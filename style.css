@@ -1,0 +1,103 @@
+/* ─── Pull-tab indicator ──────────────────────────────────────────────────────
+   Visible only when the bar is hidden. A small pill at the top centre of the
+   screen that the user can tap or drag to reveal the menu bar.              */
+
+#mobilyze-pull-tab {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px;
+    height: 6px;
+    background: var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.35));
+    border-radius: 0 0 6px 6px;
+    z-index: 9999;
+    cursor: pointer;
+    touch-action: none;
+    transition: background 0.2s ease, height 0.15s ease;
+}
+
+#mobilyze-pull-tab:active {
+    height: 10px;
+    background: var(--SmartThemeQuoteColor, rgba(255, 255, 255, 0.65));
+}
+
+body.mobilyze-active.mobilyze-bar-hidden #mobilyze-pull-tab {
+    display: block;
+}
+
+/* ─── Force full-width layout ────────────────────────────────────────────────
+   SillyTavern writes --sheldWidth as an inline style on :root (bypassing all
+   @media rules). These rules use !important on concrete properties so they win
+   regardless of what --sheldWidth computes to.                               */
+
+body.mobilyze-active #sheld {
+    width:     100dvw !important;
+    max-width: 100dvw !important;
+    left:      0      !important;
+    right:     0      !important;
+    margin:    0 auto !important;
+}
+
+body.mobilyze-active #top-bar,
+body.mobilyze-active #top-settings-holder {
+    width:    100dvw  !important;
+    position: fixed   !important;
+    left:     0       !important;
+    right:    0       !important;
+}
+
+body.mobilyze-active #left-nav-panel,
+body.mobilyze-active #right-nav-panel {
+    width:     100dvw !important;
+    min-width: 100dvw !important;
+    max-width: 100dvw !important;
+    left:      0      !important;
+}
+
+body.mobilyze-active #left-nav-panel:not(.openDrawer),
+body.mobilyze-active #right-nav-panel:not(.openDrawer) {
+    height:   0       !important;
+    overflow: hidden  !important;
+}
+
+body.mobilyze-active #bg1,
+body.mobilyze-active #bg_custom {
+    width:  100dvw !important;
+    height: 100dvh !important;
+}
+
+/* ─── Auto-hiding top bar ────────────────────────────────────────────────────
+   The bar slides off the top with a CSS transform (GPU-composited, no reflow).
+   When hidden, #sheld expands to top: 0 to reclaim the freed space.         */
+
+body.mobilyze-active #top-bar,
+body.mobilyze-active #top-settings-holder {
+    transition: transform 0.25s ease;
+}
+
+body.mobilyze-active.mobilyze-bar-hidden #top-bar,
+body.mobilyze-active.mobilyze-bar-hidden #top-settings-holder {
+    transform: translateY(-100%);
+}
+
+body.mobilyze-active #sheld {
+    transition: top 0.25s ease, height 0.25s ease, max-height 0.25s ease;
+}
+
+body.mobilyze-active.mobilyze-bar-hidden #sheld {
+    top:        0      !important;
+    height:     100dvh !important;
+    max-height: 100dvh !important;
+}
+
+/* ─── Settings panel hint ────────────────────────────────────────────────────*/
+
+.mobilyze-hint {
+    display:    block;
+    margin-top: 6px;
+    opacity:    0.55;
+    font-size:  11px;
+    line-height: 1.4;
+}
