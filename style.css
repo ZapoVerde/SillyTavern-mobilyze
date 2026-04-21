@@ -11,7 +11,7 @@
     width:             36px;
     height:            28px;
     background:        transparent;
-    border:            1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.2));
+    border:            1px solid rgba(128, 128, 128, 0.6);
     border-top:        none;
     border-radius:     0 0 14px 14px;
     z-index:           9999;
@@ -21,7 +21,7 @@
     -webkit-user-select: none;
     align-items:       center;
     justify-content:   center;
-    color:             var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.2));
+    color:             rgba(128, 128, 128, 0.6);
     font-size:         11px;
     transition:        color 0.2s ease, border-color 0.2s ease;
 }
@@ -118,6 +118,33 @@ body.mobilyze-active.mobilyze-bar-hidden:not(.plz-vn-active) #sheld {
 
 body.mobilyze-active {
     --mes-right-spacing: 10px;
+}
+
+/* ─── Full-width text layout ─────────────────────────────────────────────────
+   Pulls the avatar out of the flex flow so .mes_block spans the full width
+   from the left edge of the screen (same x-position as the avatar).
+   The avatar sits absolutely in the top-left corner of the message; text
+   clears below it via padding-top so they never overlap.                    */
+
+body.mobilyze-active .mes {
+    position: relative;
+}
+
+body.mobilyze-active .mesAvatarWrapper {
+    position: absolute;
+    top:  10px;  /* matches .mes padding-top */
+    left: 10px;  /* matches .mes padding-left */
+    z-index: 1;
+    pointer-events: none; /* wrapper transparent to clicks… */
+}
+
+body.mobilyze-active .mesAvatarWrapper .avatar {
+    pointer-events: auto; /* …but the avatar itself stays clickable */
+}
+
+body.mobilyze-active .mes_block {
+    padding-left: 0;
+    padding-top:  calc(var(--avatar-base-height) + 8px);
 }
 
 /* ─── Settings panel hint ────────────────────────────────────────────────────*/
