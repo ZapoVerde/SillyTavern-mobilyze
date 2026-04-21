@@ -1,30 +1,41 @@
-/* ─── Pull-tab indicator ──────────────────────────────────────────────────────
-   Visible only when the bar is hidden. A small pill at the top centre of the
-   screen that the user can tap or drag to reveal the menu bar.              */
+/* ─── Pull handle ─────────────────────────────────────────────────────────────
+   Visible only when the bar is hidden. Hangs from the top edge like a tab.
+   The FA grip-lines icon signals that it can be dragged.                    */
 
 #mobilyze-pull-tab {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 48px;
-    height: 6px;
-    background: var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.35));
-    border-radius: 0 0 6px 6px;
-    z-index: 9999;
-    cursor: pointer;
-    touch-action: none;
-    transition: background 0.2s ease, height 0.15s ease;
+    display:           none; /* overridden to flex by body class below */
+    position:          fixed;
+    top:               0;
+    left:              50%;
+    transform:         translateX(-50%);
+    width:             72px;
+    height:            28px;
+    background:        var(--SmartThemeBlurTintColor, rgba(25, 25, 25, 0.85));
+    border:            1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.2));
+    border-top:        none;
+    border-radius:     0 0 14px 14px;
+    z-index:           9999;
+    cursor:            grab;
+    touch-action:      none;
+    user-select:       none;
+    -webkit-user-select: none;
+    align-items:       center;
+    justify-content:   center;
+    color:             var(--SmartThemeBodyColor, rgba(255, 255, 255, 0.55));
+    font-size:         13px;
+    backdrop-filter:   blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition:        background 0.2s ease, color 0.2s ease;
 }
 
 #mobilyze-pull-tab:active {
-    height: 10px;
-    background: var(--SmartThemeQuoteColor, rgba(255, 255, 255, 0.65));
+    cursor:     grabbing;
+    background: var(--SmartThemeBlurTintColor, rgba(40, 40, 40, 0.95));
+    color:      var(--SmartThemeQuoteColor, rgba(255, 255, 255, 0.9));
 }
 
 body.mobilyze-active.mobilyze-bar-hidden #mobilyze-pull-tab {
-    display: block;
+    display: flex;
 }
 
 /* ─── Force full-width layout ────────────────────────────────────────────────
@@ -75,6 +86,13 @@ body.mobilyze-active #bg_custom {
 body.mobilyze-active #top-bar,
 body.mobilyze-active #top-settings-holder {
     transition: transform 0.25s ease;
+}
+
+/* Disable transition while the handle is being dragged so the bar follows
+   the finger exactly rather than lagging behind.                           */
+body.mobilyze-dragging #top-bar,
+body.mobilyze-dragging #top-settings-holder {
+    transition: none !important;
 }
 
 body.mobilyze-active.mobilyze-bar-hidden #top-bar,
