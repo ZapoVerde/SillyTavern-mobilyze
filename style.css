@@ -138,6 +138,14 @@ body.mobilyze-active .mes_block {
     overflow-x: visible; /* allow .mes_text to extend left past the block edge */
 }
 
+/* Give the header row (name + timestamp) a minimum height equal to the avatar
+   so .mes_text — which extends leftward under the portrait — never overlaps it.
+   Uses the same variable as the horizontal offset: auto-adjusts if the user
+   changes avatar size in settings.                                            */
+body.mobilyze-active .ch_name {
+    min-height: var(--avatar-base-width);
+}
+
 body.mobilyze-active .mes_text {
     margin-left: calc(-1 * (var(--avatar-base-width) + 10px));
     width:       calc(100% + var(--avatar-base-width) + 10px);
