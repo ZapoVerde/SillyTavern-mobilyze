@@ -63,6 +63,7 @@ const DEFAULTS = {
 // ─── State ────────────────────────────────────────────────────────────────────
 
 let _observer       = null;   // MutationObserver on document.documentElement.style
+let _drawerObserver = null;   // MutationObserver on nav panel class lists
 let _hideTimer      = null;
 let _touchStartY    = 0;
 let _touchStartX    = 0;
@@ -100,6 +101,33 @@ function stopSheldObserver() {
     if (!_observer) return;
     _observer.disconnect();
     _observer = null;
+}
+
+// ─── Drawer-open watcher ──────────────────────────────────────────────────────
+// Cancels the auto-hide timer while any nav panel is open, and restarts it
+// once all panels are closed.
+
+function startDrawerObserver() {
+    if (_drawerObserver) return;
+    const panels = document.querySelectorAll('.fillLeft, .fillRight');
+    if (!panels.length) return;
+    _drawerObserver = new MutationObserver(() => {
+        if (anyPanelOpen()) {
+            clearHideTimer();
+        } else {
+            scheduleHide();
+        }
+    });
+    panels.forEach(el => _drawerObserver.observe(el, {
+        attributes:      true,
+        attributeFilter: ['class'],
+    }));
+}
+
+function stopDrawerObserver() {
+    if (!_drawerObserver) return;
+    _drawerObserver.disconnect();
+    _drawerObserver = null;
 }
 
 // ─── Top bar show / hide ──────────────────────────────────────────────────────
@@ -251,6 +279,7 @@ function activate() {
     document.body.classList.add(CLASS_ACTIVE);
     forceSheldWidth();
     startSheldObserver();
+    startDrawerObserver();
 
     if (!document.getElementById(PULL_TAB_ID)) {
         document.body.appendChild(buildPullTab());
@@ -272,6 +301,7 @@ function activate() {
 function deactivate() {
     clearHideTimer();
     stopSheldObserver();
+    stopDrawerObserver();
     _suppressScroll = false;
     _dragActive     = false;
 
