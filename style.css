@@ -129,6 +129,10 @@ body.mobilyze-active {
    We apply an equal negative margin-left + matching width increase so the
    text lines up with the portrait's left edge without affecting the header. */
 
+body.mobilyze-active .mesAvatarWrapper {
+    padding-bottom: 10px;
+}
+
 body.mobilyze-active .mes_block {
     overflow-x: visible; /* allow .mes_text to extend left past the block edge */
 }
