@@ -6,7 +6,7 @@
     display:           none; /* overridden to flex by body class below */
     position:          fixed;
     top:               0;
-    left:              50%;
+    left:              61.8%; /* golden ratio from the right */
     transform:         translateX(-50%);
     width:             36px;
     height:            28px;
@@ -120,31 +120,22 @@ body.mobilyze-active {
     --mes-right-spacing: 10px;
 }
 
-/* ─── Full-width text layout ─────────────────────────────────────────────────
-   Pulls the avatar out of the flex flow so .mes_block spans the full width
-   from the left edge of the screen (same x-position as the avatar).
-   The avatar sits absolutely in the top-left corner of the message; text
-   clears below it via padding-top so they never overlap.                    */
+/* ─── Full-width message body ────────────────────────────────────────────────
+   The avatar and header (.ch_name — name, timestamp, buttons) stay in their
+   normal flex-row beside the portrait. Only .mes_text is pulled back to the
+   left edge of the portrait and expanded to fill the full message width.
 
-body.mobilyze-active .mes {
-    position: relative;
-}
-
-body.mobilyze-active .mesAvatarWrapper {
-    position: absolute;
-    top:  10px;  /* matches .mes padding-top */
-    left: 10px;  /* matches .mes padding-left */
-    z-index: 1;
-    pointer-events: none; /* wrapper transparent to clicks… */
-}
-
-body.mobilyze-active .mesAvatarWrapper .avatar {
-    pointer-events: auto; /* …but the avatar itself stays clickable */
-}
+   Offset to left edge of avatar  =  avatar-width  +  mes_block padding-left (10px)
+   We apply an equal negative margin-left + matching width increase so the
+   text lines up with the portrait's left edge without affecting the header. */
 
 body.mobilyze-active .mes_block {
-    padding-left: 0;
-    padding-top:  calc(var(--avatar-base-height) + 8px);
+    overflow-x: visible; /* allow .mes_text to extend left past the block edge */
+}
+
+body.mobilyze-active .mes_text {
+    margin-left: calc(-1 * (var(--avatar-base-width) + 10px));
+    width:       calc(100% + var(--avatar-base-width) + 10px);
 }
 
 /* ─── Settings panel hint ────────────────────────────────────────────────────*/
