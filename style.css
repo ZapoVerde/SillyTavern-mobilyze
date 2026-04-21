@@ -108,6 +108,15 @@ body.mobilyze-active.mobilyze-bar-hidden #sheld {
     max-height: 100dvh !important;
 }
 
+/* ─── Tighten chat message right buffer ─────────────────────────────────────
+   --mes-right-spacing (default 30px) is the right padding on .mes_text and
+   related elements. Reducing it to 10px matches the existing left padding on
+   .mes so the text column is symmetrical without touching avatar sizing.    */
+
+body.mobilyze-active {
+    --mes-right-spacing: 10px;
+}
+
 /* ─── Settings panel hint ────────────────────────────────────────────────────*/
 
 .mobilyze-hint {
