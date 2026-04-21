@@ -8,9 +8,9 @@
     top:               0;
     left:              50%;
     transform:         translateX(-50%);
-    width:             72px;
+    width:             36px;
     height:            28px;
-    background:        var(--SmartThemeBlurTintColor, rgba(25, 25, 25, 0.85));
+    background:        transparent;
     border:            1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.2));
     border-top:        none;
     border-radius:     0 0 14px 14px;
@@ -21,17 +21,15 @@
     -webkit-user-select: none;
     align-items:       center;
     justify-content:   center;
-    color:             var(--SmartThemeBodyColor, rgba(255, 255, 255, 0.55));
-    font-size:         13px;
-    backdrop-filter:   blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    transition:        background 0.2s ease, color 0.2s ease;
+    color:             var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.2));
+    font-size:         11px;
+    transition:        color 0.2s ease, border-color 0.2s ease;
 }
 
 #mobilyze-pull-tab:active {
-    cursor:     grabbing;
-    background: var(--SmartThemeBlurTintColor, rgba(40, 40, 40, 0.95));
-    color:      var(--SmartThemeQuoteColor, rgba(255, 255, 255, 0.9));
+    cursor:       grabbing;
+    color:        var(--SmartThemeBodyColor, rgba(255, 255, 255, 0.6));
+    border-color: var(--SmartThemeBodyColor, rgba(255, 255, 255, 0.6));
 }
 
 body.mobilyze-active.mobilyze-bar-hidden #mobilyze-pull-tab {
