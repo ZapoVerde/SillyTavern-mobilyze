@@ -102,7 +102,10 @@ body.mobilyze-active #sheld {
     transition: top 0.25s ease, height 0.25s ease, max-height 0.25s ease;
 }
 
-body.mobilyze-active.mobilyze-bar-hidden #sheld {
+/* When plz-vn-active is present, personalyze owns #sheld positioning via
+   inline styles (top: Xdvh, height: Ydvh). Exclude that case so mobilyze
+   does not fight it by forcing top: 0 over the portrait split.             */
+body.mobilyze-active.mobilyze-bar-hidden:not(.plz-vn-active) #sheld {
     top:        0      !important;
     height:     100dvh !important;
     max-height: 100dvh !important;
