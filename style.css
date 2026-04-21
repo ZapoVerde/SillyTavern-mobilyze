@@ -136,6 +136,7 @@ body.mobilyze-active .mes_block {
 body.mobilyze-active .mes_text {
     margin-left: calc(-1 * (var(--avatar-base-width) + 10px));
     width:       calc(100% + var(--avatar-base-width) + 10px);
+    max-width:   calc(100% + var(--avatar-base-width) + 10px);
 }
 
 /* ─── Settings panel hint ────────────────────────────────────────────────────*/
