@@ -98,6 +98,13 @@ body.mobilyze-active.mobilyze-bar-hidden #top-settings-holder {
     transform: translateY(-100%);
 }
 
+/* When the bar is hidden, zero out --topBarBlockSize so that any element
+   using it (e.g. personalyze's VN panel, nav panels, popups) automatically
+   reclaims the freed space without needing to know about mobilyze.        */
+body.mobilyze-active.mobilyze-bar-hidden {
+    --topBarBlockSize: 0px;
+}
+
 body.mobilyze-active #sheld {
     transition: top 0.25s ease, height 0.25s ease, max-height 0.25s ease;
 }
