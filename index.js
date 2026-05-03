@@ -1,11 +1,12 @@
 /**
  * @file mobilyze/index.js
- * @stamp 2024-03-20T16:10:00Z
+ * @stamp 2024-03-20T18:10:00Z
  * @architectural-role Orchestrator — Entry point and event coordinator.
  * @description
  * Wires together specialized modules for settings, layout management, 
  * bar control, and gesture handling. Coordinates the SillyTavern lifecycle 
- * and synchronizes optional layout features like avatar text-wrapping.
+ * and synchronizes optional layout features like avatar text-wrapping 
+ * (reflow) based on user configuration.
  *
  * @api-declaration
  * activate() — Enables all extension features and event listeners.

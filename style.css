@@ -1,12 +1,12 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2024-03-20T17:30:00Z
+ * @stamp 2024-03-20T18:20:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
  * CSS overrides for mobile layouts. Implements a centered "comfort width" 
- * (clamped at 800px). Includes message reflow logic that is gated by user 
- * settings (.mobilyze-wrap-active) and automatically disabled when 
- * incompatible third-party themes (like Moonlit Echoes) are detected.
+ * (clamped at 800px) for the chat area and UI panels. Includes message reflow 
+ * logic gated by user settings (.mobilyze-wrap-active) and automatically 
+ * disabled when incompatible third-party themes (like Moonlit Echoes) are active.
  *
  * @api-declaration
  * N/A - Stylesheet
@@ -59,10 +59,7 @@
    message backgrounds (like Moonlit Echoes) is active, as those themes 
    manage their own text positioning.                                       */
 
-/* Define the exclusion selector for third-party styles that break with reflow */
-/* .echostyle, .whisperstyle, .ripplestyle, .hushstyle, .tidestyle = Moonlit Echoes */
-#mobilyze-reflow-gate { --gate: "active"; }
-
+/* Exclusion list: .echostyle, .whisperstyle, .ripplestyle, .hushstyle, .tidestyle (Moonlit Echoes) */
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mesAvatarWrapper {
     padding-right:  10px;
     padding-bottom: 10px;
