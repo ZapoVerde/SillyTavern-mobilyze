@@ -1,11 +1,12 @@
 /**
  * @file mobilyze/index.js
- * @stamp 2024-03-20T11:10:00Z
+ * @stamp 2024-03-20T14:45:00Z
  * @architectural-role Orchestrator — Entry point and event coordinator.
  * @description
  * Wires together specialized modules for settings, layout management, 
- * bar control, and gesture handling. Manages the SillyTavern lifecycle, 
- * routes scroll events, and handles window resizing for responsive behavior.
+ * bar control, and gesture handling. Coordinates the SillyTavern lifecycle 
+ * within the centered "Comfort Width" (800px) layout framework, ensuring 
+ * scroll-based triggers and window resizing behave consistently on all devices.
  *
  * @api-declaration
  * activate() — Enables all extension features and event listeners.
@@ -47,6 +48,7 @@ let _lastScrollTop  = 0;
 
 /**
  * Monitors the chat container for upward scrolling to trigger the top bar.
+ * Scroll logic remains relative to content and is unaffected by width centering.
  */
 function onChatScroll() {
     const chat = document.getElementById('chat');

@@ -1,11 +1,11 @@
 /**
  * @file mobilyze/gesture-handler.js
- * @stamp 2024-03-20T12:20:00Z
+ * @stamp 2024-03-20T14:40:00Z
  * @architectural-role IO — Manages touch gestures and the pull-tab UI element.
  * @description
- * Handles screen-edge swipes and pull-tab dragging interactions. Viewport 
- * detection is height-based to match the bar-controller logic: gestures 
- * and the pull-tab are disabled on screens taller than 1000px.
+ * Handles screen-edge swipes and pull-tab dragging interactions. Designed 
+ * to work with the centered "Comfort Width" layout. Gestures are active 
+ * only when the viewport height is below 1000px, regardless of width.
  *
  * @api-declaration
  * initGestures(onShow, onResetTimer) — Binds gesture listeners and creates the pull-tab.

@@ -1,14 +1,14 @@
 /**
  * @file mobilyze/layout-manager.js
- * @stamp 2024-03-20T10:10:00Z
+ * @stamp 2024-03-20T14:30:00Z
  * @architectural-role IO — Manages root CSS variables and layout MutationObservers.
  * @description
- * Responsible for ensuring the --sheldWidth CSS variable remains at 100dvw 
- * regardless of SillyTavern's internal slider logic. Handles the setup 
- * and teardown of the MutationObserver on the root element.
+ * Responsible for ensuring the --sheldWidth CSS variable remains at a comfortable 
+ * mobile-first width (clamped at 800px) regardless of SillyTavern's internal 
+ * slider logic. Handles the setup and teardown of the MutationObserver.
  *
  * @api-declaration
- * activateLayout() — Starts the observer and forces mobile width.
+ * activateLayout() — Starts the observer and forces clamped mobile width.
  * deactivateLayout() — Disconnects the observer and restores native width.
  *
  * @contract
@@ -24,13 +24,15 @@ import { extension_settings } from '../../../extensions.js';
 import { log }                from './logger.js';
 
 const MODULE = 'layout';
+const COMFORT_WIDTH = 'min(100dvw, 800px)';
+
 let _observer = null;
 
 /**
- * Force-writes the mobile width variable to the root element.
+ * Force-writes the clamped width variable to the root element.
  */
 function forceSheldWidth() {
-    document.documentElement.style.setProperty('--sheldWidth', '100dvw');
+    document.documentElement.style.setProperty('--sheldWidth', COMFORT_WIDTH);
 }
 
 /**
@@ -46,7 +48,7 @@ export function activateLayout() {
         for (const mutation of mutations) {
             if (mutation.attributeName === 'style') {
                 const v = document.documentElement.style.getPropertyValue('--sheldWidth');
-                if (v !== '100dvw') {
+                if (v !== COMFORT_WIDTH) {
                     log(MODULE, 'Correcting --sheldWidth deviation', { detected: v });
                     forceSheldWidth();
                 }
@@ -59,7 +61,7 @@ export function activateLayout() {
         attributeFilter: ['style'],
     });
 
-    log(MODULE, 'Layout observer activated');
+    log(MODULE, 'Layout observer activated (Comfort Width: 800px max)');
 }
 
 /**

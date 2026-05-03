@@ -46,11 +46,11 @@ function isMobileViewport() {
 }
 
 /**
- * Checks if either the left or right navigation drawer is currently open.
+ * Checks if any main menu drawer is currently open.
  * @returns {boolean}
  */
 function anyPanelOpen() {
-    return document.querySelector('.fillLeft.openDrawer, .fillRight.openDrawer') !== null;
+    return document.querySelector('.drawer-content.openDrawer') !== null;
 }
 
 /**
@@ -135,7 +135,7 @@ export function syncBarState() {
  */
 function startDrawerObserver() {
     if (_drawerObserver) return;
-    const panels = document.querySelectorAll('.fillLeft, .fillRight');
+    const panels = document.querySelectorAll('.drawer-content');
     if (!panels.length) return;
 
     _drawerObserver = new MutationObserver(() => {

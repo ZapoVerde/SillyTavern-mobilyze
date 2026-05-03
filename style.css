@@ -1,11 +1,12 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2024-03-20T12:40:00Z
+ * @stamp 2024-03-20T14:35:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
- * CSS overrides for mobile layouts. The message body expansion is now 
- * global (gated only by .mobilyze-active) to ensure text wraps under 
- * portraits on all screen sizes, while bar-hiding remains height-constrained.
+ * CSS overrides for mobile layouts. Implements a centered "comfort width" 
+ * (clamped at 800px) for the chat area, top bar, and navigation drawers 
+ * to ensure usability on larger mobile/tablet screens while maintaining 
+ * the mobile-first behavior on small devices.
  *
  * @api-declaration
  * N/A - Stylesheet
@@ -19,14 +20,15 @@
 
 /* ─── Pull handle ─────────────────────────────────────────────────────────────
    Visible only when the bar is hidden. Hangs from the top edge like a tab.
-   The FA grip-lines icon signals that it can be dragged.                    */
+   Positioned relative to the center to stay within the comfort-width area.  */
 
 #mobilyze-pull-tab {
     display:           none; 
     position:          fixed;
     top:               0;
-    left:              61.8%; /* golden ratio from the right */
-    transform:         translateX(-50%);
+    left:              50%;
+    /* Positioned slightly off-center (approx golden ratio of the 800px width) */
+    transform:         translateX(calc(-50% + 95px));
     width:             36px;
     height:            28px;
     background:        transparent;
@@ -78,8 +80,7 @@ body.mobilyze-active .mes_text {
 
 /* ─── Responsive Height-Based Overrides ──────────────────────────────────────
    These rules strictly apply only below the 1000px vertical breakpoint. 
-   This ensures auto-hiding and full-width chat are only active when the 
-   available height suggests a mobile/constrained device.                  */
+   Implements the "Comfort Width" (clamped at 800px) and centering.          */
 
 @media (max-height: 1000px) {
     
@@ -87,30 +88,33 @@ body.mobilyze-active .mes_text {
         display: flex;
     }
 
-    /* Force full-width layout for the main container and drawers */
+    /* Force clamped-width layout for the main container and drawers */
     body.mobilyze-active #sheld {
-        width:     100dvw !important;
-        max-width: 100dvw !important;
-        left:      0      !important;
-        right:     0      !important;
-        margin:    0 auto !important;
+        width:     min(100dvw, 800px) !important;
+        max-width: min(100dvw, 800px) !important;
+        left:      0                  !important;
+        right:     0                  !important;
+        margin:    0 auto             !important;
     }
 
     body.mobilyze-active #top-bar,
     body.mobilyze-active #top-settings-holder {
-        width:    100dvw  !important;
-        position: fixed   !important;
-        top:      0       !important;
-        left:     0       !important;
-        right:    0       !important;
+        width:    min(100dvw, 800px)  !important;
+        position: fixed               !important;
+        top:      0                   !important;
+        left:     0                   !important;
+        right:    0                   !important;
+        margin:   0 auto              !important;
     }
 
     body.mobilyze-active #left-nav-panel,
     body.mobilyze-active #right-nav-panel {
-        width:     100dvw !important;
-        min-width: 100dvw !important;
-        max-width: 100dvw !important;
-        left:      0      !important;
+        width:     min(100dvw, 800px) !important;
+        min-width: min(100dvw, 800px) !important;
+        max-width: min(100dvw, 800px) !important;
+        left:      0                  !important;
+        right:     0                  !important;
+        margin:    0 auto             !important;
     }
 
     body.mobilyze-active #left-nav-panel:not(.openDrawer),
@@ -119,6 +123,7 @@ body.mobilyze-active .mes_text {
         overflow: hidden  !important;
     }
 
+    /* Backgrounds always remain full-screen */
     body.mobilyze-active #bg1,
     body.mobilyze-active #bg_custom {
         width:  100dvw !important;
