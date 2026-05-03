@@ -65,8 +65,9 @@ export function activateLayout() {
 }
 
 /**
- * Disconnects the observer and restores the sheld width to the value 
- * defined in SillyTavern's Power User settings.
+ * Disconnects the observer and removes the inline style override.
+ * This allows SillyTavern's native CSS and internal logic to 
+ * resume control of the layout width.
  */
 export function deactivateLayout() {
     if (_observer) {
@@ -74,9 +75,10 @@ export function deactivateLayout() {
         _observer = null;
     }
 
-    // Restore ST default behavior
-    const chatWidth = extension_settings?.power_user?.chat_width ?? 50;
-    document.documentElement.style.setProperty('--sheldWidth', `${chatWidth}vw`);
+    // Remove the inline style property entirely.
+    // Setting it to a "restored" value (like 50vw) actually blocks 
+    // ST's native mobile stylesheets from working correctly.
+    document.documentElement.style.removeProperty('--sheldWidth');
     
-    log(MODULE, 'Layout observer deactivated; width restored', { restored: `${chatWidth}vw` });
+    log(MODULE, 'Layout observer deactivated; inline override removed');
 }
