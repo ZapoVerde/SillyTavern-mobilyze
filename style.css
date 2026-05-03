@@ -1,9 +1,28 @@
+/* 
+@file mobilyze/style.css
+@stamp 2024-03-20T12:00:00Z
+@architectural-role IO — Layout and visibility definitions.
+@description
+CSS overrides for mobile layouts, bar animations, and pull-tab appearance. 
+Uses a 1000px media query to ensure that layout-distorting rules (like 
+forcing 100vw or hiding the top bar) only apply to mobile viewports.
+
+@api-declaration
+N/A - Stylesheet
+
+@contract
+  assertions:
+    purity:        IO (Global style injection)
+    state_ownership: [DOM classes .mobilyze-active, .mobilyze-bar-hidden]
+    external_io:   [Override of ST internal layout properties]
+*/
+
 /* ─── Pull handle ─────────────────────────────────────────────────────────────
    Visible only when the bar is hidden. Hangs from the top edge like a tab.
    The FA grip-lines icon signals that it can be dragged.                    */
 
 #mobilyze-pull-tab {
-    display:           none; /* overridden to flex by body class below */
+    display:           none; 
     position:          fixed;
     top:               0;
     left:              61.8%; /* golden ratio from the right */
@@ -32,135 +51,113 @@
     border-color: var(--SmartThemeBodyColor, rgba(255, 255, 255, 0.6));
 }
 
-body.mobilyze-active.mobilyze-bar-hidden #mobilyze-pull-tab {
-    display: flex;
+/* ─── Responsive Mobile Overrides ───────────────────────────────────────────
+   These rules strictly apply only below the 1000px breakpoint. This prevents
+   Mobilyze from breaking the 3-column desktop layout.                      */
+
+@media (max-width: 1000px) {
+    
+    body.mobilyze-active.mobilyze-bar-hidden #mobilyze-pull-tab {
+        display: flex;
+    }
+
+    /* Force full-width layout for the main container and drawers */
+    body.mobilyze-active #sheld {
+        width:     100dvw !important;
+        max-width: 100dvw !important;
+        left:      0      !important;
+        right:     0      !important;
+        margin:    0 auto !important;
+    }
+
+    body.mobilyze-active #top-bar,
+    body.mobilyze-active #top-settings-holder {
+        width:    100dvw  !important;
+        position: fixed   !important;
+        top:      0       !important;
+        left:     0       !important;
+        right:    0       !important;
+    }
+
+    body.mobilyze-active #left-nav-panel,
+    body.mobilyze-active #right-nav-panel {
+        width:     100dvw !important;
+        min-width: 100dvw !important;
+        max-width: 100dvw !important;
+        left:      0      !important;
+    }
+
+    body.mobilyze-active #left-nav-panel:not(.openDrawer),
+    body.mobilyze-active #right-nav-panel:not(.openDrawer) {
+        height:   0       !important;
+        overflow: hidden  !important;
+    }
+
+    body.mobilyze-active #bg1,
+    body.mobilyze-active #bg_custom {
+        width:  100dvw !important;
+        height: 100dvh !important;
+    }
+
+    /* Auto-hiding top bar transitions and movement */
+    body.mobilyze-active #top-bar,
+    body.mobilyze-active #top-settings-holder {
+        transition: transform 0.25s ease;
+    }
+
+    /* Disable transition while dragging so the bar follows the finger exactly */
+    body.mobilyze-dragging #top-bar,
+    body.mobilyze-dragging #top-settings-holder {
+        transition: none !important;
+    }
+
+    body.mobilyze-active.mobilyze-bar-hidden #top-bar,
+    body.mobilyze-active.mobilyze-bar-hidden #top-settings-holder {
+        transform: translateY(-100%);
+    }
+
+    /* Reclaim space when hidden */
+    body.mobilyze-active.mobilyze-bar-hidden {
+        --topBarBlockSize: 0px;
+    }
+
+    body.mobilyze-active #sheld {
+        transition: top 0.25s ease, height 0.25s ease, max-height 0.25s ease;
+    }
+
+    body.mobilyze-active.mobilyze-bar-hidden:not(.plz-vn-active) #sheld {
+        top:        0      !important;
+        height:     100dvh !important;
+        max-height: 100dvh !important;
+    }
+
+    /* Tighten chat message right buffer */
+    body.mobilyze-active {
+        --mes-right-spacing: 10px;
+    }
+
+    /* Full-width message body logic */
+    body.mobilyze-active .mesAvatarWrapper {
+        padding-right:  10px;
+        padding-bottom: 10px;
+    }
+
+    body.mobilyze-active .mes_block {
+        overflow-x: visible;
+    }
+
+    body.mobilyze-active .ch_name {
+        min-height: var(--avatar-base-width);
+    }
+
+    body.mobilyze-active .mes_text {
+        margin-left: calc(-1 * (var(--avatar-base-width) + 10px));
+        width:       calc(100% + var(--avatar-base-width) + 10px);
+        max-width:   calc(100% + var(--avatar-base-width) + 10px);
+    }
 }
 
-/* ─── Force full-width layout ────────────────────────────────────────────────
-   SillyTavern writes --sheldWidth as an inline style on :root (bypassing all
-   @media rules). These rules use !important on concrete properties so they win
-   regardless of what --sheldWidth computes to.                               */
-
-body.mobilyze-active #sheld {
-    width:     100dvw !important;
-    max-width: 100dvw !important;
-    left:      0      !important;
-    right:     0      !important;
-    margin:    0 auto !important;
-}
-
-body.mobilyze-active #top-bar,
-body.mobilyze-active #top-settings-holder {
-    width:    100dvw  !important;
-    position: fixed   !important;
-    top:      0       !important;
-    left:     0       !important;
-    right:    0       !important;
-}
-
-body.mobilyze-active #left-nav-panel,
-body.mobilyze-active #right-nav-panel {
-    width:     100dvw !important;
-    min-width: 100dvw !important;
-    max-width: 100dvw !important;
-    left:      0      !important;
-}
-
-body.mobilyze-active #left-nav-panel:not(.openDrawer),
-body.mobilyze-active #right-nav-panel:not(.openDrawer) {
-    height:   0       !important;
-    overflow: hidden  !important;
-}
-
-body.mobilyze-active #bg1,
-body.mobilyze-active #bg_custom {
-    width:  100dvw !important;
-    height: 100dvh !important;
-}
-
-/* ─── Auto-hiding top bar ────────────────────────────────────────────────────
-   The bar slides off the top with a CSS transform (GPU-composited, no reflow).
-   When hidden, #sheld expands to top: 0 to reclaim the freed space.         */
-
-body.mobilyze-active #top-bar,
-body.mobilyze-active #top-settings-holder {
-    transition: transform 0.25s ease;
-}
-
-/* Disable transition while the handle is being dragged so the bar follows
-   the finger exactly rather than lagging behind.                           */
-body.mobilyze-dragging #top-bar,
-body.mobilyze-dragging #top-settings-holder {
-    transition: none !important;
-}
-
-body.mobilyze-active.mobilyze-bar-hidden #top-bar,
-body.mobilyze-active.mobilyze-bar-hidden #top-settings-holder {
-    transform: translateY(-100%);
-}
-
-/* When the bar is hidden, zero out --topBarBlockSize so that any element
-   using it (e.g. personalyze's VN panel, nav panels, popups) automatically
-   reclaims the freed space without needing to know about mobilyze.        */
-body.mobilyze-active.mobilyze-bar-hidden {
-    --topBarBlockSize: 0px;
-}
-
-body.mobilyze-active #sheld {
-    transition: top 0.25s ease, height 0.25s ease, max-height 0.25s ease;
-}
-
-/* When plz-vn-active is present, personalyze owns #sheld positioning via
-   inline styles (top: Xdvh, height: Ydvh). Exclude that case so mobilyze
-   does not fight it by forcing top: 0 over the portrait split.             */
-body.mobilyze-active.mobilyze-bar-hidden:not(.plz-vn-active) #sheld {
-    top:        0      !important;
-    height:     100dvh !important;
-    max-height: 100dvh !important;
-}
-
-/* ─── Tighten chat message right buffer ─────────────────────────────────────
-   --mes-right-spacing (default 30px) is the right padding on .mes_text and
-   related elements. Reducing it to 10px matches the existing left padding on
-   .mes so the text column is symmetrical without touching avatar sizing.    */
-
-body.mobilyze-active {
-    --mes-right-spacing: 10px;
-}
-
-/* ─── Full-width message body ────────────────────────────────────────────────
-   The avatar and header (.ch_name — name, timestamp, buttons) stay in their
-   normal flex-row beside the portrait. Only .mes_text is pulled back to the
-   left edge of the portrait and expanded to fill the full message width.
-
-   Offset to left edge of avatar  =  avatar-width  +  mes_block padding-left (10px)
-   We apply an equal negative margin-left + matching width increase so the
-   text lines up with the portrait's left edge without affecting the header. */
-
-body.mobilyze-active .mesAvatarWrapper {
-    padding-right:  10px;
-    padding-bottom: 10px;
-}
-
-body.mobilyze-active .mes_block {
-    overflow-x: visible; /* allow .mes_text to extend left past the block edge */
-}
-
-/* Give the header row (name + timestamp) a minimum height equal to the avatar
-   so .mes_text — which extends leftward under the portrait — never overlaps it.
-   Uses the same variable as the horizontal offset: auto-adjusts if the user
-   changes avatar size in settings.                                            */
-body.mobilyze-active .ch_name {
-    min-height: var(--avatar-base-width);
-}
-
-body.mobilyze-active .mes_text {
-    margin-left: calc(-1 * (var(--avatar-base-width) + 10px));
-    width:       calc(100% + var(--avatar-base-width) + 10px);
-    max-width:   calc(100% + var(--avatar-base-width) + 10px);
-}
-
-/* ─── Settings panel hint ────────────────────────────────────────────────────*/
+/* ─── Settings panel hint (Global) ─────────────────────────────────────────── */
 
 .mobilyze-hint {
     display:    block;

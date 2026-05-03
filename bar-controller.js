@@ -1,11 +1,11 @@
 /**
  * @file mobilyze/bar-controller.js
- * @stamp 2024-03-20T11:00:00Z
+ * @stamp 2024-03-20T12:05:00Z
  * @architectural-role Stateful / IO — Manages top bar visibility and auto-hide logic.
  * @description
  * Controls the 'mobilyze-bar-hidden' state on the document body. Orchestrates 
  * the auto-hide timer and monitors SillyTavern's side drawers. Now includes 
- * responsive logic: the bar will not hide on viewports wider than 1000px.
+ * robust desktop-sync logic to prevent the bar from staying hidden on large screens.
  *
  * @api-declaration
  * showBar() — Reveals the top bar and schedules auto-hide (if mobile).
@@ -13,7 +13,7 @@
  * isScrollSuppressed() — Returns true during the hide transition.
  * activateBar() — Starts drawer observers and initial timers.
  * deactivateBar() — Clears all timers and observers.
- * syncBarState() — Forces the bar visible if the viewport is desktop-sized.
+ * syncBarState() — Forces the bar visible and clears timers if the viewport is desktop-sized.
  *
  * @contract
  *   assertions:
@@ -99,7 +99,7 @@ export function showBar() {
 export function hideBar() {
     if (!isMobileViewport()) {
         log(MODULE, 'Hide aborted: desktop viewport');
-        showBar(); // Ensure visible
+        syncBarState();
         return;
     }
 
@@ -120,11 +120,13 @@ export function hideBar() {
 }
 
 /**
- * Forces the bar visible if the viewport is no longer mobile.
+ * Forces the bar visible and kills all timers if the viewport is no longer mobile.
  */
 export function syncBarState() {
     if (!isMobileViewport()) {
-        showBar();
+        clearHideTimer();
+        document.body.classList.remove(CLASS_BAR_HIDDEN);
+        log(MODULE, 'Desktop detected: state reset and bar forced visible');
     }
 }
 
