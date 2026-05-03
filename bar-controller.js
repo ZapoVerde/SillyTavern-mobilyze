@@ -1,19 +1,20 @@
 /**
  * @file mobilyze/bar-controller.js
- * @stamp 2024-03-20T12:15:00Z
+ * @stamp 2024-03-20T19:00:00Z
  * @architectural-role Stateful / IO — Manages top bar visibility and auto-hide logic.
  * @description
  * Controls the 'mobilyze-bar-hidden' state on the document body. Orchestrates 
  * the auto-hide timer and monitors SillyTavern's side drawers. Viewport 
- * detection is height-based to prioritize vertical chat space.
+ * detection is height-based logic has been removed to force a unified 
+ * single-column experience on all devices.
  *
  * @api-declaration
- * showBar() — Reveals the top bar and schedules auto-hide (if mobile).
- * hideBar() — Hides the top bar if no drawers are open and on mobile viewport.
+ * showBar() — Reveals the top bar and schedules auto-hide.
+ * hideBar() — Hides the top bar if no drawers are open.
  * isScrollSuppressed() — Returns true during the hide transition.
  * activateBar() — Starts drawer observers and initial timers.
  * deactivateBar() — Clears all timers and observers.
- * syncBarState() — Forces the bar visible and clears timers if the viewport is desktop-sized.
+ * syncBarState() — Forces the bar visible and clears timers if logic is disabled.
  *
  * @contract
  *   assertions:
@@ -31,18 +32,17 @@ const MODULE               = 'bar';
 const CLASS_BAR_HIDDEN     = 'mobilyze-bar-hidden';
 const TRANSITION_DURATION  = 400; 
 const INITIAL_HIDE_DELAY   = 1500;
-const HEIGHT_BREAKPOINT    = 1000; // Triggers auto-hide if screen height is below this
 
 let _hideTimer      = null;
 let _drawerObserver = null;
 let _suppressScroll = false;
 
 /**
- * Checks if the current viewport is considered "mobile" based on height.
+ * Mobilyze logic now applies to all viewports to maintain single-column layout.
  * @returns {boolean}
  */
 function isMobileViewport() {
-    return window.innerHeight < HEIGHT_BREAKPOINT;
+    return true;
 }
 
 /**
@@ -72,7 +72,6 @@ export function clearHideTimer() {
 
 /**
  * Schedules the top bar to hide after the configured delay.
- * Only triggers if the screen height is within the mobile threshold.
  */
 export function scheduleHide() {
     clearHideTimer();
@@ -94,11 +93,11 @@ export function showBar() {
 
 /**
  * Adds the hidden class to slide the bar out of view.
- * Aborts if navigation drawers are open OR if the viewport height is large.
+ * Aborts if navigation drawers are open.
  */
 export function hideBar() {
     if (!isMobileViewport()) {
-        log(MODULE, 'Hide aborted: viewport height too large');
+        log(MODULE, 'Hide aborted: viewport inactive');
         syncBarState();
         return;
     }
@@ -120,13 +119,13 @@ export function hideBar() {
 }
 
 /**
- * Forces the bar visible and kills all timers if the viewport height is large.
+ * Forces the bar visible and kills all timers if the viewport is reset.
  */
 export function syncBarState() {
     if (!isMobileViewport()) {
         clearHideTimer();
         document.body.classList.remove(CLASS_BAR_HIDDEN);
-        log(MODULE, 'Large viewport height detected: state reset and bar forced visible');
+        log(MODULE, 'State reset and bar forced visible');
     }
 }
 
@@ -162,7 +161,6 @@ export function activateBar() {
     startDrawerObserver();
     document.body.classList.remove(CLASS_BAR_HIDDEN);
     
-    // Only schedule initial hide if we are in the mobile height range
     if (isMobileViewport()) {
         setTimeout(hideBar, INITIAL_HIDE_DELAY);
     }

@@ -81,8 +81,23 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
     max-width:   calc(100% + var(--avatar-base-width) + 10px);
 }
 
+/* ─── Panel Centering Override (All Viewports) ──────────────────────────────
+   ST's fillLeft/fillRight classes anchor #left-nav-panel and #right-nav-panel
+   to the screen edges. These rules defeat that anchoring so both panels always
+   open in the middle column. The sidebars are purely decorative.             */
+
+body.mobilyze-active #left-nav-panel,
+body.mobilyze-active #right-nav-panel {
+    width:     var(--sheldWidth) !important;
+    min-width: var(--sheldWidth) !important;
+    max-width: var(--sheldWidth) !important;
+    left:      0                 !important;
+    right:     0                 !important;
+    margin:    0 auto            !important;
+}
+
 /* ─── Responsive Height-Based Overrides ──────────────────────────────────────
-   These rules strictly apply only below the 1000px vertical breakpoint. 
+   These rules strictly apply only below the 1000px vertical breakpoint.
    Implements the "Comfort Width" (clamped at 800px) and centering.          */
 
 @media (max-height: 1000px) {
