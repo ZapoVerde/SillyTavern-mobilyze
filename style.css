@@ -1,12 +1,11 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2024-03-20T12:25:00Z
+ * @stamp 2024-03-20T12:30:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
- * CSS overrides for mobile layouts, bar animations, and pull-tab appearance. 
- * Uses a 1000px max-height media query to ensure that layout-distorting 
- * rules (like forcing 100vw or hiding the top bar) only apply when 
- * vertical screen real-estate is limited.
+ * CSS overrides for mobile layouts. Includes hardened top-bar hiding logic 
+ * using a 5% translation buffer and opacity/visibility toggles to prevent 
+ * "ghost" bar fragments or stray borders from remaining visible.
  *
  * @api-declaration
  * N/A - Stylesheet
@@ -104,7 +103,9 @@
     /* Auto-hiding top bar transitions and movement */
     body.mobilyze-active #top-bar,
     body.mobilyze-active #top-settings-holder {
-        transition: transform 0.25s ease;
+        transition: transform 0.25s ease, opacity 0.2s ease, visibility 0.25s;
+        opacity:    1;
+        visibility: visible;
     }
 
     /* Disable transition while dragging so the bar follows the finger exactly */
@@ -113,9 +114,14 @@
         transition: none !important;
     }
 
+    /* -105% buffer to ensure shadows/borders are cleared. 
+       Opacity and Visibility added as a fail-safe against stray pixels. */
     body.mobilyze-active.mobilyze-bar-hidden #top-bar,
     body.mobilyze-active.mobilyze-bar-hidden #top-settings-holder {
-        transform: translateY(-100%);
+        transform:      translateY(-105%);
+        opacity:        0;
+        visibility:     hidden;
+        pointer-events: none;
     }
 
     /* Reclaim space when hidden */
