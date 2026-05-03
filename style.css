@@ -88,12 +88,14 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
 
 body.mobilyze-active #left-nav-panel,
 body.mobilyze-active #right-nav-panel {
-    width:     var(--sheldWidth) !important;
-    min-width: var(--sheldWidth) !important;
-    max-width: var(--sheldWidth) !important;
-    left:      0                 !important;
-    right:     0                 !important;
-    margin:    0 auto            !important;
+    width:      var(--sheldWidth)                                                     !important;
+    min-width:  var(--sheldWidth)                                                     !important;
+    max-width:  var(--sheldWidth)                                                     !important;
+    left:       0                                                                     !important;
+    right:      0                                                                     !important;
+    margin:     0 auto                                                                !important;
+    top:        var(--topBarBlockSize)                                                !important;
+    max-height: calc(100dvh - var(--topBarBlockSize) - var(--bottomFormBlockSize))   !important;
 }
 
 /* ─── Responsive Height-Based Overrides ──────────────────────────────────────
