@@ -1,11 +1,11 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2024-03-20T12:30:00Z
+ * @stamp 2024-03-20T12:40:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
- * CSS overrides for mobile layouts. Includes hardened top-bar hiding logic 
- * using a 5% translation buffer and opacity/visibility toggles to prevent 
- * "ghost" bar fragments or stray borders from remaining visible.
+ * CSS overrides for mobile layouts. The message body expansion is now 
+ * global (gated only by .mobilyze-active) to ensure text wraps under 
+ * portraits on all screen sizes, while bar-hiding remains height-constrained.
  *
  * @api-declaration
  * N/A - Stylesheet
@@ -49,6 +49,31 @@
     cursor:       grabbing;
     color:        var(--SmartThemeBodyColor, rgba(255, 255, 255, 0.6));
     border-color: var(--SmartThemeBodyColor, rgba(255, 255, 255, 0.6));
+}
+
+/* ─── Global Message Layout Overrides ───────────────────────────────────────
+   These apply whenever Mobilyze is active, regardless of screen height.
+   Forces the message text to wrap under the avatar.                         */
+
+body.mobilyze-active .mesAvatarWrapper {
+    padding-right:  10px;
+    padding-bottom: 10px;
+}
+
+body.mobilyze-active .mes_block {
+    overflow-x: visible; /* allow .mes_text to extend left past the block edge */
+}
+
+/* Give the header row (name + timestamp) a minimum height equal to the avatar
+   so .mes_text — which extends leftward under the portrait — never overlaps it. */
+body.mobilyze-active .ch_name {
+    min-height: var(--avatar-base-width);
+}
+
+body.mobilyze-active .mes_text {
+    margin-left: calc(-1 * (var(--avatar-base-width) + 10px));
+    width:       calc(100% + var(--avatar-base-width) + 10px);
+    max-width:   calc(100% + var(--avatar-base-width) + 10px);
 }
 
 /* ─── Responsive Height-Based Overrides ──────────────────────────────────────
@@ -114,8 +139,6 @@
         transition: none !important;
     }
 
-    /* -105% buffer to ensure shadows/borders are cleared. 
-       Opacity and Visibility added as a fail-safe against stray pixels. */
     body.mobilyze-active.mobilyze-bar-hidden #top-bar,
     body.mobilyze-active.mobilyze-bar-hidden #top-settings-holder {
         transform:      translateY(-105%);
@@ -142,26 +165,6 @@
     /* Tighten chat message right buffer */
     body.mobilyze-active {
         --mes-right-spacing: 10px;
-    }
-
-    /* Full-width message body logic */
-    body.mobilyze-active .mesAvatarWrapper {
-        padding-right:  10px;
-        padding-bottom: 10px;
-    }
-
-    body.mobilyze-active .mes_block {
-        overflow-x: visible;
-    }
-
-    body.mobilyze-active .ch_name {
-        min-height: var(--avatar-base-width);
-    }
-
-    body.mobilyze-active .mes_text {
-        margin-left: calc(-1 * (var(--avatar-base-width) + 10px));
-        width:       calc(100% + var(--avatar-base-width) + 10px);
-        max-width:   calc(100% + var(--avatar-base-width) + 10px);
     }
 }
 
