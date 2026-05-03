@@ -1,12 +1,12 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2024-03-20T14:35:00Z
+ * @stamp 2024-03-20T17:30:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
  * CSS overrides for mobile layouts. Implements a centered "comfort width" 
- * (clamped at 800px) for the chat area, top bar, and navigation drawers 
- * to ensure usability on larger mobile/tablet screens while maintaining 
- * the mobile-first behavior on small devices.
+ * (clamped at 800px). Includes message reflow logic that is gated by user 
+ * settings (.mobilyze-wrap-active) and automatically disabled when 
+ * incompatible third-party themes (like Moonlit Echoes) are detected.
  *
  * @api-declaration
  * N/A - Stylesheet
@@ -14,7 +14,7 @@
  * @contract
  *   assertions:
  *     purity:        IO (Global style injection)
- *     state_ownership: [DOM classes .mobilyze-active, .mobilyze-bar-hidden]
+ *     state_ownership: [DOM classes .mobilyze-active, .mobilyze-bar-hidden, .mobilyze-wrap-active]
  *     external_io:   [Override of ST internal layout properties]
  */
 
@@ -54,25 +54,31 @@
 }
 
 /* ─── Global Message Layout Overrides ───────────────────────────────────────
-   These apply whenever Mobilyze is active, regardless of screen height.
-   Forces the message text to wrap under the avatar.                         */
+   These apply when Mobilyze is active AND the text-wrap setting is enabled.
+   COMPATIBILITY: These rules automatically disable if a theme with complex 
+   message backgrounds (like Moonlit Echoes) is active, as those themes 
+   manage their own text positioning.                                       */
 
-body.mobilyze-active .mesAvatarWrapper {
+/* Define the exclusion selector for third-party styles that break with reflow */
+/* .echostyle, .whisperstyle, .ripplestyle, .hushstyle, .tidestyle = Moonlit Echoes */
+#mobilyze-reflow-gate { --gate: "active"; }
+
+body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mesAvatarWrapper {
     padding-right:  10px;
     padding-bottom: 10px;
 }
 
-body.mobilyze-active .mes_block {
+body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mes_block {
     overflow-x: visible; /* allow .mes_text to extend left past the block edge */
 }
 
 /* Give the header row (name + timestamp) a minimum height equal to the avatar
    so .mes_text — which extends leftward under the portrait — never overlaps it. */
-body.mobilyze-active .ch_name {
+body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .ch_name {
     min-height: var(--avatar-base-width);
 }
 
-body.mobilyze-active .mes_text {
+body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mes_text {
     margin-left: calc(-1 * (var(--avatar-base-width) + 10px));
     width:       calc(100% + var(--avatar-base-width) + 10px);
     max-width:   calc(100% + var(--avatar-base-width) + 10px);

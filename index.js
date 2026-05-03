@@ -1,12 +1,11 @@
 /**
  * @file mobilyze/index.js
- * @stamp 2024-03-20T14:45:00Z
+ * @stamp 2024-03-20T16:10:00Z
  * @architectural-role Orchestrator — Entry point and event coordinator.
  * @description
  * Wires together specialized modules for settings, layout management, 
  * bar control, and gesture handling. Coordinates the SillyTavern lifecycle 
- * within the centered "Comfort Width" (800px) layout framework, ensuring 
- * scroll-based triggers and window resizing behave consistently on all devices.
+ * and synchronizes optional layout features like avatar text-wrapping.
  *
  * @api-declaration
  * activate() — Enables all extension features and event listeners.
@@ -16,7 +15,7 @@
  *   assertions:
  *     purity:        IO / Stateful (Orchestration)
  *     state_ownership: [Scroll state]
- *     external_io:   [document events, #chat scroll, window resize]
+ *     external_io:   [document events, #chat scroll, window resize, body classes]
  */
 
 'use strict';
@@ -43,8 +42,19 @@ import {
 
 const MODULE        = 'core';
 const CLASS_ACTIVE  = 'mobilyze-active';
+const CLASS_WRAP    = 'mobilyze-wrap-active';
 
 let _lastScrollTop  = 0;
+
+/**
+ * Toggles the CSS class that controls text reflow behind portraits.
+ */
+function syncWrapState() {
+    const settings = getSettings();
+    const shouldWrap = settings.enabled && settings.enableTextWrap;
+    document.body.classList.toggle(CLASS_WRAP, !!shouldWrap);
+    log(MODULE, 'Wrap state synced', { active: shouldWrap });
+}
 
 /**
  * Monitors the chat container for upward scrolling to trigger the top bar.
@@ -84,6 +94,7 @@ function activate() {
 
     activateLayout();
     activateBar();
+    syncWrapState();
     initGestures(showBar, scheduleHide);
 
     const chat = document.getElementById('chat');
@@ -101,6 +112,7 @@ function activate() {
 function deactivate() {
     log(MODULE, 'Deactivating Mobilyze');
     document.body.classList.remove(CLASS_ACTIVE);
+    document.body.classList.remove(CLASS_WRAP);
 
     deactivateLayout();
     deactivateBar();
@@ -125,6 +137,9 @@ jQuery(async () => {
         },
         (debugEnabled) => {
             setVerbose(debugEnabled);
+        },
+        () => {
+            syncWrapState();
         }
     );
 
