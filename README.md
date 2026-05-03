@@ -8,9 +8,9 @@ Mobilyze is a SillyTavern extension designed to transform the mobile chatting ex
 ## What Mobilyze Does for You
 
 *   **Maximizes Chat Space:** The top navigation bar automatically slides out of view when you start reading, giving you back 15% more vertical space.
-*   **The "Comfort Width" Layout:** No more awkward stretching. Chat messages are clamped to a maximum width of 800px and centered. This keeps text lines at a readable length on tablets while remaining full-width on phones.
+*   **The "Comfort Width" Layout:** Chat messages are clamped to a maximum width of 800px and centered. This keeps text lines at a readable length on tablets while remaining full-width on phones.
 *   **Smart Message Wrapping:** Text now flows *under* avatars instead of being squeezed into a narrow column next to them. This makes message bubbles feel more spacious and natural.
-*   **Fixes "Stuck" Side Panels:** Forces the left and right drawers to behave on mobile, ensuring they never overlap your chat or get stuck in a three-column desktop view.
+*   **Fixes "Stuck" Side Panels:** Forces the left and right drawers to behave ensuring they disapear on mobile or get squeezed in a three-column desktop view.
 
 ---
 
@@ -47,4 +47,4 @@ Find the Mobilyze configuration in the SillyTavern Extensions drawer:
 | **Auto-hide delay** | 4000ms | Controls how long the bar stays visible before sliding away. |
 | **Enable debug logging** | Off | Only needed if you are reporting a bug to the developers. |
 
-**Note:** Mobilyze is designed to activate automatically whenever your screen height is less than 1000px. On large desktop monitors, the extension remains dormant to preserve the standard desktop experience.
+**Note:** Mobilyze is designed to hide the menu automatically whenever your screen height is less than 1000px. On large desktop monitors, the menu remains available.
