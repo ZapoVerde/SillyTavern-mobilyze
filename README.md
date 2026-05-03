@@ -1,6 +1,3 @@
-Here is the updated `README.md` with the specific installation instructions and GitHub URL included.
-
-***
 
 # Mobilyze
 
