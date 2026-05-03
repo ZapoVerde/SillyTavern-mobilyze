@@ -1,21 +1,22 @@
-/* 
-@file mobilyze/style.css
-@stamp 2024-03-20T12:00:00Z
-@architectural-role IO — Layout and visibility definitions.
-@description
-CSS overrides for mobile layouts, bar animations, and pull-tab appearance. 
-Uses a 1000px media query to ensure that layout-distorting rules (like 
-forcing 100vw or hiding the top bar) only apply to mobile viewports.
-
-@api-declaration
-N/A - Stylesheet
-
-@contract
-  assertions:
-    purity:        IO (Global style injection)
-    state_ownership: [DOM classes .mobilyze-active, .mobilyze-bar-hidden]
-    external_io:   [Override of ST internal layout properties]
-*/
+/**
+ * @file mobilyze/style.css
+ * @stamp 2024-03-20T12:25:00Z
+ * @architectural-role IO — Layout and visibility definitions.
+ * @description
+ * CSS overrides for mobile layouts, bar animations, and pull-tab appearance. 
+ * Uses a 1000px max-height media query to ensure that layout-distorting 
+ * rules (like forcing 100vw or hiding the top bar) only apply when 
+ * vertical screen real-estate is limited.
+ *
+ * @api-declaration
+ * N/A - Stylesheet
+ *
+ * @contract
+ *   assertions:
+ *     purity:        IO (Global style injection)
+ *     state_ownership: [DOM classes .mobilyze-active, .mobilyze-bar-hidden]
+ *     external_io:   [Override of ST internal layout properties]
+ */
 
 /* ─── Pull handle ─────────────────────────────────────────────────────────────
    Visible only when the bar is hidden. Hangs from the top edge like a tab.
@@ -51,11 +52,12 @@ N/A - Stylesheet
     border-color: var(--SmartThemeBodyColor, rgba(255, 255, 255, 0.6));
 }
 
-/* ─── Responsive Mobile Overrides ───────────────────────────────────────────
-   These rules strictly apply only below the 1000px breakpoint. This prevents
-   Mobilyze from breaking the 3-column desktop layout.                      */
+/* ─── Responsive Height-Based Overrides ──────────────────────────────────────
+   These rules strictly apply only below the 1000px vertical breakpoint. 
+   This ensures auto-hiding and full-width chat are only active when the 
+   available height suggests a mobile/constrained device.                  */
 
-@media (max-width: 1000px) {
+@media (max-height: 1000px) {
     
     body.mobilyze-active.mobilyze-bar-hidden #mobilyze-pull-tab {
         display: flex;

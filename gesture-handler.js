@@ -1,22 +1,22 @@
 /**
  * @file mobilyze/gesture-handler.js
- * @stamp 2024-03-20T11:05:00Z
+ * @stamp 2024-03-20T12:20:00Z
  * @architectural-role IO — Manages touch gestures and the pull-tab UI element.
  * @description
- * Handles screen-edge swipes and pull-tab dragging interactions. Now 
- * viewport-aware: gestures and the pull-tab are disabled on screens 
- * wider than 1000px to maintain standard desktop behavior.
+ * Handles screen-edge swipes and pull-tab dragging interactions. Viewport 
+ * detection is height-based to match the bar-controller logic: gestures 
+ * and the pull-tab are disabled on screens taller than 1000px.
  *
  * @api-declaration
  * initGestures(onShow, onResetTimer) — Binds gesture listeners and creates the pull-tab.
  * destroyGestures() — Cleans up listeners and removes the pull-tab.
- * syncGestures() — Adds or removes the pull-tab based on current window width.
+ * syncGestures() — Adds or removes the pull-tab based on current window height.
  *
  * @contract
  *   assertions:
  *     purity:        IO (DOM events and element manipulation)
  *     state_ownership: [Pull-tab DOM, touch/drag state]
- *     external_io:   [document body listeners, window.innerWidth]
+ *     external_io:   [document body listeners, window.innerHeight]
  */
 
 'use strict';
@@ -26,7 +26,7 @@ import { log } from './logger.js';
 const MODULE            = 'gesture';
 const PULL_TAB_ID       = 'mobilyze-pull-tab';
 const CLASS_DRAGGING    = 'mobilyze-dragging';
-const MOBILE_BREAKPOINT = 1000;
+const HEIGHT_BREAKPOINT = 1000;
 
 // Gesture Thresholds
 const SWIPE_ORIGIN_MAX_Y  = 30;
@@ -46,11 +46,11 @@ let _onShow       = null;
 let _onResetTimer = null;
 
 /**
- * Checks if the current viewport is considered "mobile".
+ * Checks if the current viewport is considered "mobile" based on height.
  * @returns {boolean}
  */
 function isMobileViewport() {
-    return window.innerWidth < MOBILE_BREAKPOINT;
+    return window.innerHeight < HEIGHT_BREAKPOINT;
 }
 
 /**
@@ -159,19 +159,19 @@ function buildPullTab() {
 }
 
 /**
- * Ensures the pull-tab only exists when the viewport is mobile-sized.
+ * Ensures the pull-tab only exists when the viewport height is mobile-sized.
  */
 export function syncGestures() {
     const tab = document.getElementById(PULL_TAB_ID);
     if (isMobileViewport()) {
         if (!tab) {
             document.body.appendChild(buildPullTab());
-            log(MODULE, 'Pull-tab created (mobile detected)');
+            log(MODULE, 'Pull-tab created (small height detected)');
         }
     } else {
         if (tab) {
             tab.remove();
-            log(MODULE, 'Pull-tab removed (desktop detected)');
+            log(MODULE, 'Pull-tab removed (large height detected)');
         }
     }
 }
