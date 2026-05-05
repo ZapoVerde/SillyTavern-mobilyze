@@ -1,6 +1,6 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2026-05-05T18:45:00Z
+ * @stamp 2026-05-05T19:05:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
  * CSS overrides for mobile layouts. Implements a centered "comfort width" 
@@ -65,25 +65,25 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
     min-height: var(--avatar-base-width);
 }
 
+/* Aggressive targeting for the 1px text-to-tab distance */
+body.mobilyze-active .mes_block .mes_text {
+    padding-left:  21px !important;
+    padding-right: 31px !important;
+    margin-left:   0    !important;
+    margin-right:  0    !important;
+}
+
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mes_text {
-    margin-left: calc(-1 * (var(--avatar-base-width) + 10px));
-    width:       calc(100% + var(--avatar-base-width) + 10px);
-    max-width:   calc(100% + var(--avatar-base-width) + 10px);
+    margin-left: calc(-1 * (var(--avatar-base-width) + 10px)) !important;
+    width:       calc(100% + var(--avatar-base-width) + 10px) !important;
+    max-width:   calc(100% + var(--avatar-base-width) + 10px) !important;
 }
 
 /* ─── Swipe Navigation Chassis (Max-Space Asymmetrical D-Tabs) ────────────────
-   Replaces floating arrows with frosted glass tabs.
-   Left: 20px depth. Right: 30px depth (to house counter numbers).
-   Padding is tightly clamped to 1px from the tab edge for maximum reading area. */
+   Force-overrides ST native button dimming and positioning.                */
 
 body.mobilyze-active .mes_block {
     position: relative;
-}
-
-body.mobilyze-active .mes_text {
-    /* Clamped to 1px distance from the D-tab outlines */
-    padding-left:  21px !important;
-    padding-right: 31px !important;
 }
 
 body.mobilyze-active .swipes {
@@ -94,35 +94,39 @@ body.mobilyze-active .swipes {
     right:          0;
     height:         100%;
     pointer-events: none;
+    opacity:        1 !important; /* Force parent visibility */
 }
 
 body.mobilyze-active .swipe_left,
 body.mobilyze-active .swipe_right {
-    pointer-events: auto;
-    position:       absolute !important;
-    bottom:         10px !important; 
-    background:     rgba(200, 200, 200, 0.2) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border:         0.5px solid rgba(255, 255, 255, 0.25) !important;
-    display:        flex !important;
-    align-items:    center;
+    pointer-events:  auto !important;
+    position:        absolute !important;
+    bottom:          10px !important; 
+    opacity:         1 !important;     /* Fix for "dimmer" left D */
+    visibility:      visible !important;
+    background:      rgba(200, 200, 200, 0.25) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border:          0.5px solid rgba(255, 255, 255, 0.3) !important;
+    display:         flex !important;
+    align-items:     center;
     justify-content: center;
-    z-index:        10;
-    transition:     background 0.2s ease, transform 0.1s ease;
+    z-index:         20 !important;
+    transition:      background 0.2s ease, transform 0.1s ease;
 }
 
 body.mobilyze-active .swipe_left i, 
 body.mobilyze-active .swipe_right i {
-    color:       rgba(255, 255, 255, 0.9) !important;
-    text-shadow: 0 0 2px rgba(0,0,0,0.5) !important;
+    color:       rgba(255, 255, 255, 0.95) !important;
+    text-shadow: 0 0 3px rgba(0,0,0,0.8) !important;
     background:  none !important;
     font-size:   14px !important;
+    opacity:     1 !important;
 }
 
 body.mobilyze-active .swipe_left:active,
 body.mobilyze-active .swipe_right:active {
-    background: rgba(255, 255, 255, 0.35) !important;
+    background: rgba(255, 255, 255, 0.4) !important;
     transform:  scale(0.95);
 }
 
@@ -135,7 +139,7 @@ body.mobilyze-active .swipe_left {
     border-radius: 0 12px 12px 0 !important;
 }
 
-/* Right Navigator: 30px depth with internal counter */
+/* Right Navigator: 30px depth */
 body.mobilyze-active .swipe_right {
     right:          0 !important;
     width:          30px !important;
@@ -145,24 +149,25 @@ body.mobilyze-active .swipe_right {
     flex-direction: column !important;
 }
 
+/* Fix for number positioning inside the tall Right D */
 body.mobilyze-active .swipe_right .fa-chevron-right {
-    margin-top:    -18px !important; /* Raised slightly for internal balance */
+    margin-top:    -18px !important;
 }
 
-/* Numbers moved closer to edge and up into the frosted zone */
 body.mobilyze-active .swipe_counter {
     position:       absolute !important;
-    bottom:         11px !important;
-    right:          4px !important;
-    left:           auto !important;
-    width:          auto !important;
-    text-align:     right;
-    font-size:      9px !important;
-    font-weight:    bold;
+    bottom:         14px !important; /* Raised up into the frosted zone */
+    right:          0px !important;
+    left:           0px !important;
+    width:          100% !important;
+    text-align:     center !important;
+    font-size:      10px !important;
+    font-weight:    bold !important;
     letter-spacing: -0.5px;
     pointer-events: none;
     color:          white !important;
     opacity:        1 !important;
+    z-index:        30 !important;
 }
 
 /* ─── Panel Centering Override ───────────────────────────────────────────── */
