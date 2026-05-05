@@ -166,11 +166,6 @@ body.mobilyze-active .swipe_left {
     justify-content: center !important; /* Centers the single chevron vertically */
 }
 
-/* Sync Left D to the reflowed gray box edge (Avatar width + 10px gutter) 
-body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .swipe_left {
-    left: calc(-1 * (var(--avatar-base-width) + 10px)) !important;
-}*/
-
 /* Right D (The Block): 30px wide, 55px tall. Split into two halves. */
 body.mobilyze-active .swipeRightBlock {
     right:           0 !important;
@@ -309,4 +304,23 @@ body.mobilyze-active #right-nav-panel {
     opacity:    0.55;
     font-size:  11px;
     line-height: 1.4;
+}
+
+/* Prevent frosted glass tabs from repeating on past messages */
+body.mobilyze-active:not(.swipeAllMessages) .mes:not(.last_mes) .swipe_left,
+body.mobilyze-active:not(.swipeAllMessages) .mes:not(.last_mes) .swipeRightBlock {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Hide the right block completely if a message has 0 swipes */
+body.mobilyze-active .swipeRightBlock:has(.swipes-counter[hidden]) {
+    display: none !important;
+}
+
+/* Respect the global "Hide All Swipe Buttons" setting if toggled */
+body.mobilyze-active.hideAllSwipeButtons .swipe_left,
+body.mobilyze-active.hideAllSwipeButtons .swipeRightBlock {
+    display: none !important;
 }
