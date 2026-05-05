@@ -112,7 +112,7 @@ body.mobilyze-active.mobilyze-wrap-active .swipeRightBlock {
     bottom:          10px !important; 
     opacity:         1 !important;
     visibility:      visible !important;
-    background:      rgba(200, 200, 200, 0.1) !important;
+    background:      rgba(200, 200, 200, 0.05) !important;
     backdrop-filter: blur(10px) !important;
     -webkit-backdrop-filter: blur(10px) !important;
     border:          0.5px solid rgba(255, 255, 255, 0.3) !important;
