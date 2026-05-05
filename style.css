@@ -65,10 +65,10 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
     min-height: var(--avatar-base-width);
 }
 
-/* Aggressive targeting for the 1px text-to-tab distance */
+/* 2px text-to-tab overlap — both D-tabs are now 20px wide */
 body.mobilyze-active .mes_block .mes_text {
-    padding-left:  21px !important;
-    padding-right: 31px !important;
+    padding-left:  18px !important;
+    padding-right: 18px !important;
     margin-left:   0    !important;
     margin-right:  0    !important;
 }
@@ -130,36 +130,43 @@ body.mobilyze-active .swipe_right:active {
     transform:  scale(0.95);
 }
 
-/* Left Navigator: 20px depth */
+/* Left Navigator: 20px wide, taller to visually contain the counter below the chevron */
 body.mobilyze-active .swipe_left {
     left:          0 !important;
     width:         20px !important;
-    height:        35px !important;
+    height:        55px !important;
     border-left:   none !important;
     border-radius: 0 12px 12px 0 !important;
 }
 
-/* Right Navigator: 30px depth */
+/* Right Navigator: symmetric 20px — counter has moved to the left D */
 body.mobilyze-active .swipe_right {
-    right:          0 !important;
-    width:          30px !important;
-    height:         65px !important;
-    border-right:   none !important;
-    border-radius:  12px 0 0 12px !important;
-    flex-direction: column !important;
+    right:         0 !important;
+    width:         20px !important;
+    height:        35px !important;
+    border-right:  none !important;
+    border-radius: 12px 0 0 12px !important;
 }
 
-/* Fix for number positioning inside the tall Right D */
-body.mobilyze-active .swipe_right .fa-chevron-right {
-    margin-top:    -18px !important;
-}
-
-body.mobilyze-active .swipe_counter {
+/*
+ * Swipe counter — repositioned to appear at the bottom of the left D-tab.
+ *
+ * swipeRightBlock is position:absolute at right:0/bottom:0 inside .mes (position:relative).
+ * With both its children now position:absolute it collapses to 0 width, so its
+ * left edge = .mes right edge = chat right edge.
+ *
+ * left: calc(-1 * min(100dvw, 800px)) moves the counter from chat-right to chat-left,
+ * where the left D-tab lives.  bottom: 10px aligns it with the D-tab's lower edge.
+ *
+ * ST setting overridden: min-width: 40px (was forcing swipeRightBlock to 40px wide).
+ */
+body.mobilyze-active .swipes-counter {
     position:       absolute !important;
-    bottom:         14px !important; /* Raised up into the frosted zone */
-    right:          0px !important;
-    left:           0px !important;
-    width:          100% !important;
+    bottom:         10px !important;
+    left:           calc(-1 * min(100dvw, 800px)) !important;
+    width:          20px !important;
+    min-width:      0 !important;
+    height:         15px !important;
     text-align:     center !important;
     font-size:      10px !important;
     font-weight:    bold !important;
@@ -167,7 +174,17 @@ body.mobilyze-active .swipe_counter {
     pointer-events: none;
     color:          white !important;
     opacity:        1 !important;
+    visibility:     visible !important;
     z-index:        30 !important;
+    padding:        0 !important;
+}
+
+/*
+ * ST override: body.documentstyle adds margin-right:30px to .mes_block, pulling
+ * the block's right edge 30px from the chat edge and breaking right D-tab flush.
+ */
+body.mobilyze-active.documentstyle #chat .mes .mes_block {
+    margin-right: 0 !important;
 }
 
 /* ─── Panel Centering Override ───────────────────────────────────────────── */
