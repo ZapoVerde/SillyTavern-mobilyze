@@ -1,6 +1,6 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2026-05-05T19:40:00Z
+ * @stamp 2026-05-05T19:45:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
  * CSS overrides for mobile layouts. Implements a centered "comfort width" 
@@ -14,7 +14,7 @@
  * @contract
  *   assertions:
  *     purity:        IO (Global style injection)
- *     state_ownership: [DOM classes .mobilyze-active, .mobilyze-bar-hidden, .mobilyze-wrap-active]
+ *     state_ownership:[DOM classes .mobilyze-active, .mobilyze-bar-hidden, .mobilyze-wrap-active]
  *     external_io:   [Override of ST internal layout properties]
  */
 
@@ -52,7 +52,6 @@
 
 /* ─── Global Message Layout Overrides ─────────────────────────────────────── */
 
-/* Neutralize ST internal gutters and force visibility for tabs */
 body.mobilyze-active .mes {
     padding-left:  0        !important;
     padding-right: 0        !important;
@@ -96,15 +95,18 @@ body.mobilyze-active .swipes {
     display:        block !important;
     position:       absolute !important;
     bottom:         0;
-    left:           0;
+    left:           -100px !important; /* Move boundary left to prevent clipping Left D */
     right:          0;
+    width:          calc(100% + 100px) !important;
     height:         100%;
     pointer-events: none;
+    overflow:       visible !important;
     opacity:        1 !important;
 }
 
+/* Shared D-Tab aesthetics */
 body.mobilyze-active .swipe_left,
-body.mobilyze-active .swipe_right {
+body.mobilyze-active .swipeRightBlock {
     pointer-events:  auto !important;
     position:        absolute !important;
     bottom:          10px !important; 
@@ -114,78 +116,85 @@ body.mobilyze-active .swipe_right {
     backdrop-filter: blur(10px) !important;
     -webkit-backdrop-filter: blur(10px) !important;
     border:          0.5px solid rgba(255, 255, 255, 0.3) !important;
-    z-index:         20 !important;
+    z-index:         50 !important;
     transition:      background 0.2s ease, transform 0.1s ease;
-    display:         block !important; /* Block for absolute chevron positioning */
+    display:         flex !important;
+    flex-direction:  column !important;
+    align-items:     center !important;
+    justify-content: center !important;
 }
 
-/* Symmetrical Chevron Alignment: Absolute anchored to bottom of tabs */
+/* Reset internal ST elements so they don't bring their own backgrounds/borders */
+body.mobilyze-active .swipe_right,
+body.mobilyze-active .swipes-counter {
+    background:      none !important;
+    border:          none !important;
+    backdrop-filter: none !important;
+    position:        relative !important;
+    bottom:          auto !important;
+    right:           auto !important;
+    opacity:         1 !important;
+    display:         flex !important;
+    align-items:     center !important;
+    justify-content: center !important;
+    pointer-events:  none !important;
+}
+
+/* Chevron Styling */
 body.mobilyze-active .swipe_left i, 
 body.mobilyze-active .swipe_right i {
-    position:    absolute !important;
-    bottom:      10px !important;
-    left:        0 !important;
-    right:       0 !important;
-    text-align:  center !important;
     color:       rgba(255, 255, 255, 0.95) !important;
     text-shadow: 0 0 3px rgba(0,0,0,0.8) !important;
-    background:  none !important;
     font-size:   14px !important;
     opacity:     1 !important;
 }
 
+/* Interaction feedback */
 body.mobilyze-active .swipe_left:active,
-body.mobilyze-active .swipe_right:active {
+body.mobilyze-active .swipeRightBlock:active {
     background: rgba(255, 255, 255, 0.4) !important;
     transform:  scale(0.95);
 }
 
-/* Left Navigator: 20px wide, 35px tall */
+/* Left D: 20px wide, 35px tall. Chevron centered vertically. */
 body.mobilyze-active .swipe_left {
-    left:          0 !important;
+    left:          100px !important; /* Offset parent shift */
     width:         20px !important;
     height:        35px !important;
     border-left:   none !important;
     border-radius: 0 12px 12px 0 !important;
 }
 
-/* Fix Left D missing: Match the text reflow offset exactly */
+/* Sync Left D to text reflow */
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .swipe_left {
-    left: calc(-1 * (var(--avatar-base-width) + 10px)) !important;
+    left: calc(100px - (var(--avatar-base-width) + 10px)) !important;
 }
 
-/* Right Navigator: 30px wide, 55px tall */
-body.mobilyze-active .swipe_right {
-    right:         0 !important;
-    width:         30px !important;
-    height:        55px !important;
-    border-right:  none !important;
-    border-radius: 12px 0 0 12px !important;
+/* Right D (The Block): 30px wide, 55px tall. Split into two halves. */
+body.mobilyze-active .swipeRightBlock {
+    right:           0 !important;
+    width:           30px !important;
+    height:          55px !important;
+    border-right:    none !important;
+    border-radius:   12px 0 0 12px !important;
+    justify-content: space-evenly !important; /* Centers counter in top half, chevron in bottom half */
+    padding:         2px 0 !important;
 }
 
-/* Swipe counter: Placed with a small vertical gap above the right chevron */
 body.mobilyze-active .swipes-counter {
-    position:       absolute !important;
-    bottom:         30px !important; /* 6px gap above 14px chevron starting at 10px */
-    right:          0 !important;
-    left:           auto !important;
     width:          30px !important;
-    min-width:      0 !important;
-    height:         15px !important;
-    text-align:     center !important;
+    height:         25px !important; /* Top half */
     font-size:      10px !important;
     font-weight:    bold !important;
     letter-spacing: -0.5px;
-    pointer-events: none;
     color:          white !important;
-    opacity:        1 !important;
-    visibility:     visible !important;
-    z-index:        30 !important;
-    padding:        0 !important;
-    display:        flex !important;
-    align-items:    center !important;
-    justify-content: center !important;
-    margin-bottom:  0 !important;
+    margin:         0 !important;
+}
+
+body.mobilyze-active .swipe_right {
+    width:          30px !important;
+    height:         25px !important; /* Bottom half */
+    margin:         0 !important;
 }
 
 /* Restore documentstyle flushness */
