@@ -166,10 +166,10 @@ body.mobilyze-active .swipe_left {
     justify-content: center !important; /* Centers the single chevron vertically */
 }
 
-/* Sync Left D to the reflowed gray box edge (Avatar width + 10px gutter) */
+/* Sync Left D to the reflowed gray box edge (Avatar width + 10px gutter) 
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .swipe_left {
     left: calc(-1 * (var(--avatar-base-width) + 10px)) !important;
-}
+}*/
 
 /* Right D (The Block): 30px wide, 55px tall. Split into two halves. */
 body.mobilyze-active .swipeRightBlock {
