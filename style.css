@@ -1,6 +1,6 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2026-05-05T19:05:00Z
+ * @stamp 2026-05-05T19:16:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
  * CSS overrides for mobile layouts. Implements a centered "comfort width" 
@@ -14,7 +14,7 @@
  * @contract
  *   assertions:
  *     purity:        IO (Global style injection)
- *     state_ownership: [DOM classes .mobilyze-active, .mobilyze-bar-hidden, .mobilyze-wrap-active]
+ *     state_ownership:[DOM classes .mobilyze-active, .mobilyze-bar-hidden, .mobilyze-wrap-active]
  *     external_io:   [Override of ST internal layout properties]
  */
 
@@ -65,7 +65,7 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
     min-height: var(--avatar-base-width);
 }
 
-/* 2px text-to-tab overlap — both D-tabs are now 20px wide */
+/* 2px text-to-tab overlap on both sides — both D-tabs are exactly 20px wide */
 body.mobilyze-active .mes_block .mes_text {
     padding-left:  18px !important;
     padding-right: 18px !important;
@@ -117,6 +117,8 @@ body.mobilyze-active .swipe_right {
 
 body.mobilyze-active .swipe_left i, 
 body.mobilyze-active .swipe_right i {
+    position:    absolute !important;
+    bottom:      10px !important; /* Symmetrically aligns both chevrons inside tabs */
     color:       rgba(255, 255, 255, 0.95) !important;
     text-shadow: 0 0 3px rgba(0,0,0,0.8) !important;
     background:  none !important;
@@ -130,40 +132,37 @@ body.mobilyze-active .swipe_right:active {
     transform:  scale(0.95);
 }
 
-/* Left Navigator: 20px wide, taller to visually contain the counter below the chevron */
+/* Left Navigator: symmetric 20px, smaller height */
 body.mobilyze-active .swipe_left {
     left:          0 !important;
     width:         20px !important;
-    height:        55px !important;
+    height:        35px !important;
     border-left:   none !important;
     border-radius: 0 12px 12px 0 !important;
 }
 
-/* Right Navigator: symmetric 20px — counter has moved to the left D */
+/* Right Navigator: symmetric 20px wide, taller to visually contain the counter ABOVE the chevron */
 body.mobilyze-active .swipe_right {
     right:         0 !important;
     width:         20px !important;
-    height:        35px !important;
+    height:        55px !important;
     border-right:  none !important;
     border-radius: 12px 0 0 12px !important;
 }
 
 /*
- * Swipe counter — repositioned to appear at the bottom of the left D-tab.
+ * Swipe counter — stacked vertically in the taller right D-tab above the chevron.
  *
- * swipeRightBlock is position:absolute at right:0/bottom:0 inside .mes (position:relative).
- * With both its children now position:absolute it collapses to 0 width, so its
- * left edge = .mes right edge = chat right edge.
- *
- * left: calc(-1 * min(100dvw, 800px)) moves the counter from chat-right to chat-left,
- * where the left D-tab lives.  bottom: 10px aligns it with the D-tab's lower edge.
+ * Placed 42px from bottom to align nicely in the upper half of the 55px tall tab, 
+ * perfectly above the chevron sitting at 10px. 
  *
  * ST setting overridden: min-width: 40px (was forcing swipeRightBlock to 40px wide).
  */
 body.mobilyze-active .swipes-counter {
     position:       absolute !important;
-    bottom:         10px !important;
-    left:           calc(-1 * min(100dvw, 800px)) !important;
+    bottom:         42px !important;
+    right:          0 !important;
+    left:           auto !important;
     width:          20px !important;
     min-width:      0 !important;
     height:         15px !important;
@@ -177,6 +176,9 @@ body.mobilyze-active .swipes-counter {
     visibility:     visible !important;
     z-index:        30 !important;
     padding:        0 !important;
+    display:        flex !important;
+    align-items:    center !important;
+    justify-content: center !important;
 }
 
 /*
