@@ -1,12 +1,12 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2026-05-05T18:35:00Z
+ * @stamp 2026-05-05T18:45:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
  * CSS overrides for mobile layouts. Implements a centered "comfort width" 
  * (clamped at 800px) for the chat area and UI panels. Includes message reflow 
  * logic and an asymmetrical "Chassis Tab" swipe UI with frosted glass 
- * navigation controls and optimized ergonomics for mobile.
+ * navigation controls and maximized horizontal reading space.
  *
  * @api-declaration
  * N/A - Stylesheet
@@ -71,19 +71,19 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
     max-width:   calc(100% + var(--avatar-base-width) + 10px);
 }
 
-/* ─── Swipe Navigation Chassis (Refined Asymmetrical D-Tabs) ──────────────────
+/* ─── Swipe Navigation Chassis (Max-Space Asymmetrical D-Tabs) ────────────────
    Replaces floating arrows with frosted glass tabs.
    Left: 20px depth. Right: 30px depth (to house counter numbers).
-   Icons brightened and gap halved for a tighter, integrated look.           */
+   Padding is tightly clamped to 1px from the tab edge for maximum reading area. */
 
 body.mobilyze-active .mes_block {
     position: relative;
 }
 
 body.mobilyze-active .mes_text {
-    /* Padding adjusted to halve the gap between text and D-tabs */
-    padding-left:  22px !important;
-    padding-right: 32px !important;
+    /* Clamped to 1px distance from the D-tab outlines */
+    padding-left:  21px !important;
+    padding-right: 31px !important;
 }
 
 body.mobilyze-active .swipes {
@@ -101,7 +101,7 @@ body.mobilyze-active .swipe_right {
     pointer-events: auto;
     position:       absolute !important;
     bottom:         10px !important; 
-    background:     rgba(200, 200, 200, 0.2) !important; /* Slightly brighter glass */
+    background:     rgba(200, 200, 200, 0.2) !important;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border:         0.5px solid rgba(255, 255, 255, 0.25) !important;
@@ -112,7 +112,6 @@ body.mobilyze-active .swipe_right {
     transition:     background 0.2s ease, transform 0.1s ease;
 }
 
-/* Brighten the chevrons */
 body.mobilyze-active .swipe_left i, 
 body.mobilyze-active .swipe_right i {
     color:       rgba(255, 255, 255, 0.9) !important;
@@ -136,7 +135,7 @@ body.mobilyze-active .swipe_left {
     border-radius: 0 12px 12px 0 !important;
 }
 
-/* Right Navigator: 30px depth to accommodate numbers */
+/* Right Navigator: 30px depth with internal counter */
 body.mobilyze-active .swipe_right {
     right:          0 !important;
     width:          30px !important;
@@ -146,20 +145,21 @@ body.mobilyze-active .swipe_right {
     flex-direction: column !important;
 }
 
-/* Position arrow in the top half of the tall right tab */
 body.mobilyze-active .swipe_right .fa-chevron-right {
-    margin-top:    -15px !important;
+    margin-top:    -18px !important; /* Raised slightly for internal balance */
 }
 
-/* Move numbers into the bottom of the Right D-Tab */
+/* Numbers moved closer to edge and up into the frosted zone */
 body.mobilyze-active .swipe_counter {
     position:       absolute !important;
-    bottom:         6px !important;
-    left:           0 !important;
-    right:          0 !important;
-    text-align:     center;
-    font-size:      10px !important;
+    bottom:         11px !important;
+    right:          4px !important;
+    left:           auto !important;
+    width:          auto !important;
+    text-align:     right;
+    font-size:      9px !important;
     font-weight:    bold;
+    letter-spacing: -0.5px;
     pointer-events: none;
     color:          white !important;
     opacity:        1 !important;
