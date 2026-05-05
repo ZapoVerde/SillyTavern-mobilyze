@@ -140,13 +140,12 @@ body.mobilyze-active.mobilyze-wrap-active .swipes-counter {
     pointer-events:  none !important;
 }
 
-/* Chevron Styling */
-body.mobilyze-active.mobilyze-wrap-active .swipe_left i,
-body.mobilyze-active.mobilyze-wrap-active .swipe_right i {
+/* Chevron Styling — icons are FA classes on the divs directly, not on child <i> elements */
+body.mobilyze-active.mobilyze-wrap-active .swipe_left,
+body.mobilyze-active.mobilyze-wrap-active .swipe_right {
     color:       rgba(255, 255, 255, 0.4) !important;
     text-shadow: 0 0 3px rgba(0,0,0,0.8) !important;
     font-size:   14px !important;
-    opacity:     1 !important; 
 }
 
 /* Interaction feedback */
