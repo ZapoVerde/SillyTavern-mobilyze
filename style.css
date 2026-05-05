@@ -146,7 +146,7 @@ body.mobilyze-active .swipe_right i {
     color:       rgba(255, 255, 255, 0.4) !important;
     text-shadow: 0 0 3px rgba(0,0,0,0.8) !important;
     font-size:   14px !important;
-/*    opacity:     1 !important; */
+    opacity:     1 !important; 
 }
 
 /* Interaction feedback */
@@ -168,13 +168,14 @@ body.mobilyze-active .swipe_left {
 
 /* Right D (The Block): 30px wide, 55px tall. Split into two halves. */
 body.mobilyze-active .swipeRightBlock {
-    right:           0 !important;
-    width:           30px !important;
-    height:          55px !important;
-    border-right:    none !important;
-    border-radius:   12px 0 0 12px !important;
-    justify-content: space-evenly !important; /* Centers counter in top half, chevron in bottom half */
-    padding:         2px 0 !important;
+    right:            0 !important;
+    width:            30px !important;
+    height:           55px !important;
+    border-right:     none !important;
+    border-radius:    12px 0 0 12px !important;
+    flex-direction:   column-reverse !important; /* DOM order is chevron then counter; reverse puts counter on top */
+    justify-content:  space-evenly !important;
+    padding:          2px 0 !important;
 }
 
 body.mobilyze-active .swipes-counter {
