@@ -156,16 +156,17 @@ body.mobilyze-active .swipeRightBlock:active {
     transform:  scale(0.95);
 }
 
-/* Left D: 20px wide, 35px tall. Chevron centered vertically. */
+/* Left D: 20px wide, 35px tall. Perfectly centered chevron. */
 body.mobilyze-active .swipe_left {
-    left:          100px !important; /* Offset parent shift */
-    width:         20px !important;
-    height:        35px !important;
-    border-left:   none !important;
-    border-radius: 0 12px 12px 0 !important;
+    left:            100px !important; /* Offset the -100px parent safety shift */
+    width:           20px  !important;
+    height:          35px  !important;
+    border-left:     none  !important;
+    border-radius:   0 12px 12px 0 !important;
+    justify-content: center !important; /* Centers the single chevron vertically */
 }
 
-/* Sync Left D to text reflow */
+/* Sync Left D to the reflowed gray box edge (Avatar width + 10px gutter) */
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .swipe_left {
     left: calc(100px - (var(--avatar-base-width) + 10px)) !important;
 }
