@@ -158,7 +158,7 @@ body.mobilyze-active .swipeRightBlock:active {
 
 /* Left D: 20px wide, 35px tall. Perfectly centered chevron. */
 body.mobilyze-active .swipe_left {
-    left:            0px !important; /* Offset the -100px parent safety shift */
+    left:            0 !important; /* Changed from 100px to sit flush with div.for_checkbox */
     width:           20px  !important;
     height:          35px  !important;
     border-left:     none  !important;
@@ -168,7 +168,7 @@ body.mobilyze-active .swipe_left {
 
 /* Sync Left D to the reflowed gray box edge (Avatar width + 10px gutter) */
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .swipe_left {
-    left: calc(100px - (var(--avatar-base-width) + 10px)) !important;
+    left: calc(-1 * (var(--avatar-base-width) + 10px)) !important;
 }
 
 /* Right D (The Block): 30px wide, 55px tall. Split into two halves. */
