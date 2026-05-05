@@ -110,26 +110,24 @@ function activate() {
 /**
  * Disables all Mobilyze functionality and cleans up the environment.
  */
+// index.js deactivation wrapper
 function deactivate() {
-    log(MODULE, 'Deactivating Mobilyze');
-    document.body.classList.remove(CLASS_ACTIVE);
-    document.body.classList.remove(CLASS_WRAP);
+    try {
+        log(MODULE, 'Deactivating Mobilyze');
+        // REMOVE CLASSES FIRST before logic, so if logic fails, CSS is still gone
+        document.body.classList.remove(CLASS_ACTIVE);
+        document.body.classList.remove(CLASS_WRAP);
+        document.body.classList.remove('mobilyze-bar-hidden');
 
-    deactivateLayout();
-    deactivateBar();
-    destroyGestures();
-
-    const chat = document.getElementById('chat');
-    if (chat) {
-        chat.removeEventListener('scroll', onChatScroll);
+        deactivateLayout();
+        deactivateBar();
+        destroyGestures();
+    } catch (e) {
+        console.error("Mobilyze Deactivation failed mid-way:", e);
+    } finally {
+        window.dispatchEvent(new Event('resize'));
     }
-
-    window.removeEventListener('resize', onResize);
-
-    // Force SillyTavern to recalculate its internal layout variables
-    window.dispatchEvent(new Event('resize'));
 }
-
 /**
  * Entry point: SillyTavern initialization.
  */

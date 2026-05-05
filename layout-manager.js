@@ -64,21 +64,48 @@ export function activateLayout() {
     log(MODULE, 'Layout observer activated (Comfort Width: 800px max)');
 }
 
-/**
- * Disconnects the observer and removes the inline style override.
- * This allows SillyTavern's native CSS and internal logic to 
- * resume control of the layout width.
- */
+// layout-manager.js
+
 export function deactivateLayout() {
     if (_observer) {
         _observer.disconnect();
         _observer = null;
     }
 
-    // Remove the inline style property entirely.
-    // Setting it to a "restored" value (like 50vw) actually blocks 
-    // ST's native mobile stylesheets from working correctly.
-    document.documentElement.style.removeProperty('--sheldWidth');
+    log(MODULE, 'Performing Nuclear UI Reset...');
+
+    // 1. Remove the "Orphaned" styles from the root
+    const root = document.documentElement;
+    root.style.removeProperty('--sheldWidth');
+    root.style.removeProperty('--topBarBlockSize');
     
-    log(MODULE, 'Layout observer deactivated; inline override removed');
+    // 2. Clear SillyTavern's "Moving UI" internal caches 
+    // ST sometimes sticks in "movingUI" mode if deactivated during a drag
+    document.body.classList.remove('movingUI');
+
+    // 3. TRIGGER INTERNAL ST RECALCULATION
+    // We fire the specific event SillyTavern's 'power-user' and 'ui' modules 
+    // listen to for 'hard' layout refreshes.
+    $(document).trigger('settingsApplied');
+    $(document).trigger('layoutChanged');
+
+    // 4. The "Double-Bounce" Resize
+    // A single resize event is often debounced/ignored. 
+    // We fire one immediately, and one after a frame.
+    window.dispatchEvent(new Event('resize'));
+    
+    requestAnimationFrame(() => {
+        // Force browser to acknowledge the removal of properties
+        const width = window.innerWidth;
+        log(MODULE, 'Resetting ST Chassis for width: ' + width);
+        window.dispatchEvent(new Event('resize'));
+        
+        // V2: If ST still hasn't reset, we manually trigger the specific 
+        // function SillyTavern uses to set sheld width from the slider.
+        if (window.printMessages) { 
+            // printMessages is a core ST function; calling it often triggers 
+            // a logic check on message container widths.
+            window.printMessages(); 
+        }
+    });
 }
