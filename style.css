@@ -137,7 +137,7 @@ body.mobilyze-active.mobilyze-wrap-active .swipes-counter {
     display:         flex !important;
     align-items:     center !important;
     justify-content: center !important;
-    pointer-events:  none !important;
+    pointer-events:  auto !important;
 }
 
 /* Chevron Styling — icons are FA classes on the divs directly, not on child <i> elements */
