@@ -1,6 +1,6 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2026-05-05T19:16:00Z
+ * @stamp 2026-05-05T19:25:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
  * CSS overrides for mobile layouts. Implements a centered "comfort width" 
@@ -14,7 +14,7 @@
  * @contract
  *   assertions:
  *     purity:        IO (Global style injection)
- *     state_ownership:[DOM classes .mobilyze-active, .mobilyze-bar-hidden, .mobilyze-wrap-active]
+ *     state_ownership: [DOM classes .mobilyze-active, .mobilyze-bar-hidden, .mobilyze-wrap-active]
  *     external_io:   [Override of ST internal layout properties]
  */
 
@@ -52,20 +52,30 @@
 
 /* ─── Global Message Layout Overrides ─────────────────────────────────────── */
 
+/* Neutralize ST internal gutters to allow tabs to sit flush and overlap correctly */
+body.mobilyze-active .mes {
+    padding-left:  0 !important;
+    padding-right: 0 !important;
+}
+
+body.mobilyze-active .mes_block {
+    padding-left:  0 !important;
+    padding-right: 0 !important;
+    overflow-x:    visible; 
+}
+
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mesAvatarWrapper {
     padding-right:  10px;
     padding-bottom: 10px;
-}
-
-body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mes_block {
-    overflow-x: visible; 
+    margin-left:    10px; /* Restore avatar gutter since we zeroed .mes padding */
 }
 
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .ch_name {
-    min-height: var(--avatar-base-width);
+    min-height:   var(--avatar-base-width);
+    padding-left: 10px;
 }
 
-/* 2px text-to-tab overlap on both sides — both D-tabs are exactly 20px wide */
+/* 2px overlap: Text padding (18px) is 2px less than Tab width (20px) */
 body.mobilyze-active .mes_block .mes_text {
     padding-left:  18px !important;
     padding-right: 18px !important;
@@ -79,12 +89,7 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
     max-width:   calc(100% + var(--avatar-base-width) + 10px) !important;
 }
 
-/* ─── Swipe Navigation Chassis (Max-Space Asymmetrical D-Tabs) ────────────────
-   Force-overrides ST native button dimming and positioning.                */
-
-body.mobilyze-active .mes_block {
-    position: relative;
-}
+/* ─── Swipe Navigation Chassis (Max-Space Asymmetrical D-Tabs) ──────────────── */
 
 body.mobilyze-active .swipes {
     display:        block !important;
@@ -94,7 +99,7 @@ body.mobilyze-active .swipes {
     right:          0;
     height:         100%;
     pointer-events: none;
-    opacity:        1 !important; /* Force parent visibility */
+    opacity:        1 !important;
 }
 
 body.mobilyze-active .swipe_left,
@@ -102,23 +107,26 @@ body.mobilyze-active .swipe_right {
     pointer-events:  auto !important;
     position:        absolute !important;
     bottom:          10px !important; 
-    opacity:         1 !important;     /* Fix for "dimmer" left D */
+    opacity:         1 !important;
     visibility:      visible !important;
     background:      rgba(200, 200, 200, 0.25) !important;
     backdrop-filter: blur(10px) !important;
     -webkit-backdrop-filter: blur(10px) !important;
     border:          0.5px solid rgba(255, 255, 255, 0.3) !important;
-    display:         flex !important;
-    align-items:     center;
-    justify-content: center;
     z-index:         20 !important;
     transition:      background 0.2s ease, transform 0.1s ease;
+    /* Use block to prevent internal flex-centering of icons */
+    display:         block !important; 
 }
 
+/* Absolute bottom-alignment for chevrons to ensure symmetry */
 body.mobilyze-active .swipe_left i, 
 body.mobilyze-active .swipe_right i {
     position:    absolute !important;
-    bottom:      10px !important; /* Symmetrically aligns both chevrons inside tabs */
+    bottom:      10px !important;
+    left:        0 !important;
+    right:       0 !important;
+    text-align:  center;
     color:       rgba(255, 255, 255, 0.95) !important;
     text-shadow: 0 0 3px rgba(0,0,0,0.8) !important;
     background:  none !important;
@@ -132,7 +140,7 @@ body.mobilyze-active .swipe_right:active {
     transform:  scale(0.95);
 }
 
-/* Left Navigator: symmetric 20px, smaller height */
+/* Left Navigator: 20px wide, 35px tall */
 body.mobilyze-active .swipe_left {
     left:          0 !important;
     width:         20px !important;
@@ -141,7 +149,7 @@ body.mobilyze-active .swipe_left {
     border-radius: 0 12px 12px 0 !important;
 }
 
-/* Right Navigator: symmetric 20px wide, taller to visually contain the counter ABOVE the chevron */
+/* Right Navigator: 20px wide, 55px tall (Extra space for numbers) */
 body.mobilyze-active .swipe_right {
     right:         0 !important;
     width:         20px !important;
@@ -150,26 +158,19 @@ body.mobilyze-active .swipe_right {
     border-radius: 12px 0 0 12px !important;
 }
 
-/*
- * Swipe counter — stacked vertically in the taller right D-tab above the chevron.
- *
- * Placed 42px from bottom to align nicely in the upper half of the 55px tall tab, 
- * perfectly above the chevron sitting at 10px. 
- *
- * ST setting overridden: min-width: 40px (was forcing swipeRightBlock to 40px wide).
- */
+/* Swipe counter: Anchored to the top half of the right D-tab */
 body.mobilyze-active .swipes-counter {
     position:       absolute !important;
-    bottom:         42px !important;
+    bottom:         32px !important; /* Fixed position above bottom chevron */
     right:          0 !important;
     left:           auto !important;
     width:          20px !important;
     min-width:      0 !important;
-    height:         15px !important;
+    height:         18px !important;
     text-align:     center !important;
     font-size:      10px !important;
     font-weight:    bold !important;
-    letter-spacing: -0.5px;
+    letter-spacing: -1px;
     pointer-events: none;
     color:          white !important;
     opacity:        1 !important;
@@ -179,12 +180,10 @@ body.mobilyze-active .swipes-counter {
     display:        flex !important;
     align-items:    center !important;
     justify-content: center !important;
+    margin-bottom:  0 !important;
 }
 
-/*
- * ST override: body.documentstyle adds margin-right:30px to .mes_block, pulling
- * the block's right edge 30px from the chat edge and breaking right D-tab flush.
- */
+/* Restore documentstyle flushness */
 body.mobilyze-active.documentstyle #chat .mes .mes_block {
     margin-right: 0 !important;
 }
