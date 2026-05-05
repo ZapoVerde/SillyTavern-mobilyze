@@ -1,6 +1,6 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2026-05-05T19:35:00Z
+ * @stamp 2026-05-05T19:40:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
  * CSS overrides for mobile layouts. Implements a centered "comfort width" 
@@ -14,8 +14,8 @@
  * @contract
  *   assertions:
  *     purity:        IO (Global style injection)
- *     state_ownership:[DOM classes .mobilyze-active, .mobilyze-bar-hidden, .mobilyze-wrap-active]
- *     external_io:[Override of ST internal layout properties]
+ *     state_ownership: [DOM classes .mobilyze-active, .mobilyze-bar-hidden, .mobilyze-wrap-active]
+ *     external_io:   [Override of ST internal layout properties]
  */
 
 /* ─── Pull handle ───────────────────────────────────────────────────────────── */
@@ -52,22 +52,23 @@
 
 /* ─── Global Message Layout Overrides ─────────────────────────────────────── */
 
-/* Neutralize ST internal gutters to allow tabs to sit flush and overlap correctly */
+/* Neutralize ST internal gutters and force visibility for tabs */
 body.mobilyze-active .mes {
-    padding-left:  0 !important;
-    padding-right: 0 !important;
+    padding-left:  0        !important;
+    padding-right: 0        !important;
+    overflow:      visible  !important;
 }
 
 body.mobilyze-active .mes_block {
-    padding-left:  0 !important;
-    padding-right: 0 !important;
-    overflow-x:    visible; 
+    padding-left:  0        !important;
+    padding-right: 0        !important;
+    overflow:      visible  !important;
 }
 
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mesAvatarWrapper {
     padding-right:  10px;
     padding-bottom: 10px;
-    margin-left:    10px; /* Restore avatar gutter since we zeroed .mes padding */
+    margin-left:    10px;
 }
 
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .ch_name {
@@ -75,7 +76,7 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
     padding-left: 10px;
 }
 
-/* 2px overlap on BOTH sides. Asymmetrical tabs (20px left, 30px right) require asymmetrical padding */
+/* 2px overlap: Asymmetrical tabs (20px / 30px) require 18px / 28px text padding */
 body.mobilyze-active .mes_block .mes_text {
     padding-left:  18px !important;
     padding-right: 28px !important;
@@ -115,22 +116,22 @@ body.mobilyze-active .swipe_right {
     border:          0.5px solid rgba(255, 255, 255, 0.3) !important;
     z-index:         20 !important;
     transition:      background 0.2s ease, transform 0.1s ease;
-    /* Flex column natively anchors chevrons to bottom-center of the tabs */
-    display:         flex !important;
-    flex-direction:  column !important;
-    align-items:     center !important;
-    justify-content: flex-end !important;
-    padding-bottom:  10px !important;
+    display:         block !important; /* Block for absolute chevron positioning */
 }
 
+/* Symmetrical Chevron Alignment: Absolute anchored to bottom of tabs */
 body.mobilyze-active .swipe_left i, 
 body.mobilyze-active .swipe_right i {
+    position:    absolute !important;
+    bottom:      10px !important;
+    left:        0 !important;
+    right:       0 !important;
+    text-align:  center !important;
     color:       rgba(255, 255, 255, 0.95) !important;
     text-shadow: 0 0 3px rgba(0,0,0,0.8) !important;
     background:  none !important;
     font-size:   14px !important;
     opacity:     1 !important;
-    margin:      0 !important;
 }
 
 body.mobilyze-active .swipe_left:active,
@@ -148,12 +149,12 @@ body.mobilyze-active .swipe_left {
     border-radius: 0 12px 12px 0 !important;
 }
 
-/* Dynamically shift the Left tab leftward so it closes the gap and follows the text wrap */
+/* Fix Left D missing: Match the text reflow offset exactly */
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .swipe_left {
     left: calc(-1 * (var(--avatar-base-width) + 10px)) !important;
 }
 
-/* Right Navigator: 30px wide (Fits counter text), 55px tall */
+/* Right Navigator: 30px wide, 55px tall */
 body.mobilyze-active .swipe_right {
     right:         0 !important;
     width:         30px !important;
@@ -162,13 +163,13 @@ body.mobilyze-active .swipe_right {
     border-radius: 12px 0 0 12px !important;
 }
 
-/* Swipe counter: Anchored to the top half of the 30px-wide right D-tab */
+/* Swipe counter: Placed with a small vertical gap above the right chevron */
 body.mobilyze-active .swipes-counter {
     position:       absolute !important;
-    bottom:         38px !important; /* Fixed position safely above bottom chevron */
+    bottom:         30px !important; /* 6px gap above 14px chevron starting at 10px */
     right:          0 !important;
     left:           auto !important;
-    width:          30px !important; /* Mirrors the Right D-tab width */
+    width:          30px !important;
     min-width:      0 !important;
     height:         15px !important;
     text-align:     center !important;
