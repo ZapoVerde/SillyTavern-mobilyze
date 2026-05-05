@@ -75,12 +75,15 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
     padding-left: 10px;
 }
 
-/* 2px overlap: Asymmetrical tabs (20px / 30px) require 18px / 28px text padding */
 body.mobilyze-active .mes_block .mes_text {
-    padding-left:  18px !important;
-    padding-right: 28px !important;
-    margin-left:   0    !important;
-    margin-right:  0    !important;
+    margin-left:  0 !important;
+    margin-right: 0 !important;
+}
+
+/* D-tabs overlay the text edges; text spans avatar-left to container-right with no clearance padding */
+body.mobilyze-active.mobilyze-wrap-active .mes_block .mes_text {
+    padding-left:  0 !important;
+    padding-right: 0 !important;
 }
 
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mes_text {
