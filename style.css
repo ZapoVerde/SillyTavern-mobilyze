@@ -146,7 +146,7 @@ body.mobilyze-active .swipe_right i {
     color:       rgba(255, 255, 255, 0.4) !important;
     text-shadow: 0 0 3px rgba(0,0,0,0.8) !important;
     font-size:   14px !important;
-    opacity:     1 !important;
+/*    opacity:     1 !important; */
 }
 
 /* Interaction feedback */
