@@ -1,6 +1,6 @@
 /**
  * @file mobilyze/gesture-handler.js
- * @stamp 2024-03-20T14:40:00Z
+ * @stamp 2024-05-05T17:55:00Z
  * @architectural-role IO — Manages touch gestures and the pull-tab UI element.
  * @description
  * Handles screen-edge swipes and pull-tab dragging interactions. Designed 
@@ -196,6 +196,8 @@ export function initGestures(onShow, onResetTimer) {
 export function destroyGestures() {
     const tab = document.getElementById(PULL_TAB_ID);
     if (tab) tab.remove();
+
+    clearBarTranslate();
 
     document.removeEventListener('touchstart', onTouchStart);
     document.removeEventListener('touchend',   onTouchEnd);

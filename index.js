@@ -1,6 +1,6 @@
 /**
  * @file mobilyze/index.js
- * @stamp 2024-03-20T18:10:00Z
+ * @stamp 2024-05-05T18:00:00Z
  * @architectural-role Orchestrator — Entry point and event coordinator.
  * @description
  * Wires together specialized modules for settings, layout management, 
@@ -125,6 +125,9 @@ function deactivate() {
     }
 
     window.removeEventListener('resize', onResize);
+
+    // Force SillyTavern to recalculate its internal layout variables
+    window.dispatchEvent(new Event('resize'));
 }
 
 /**

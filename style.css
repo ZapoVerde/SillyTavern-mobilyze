@@ -1,12 +1,12 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2024-03-20T18:20:00Z
+ * @stamp 2024-05-05T18:30:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
  * CSS overrides for mobile layouts. Implements a centered "comfort width" 
  * (clamped at 800px) for the chat area and UI panels. Includes message reflow 
- * logic gated by user settings (.mobilyze-wrap-active) and automatically 
- * disabled when incompatible third-party themes (like Moonlit Echoes) are active.
+ * logic gated by user settings and a specialized "Chassis Tab" swipe UI 
+ * featuring asymmetrical, frosted glass navigation controls.
  *
  * @api-declaration
  * N/A - Stylesheet
@@ -56,8 +56,7 @@
 /* ─── Global Message Layout Overrides ───────────────────────────────────────
    These apply when Mobilyze is active AND the text-wrap setting is enabled.
    COMPATIBILITY: These rules automatically disable if a theme with complex 
-   message backgrounds (like Moonlit Echoes) is active, as those themes 
-   manage their own text positioning.                                       */
+   message backgrounds (like Moonlit Echoes) is active.                     */
 
 /* Exclusion list: .echostyle, .whisperstyle, .ripplestyle, .hushstyle, .tidestyle (Moonlit Echoes) */
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mesAvatarWrapper {
@@ -66,11 +65,9 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
 }
 
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mes_block {
-    overflow-x: visible; /* allow .mes_text to extend left past the block edge */
+    overflow-x: visible; 
 }
 
-/* Give the header row (name + timestamp) a minimum height equal to the avatar
-   so .mes_text — which extends leftward under the portrait — never overlaps it. */
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .ch_name {
     min-height: var(--avatar-base-width);
 }
@@ -81,10 +78,97 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
     max-width:   calc(100% + var(--avatar-base-width) + 10px);
 }
 
-/* ─── Panel Centering Override (All Viewports) ──────────────────────────────
-   ST's fillLeft/fillRight classes anchor #left-nav-panel and #right-nav-panel
-   to the screen edges. These rules defeat that anchoring so both panels always
-   open in the middle column. The sidebars are purely decorative.             */
+/* ─── Swipe Navigation Chassis (Asymmetrical D-Tabs) ──────────────────────────
+   Replaces floating arrows with frosted "glass" tabs docked to the edges.
+   Left: Compact D-tab. Right: Tall D-tab housing the counter.
+   Aligned to the bottom corners for ergonomic thumb reach.                 */
+
+body.mobilyze-active .mes_block {
+    position: relative;
+}
+
+body.mobilyze-active .mes_text {
+    /* Create a permanent 25px gutter on each side to clear the 20px D-tabs */
+    padding-left:  25px !important;
+    padding-right: 25px !important;
+}
+
+body.mobilyze-active .swipes {
+    display:        block !important;
+    position:       absolute !important;
+    bottom:         0;
+    left:           0;
+    right:          0;
+    height:         100%;
+    pointer-events: none; /* Allow interaction with text behind container */
+}
+
+body.mobilyze-active .swipe_left,
+body.mobilyze-active .swipe_right {
+    pointer-events: auto;
+    position:       absolute !important;
+    bottom:         10px !important; /* Bottom-weighted alignment */
+    width:          20px !important; /* 20px depth as requested */
+    background:     rgba(150, 150, 150, 0.15) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border:         0.5px solid rgba(255, 255, 255, 0.15) !important;
+    display:        flex !important;
+    align-items:    center;
+    justify-content: center;
+    z-index:        10;
+    transition:     background 0.2s ease, transform 0.1s ease;
+}
+
+body.mobilyze-active .swipe_left:active,
+body.mobilyze-active .swipe_right:active {
+    background: rgba(255, 255, 255, 0.25) !important;
+    transform:  scale(0.95);
+}
+
+/* Left Navigator: Compact short D-tab */
+body.mobilyze-active .swipe_left {
+    left:          0 !important;
+    height:        35px !important;
+    border-left:   none !important;
+    border-radius: 0 12px 12px 0 !important;
+}
+
+/* Right Navigator: Tall D-tab housing both arrow and counter */
+body.mobilyze-active .swipe_right {
+    right:          0 !important;
+    height:         65px !important;
+    border-right:   none !important;
+    border-radius:  12px 0 0 12px !important;
+    flex-direction: column !important;
+}
+
+/* Align the arrow icon to the top of the tall right tab */
+body.mobilyze-active .swipe_right .fa-chevron-right {
+    margin-top: 10px;
+}
+
+body.mobilyze-active .swipe_counter {
+    position:       absolute !important;
+    bottom:         8px !important;
+    left:           0 !important;
+    right:          0 !important;
+    text-align:     center;
+    font-size:      9px !important;
+    font-weight:    bold;
+    pointer-events: none;
+    color:          var(--SmartThemeBodyColor);
+    opacity:        0.8;
+}
+
+/* Hide default ST shadow/backgrounds on icons */
+body.mobilyze-active .swipe_left i, 
+body.mobilyze-active .swipe_right i {
+    text-shadow: none !important;
+    background:  none !important;
+}
+
+/* ─── Panel Centering Override (All Viewports) ────────────────────────────── */
 
 body.mobilyze-active #left-nav-panel,
 body.mobilyze-active #right-nav-panel {
@@ -98,9 +182,7 @@ body.mobilyze-active #right-nav-panel {
     max-height: calc(100dvh - var(--topBarBlockSize) - var(--bottomFormBlockSize))   !important;
 }
 
-/* ─── Responsive Height-Based Overrides ──────────────────────────────────────
-   These rules strictly apply only below the 1000px vertical breakpoint.
-   Implements the "Comfort Width" (clamped at 800px) and centering.          */
+/* ─── Responsive Height-Based Overrides ────────────────────────────────────── */
 
 @media (max-height: 1000px) {
     
@@ -108,7 +190,6 @@ body.mobilyze-active #right-nav-panel {
         display: flex;
     }
 
-    /* Force clamped-width layout for the main container and drawers */
     body.mobilyze-active #sheld {
         width:     min(100dvw, 800px) !important;
         max-width: min(100dvw, 800px) !important;
@@ -143,14 +224,12 @@ body.mobilyze-active #right-nav-panel {
         overflow: hidden  !important;
     }
 
-    /* Backgrounds always remain full-screen */
     body.mobilyze-active #bg1,
     body.mobilyze-active #bg_custom {
         width:  100dvw !important;
         height: 100dvh !important;
     }
 
-    /* Auto-hiding top bar transitions and movement */
     body.mobilyze-active #top-bar,
     body.mobilyze-active #top-settings-holder {
         transition: transform 0.25s ease, opacity 0.2s ease, visibility 0.25s;
@@ -158,7 +237,6 @@ body.mobilyze-active #right-nav-panel {
         visibility: visible;
     }
 
-    /* Disable transition while dragging so the bar follows the finger exactly */
     body.mobilyze-dragging #top-bar,
     body.mobilyze-dragging #top-settings-holder {
         transition: none !important;
@@ -172,7 +250,6 @@ body.mobilyze-active #right-nav-panel {
         pointer-events: none;
     }
 
-    /* Reclaim space when hidden */
     body.mobilyze-active.mobilyze-bar-hidden {
         --topBarBlockSize: 0px;
     }
@@ -187,13 +264,10 @@ body.mobilyze-active #right-nav-panel {
         max-height: 100dvh !important;
     }
 
-    /* Tighten chat message right buffer */
     body.mobilyze-active {
         --mes-right-spacing: 10px;
     }
 }
-
-/* ─── Settings panel hint (Global) ─────────────────────────────────────────── */
 
 .mobilyze-hint {
     display:    block;
