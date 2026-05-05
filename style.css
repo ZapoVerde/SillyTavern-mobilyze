@@ -91,7 +91,7 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
 
 /* ─── Swipe Navigation Chassis (Max-Space Asymmetrical D-Tabs) ──────────────── */
 
-body.mobilyze-active .swipes {
+body.mobilyze-active.mobilyze-wrap-active .swipes {
     display:        block !important;
     position:       absolute !important;
     bottom:         0;
@@ -105,8 +105,8 @@ body.mobilyze-active .swipes {
 }
 
 /* Shared D-Tab aesthetics */
-body.mobilyze-active .swipe_left,
-body.mobilyze-active .swipeRightBlock {
+body.mobilyze-active.mobilyze-wrap-active .swipe_left,
+body.mobilyze-active.mobilyze-wrap-active .swipeRightBlock {
     pointer-events:  auto !important;
     position:        absolute !important;
     bottom:          10px !important; 
@@ -125,8 +125,8 @@ body.mobilyze-active .swipeRightBlock {
 }
 
 /* Reset internal ST elements so they don't bring their own backgrounds/borders */
-body.mobilyze-active .swipe_right,
-body.mobilyze-active .swipes-counter {
+body.mobilyze-active.mobilyze-wrap-active .swipe_right,
+body.mobilyze-active.mobilyze-wrap-active .swipes-counter {
     background:      none !important;
     border:          none !important;
     backdrop-filter: none !important;
@@ -141,8 +141,8 @@ body.mobilyze-active .swipes-counter {
 }
 
 /* Chevron Styling */
-body.mobilyze-active .swipe_left i, 
-body.mobilyze-active .swipe_right i {
+body.mobilyze-active.mobilyze-wrap-active .swipe_left i,
+body.mobilyze-active.mobilyze-wrap-active .swipe_right i {
     color:       rgba(255, 255, 255, 0.4) !important;
     text-shadow: 0 0 3px rgba(0,0,0,0.8) !important;
     font-size:   14px !important;
@@ -150,14 +150,14 @@ body.mobilyze-active .swipe_right i {
 }
 
 /* Interaction feedback */
-body.mobilyze-active .swipe_left:active,
-body.mobilyze-active .swipeRightBlock:active {
+body.mobilyze-active.mobilyze-wrap-active .swipe_left:active,
+body.mobilyze-active.mobilyze-wrap-active .swipeRightBlock:active {
     background: rgba(255, 255, 255, 0.4) !important;
     transform:  scale(0.95);
 }
 
 /* Left D: 20px wide, 35px tall. Perfectly centered chevron. */
-body.mobilyze-active .swipe_left {
+body.mobilyze-active.mobilyze-wrap-active .swipe_left {
     left:            0 !important; /* Changed from 100px to sit flush with div.for_checkbox */
     width:           20px  !important;
     height:          35px  !important;
@@ -167,7 +167,7 @@ body.mobilyze-active .swipe_left {
 }
 
 /* Right D (The Block): 30px wide, 55px tall. Split into two halves. */
-body.mobilyze-active .swipeRightBlock {
+body.mobilyze-active.mobilyze-wrap-active .swipeRightBlock {
     right:            0 !important;
     width:            30px !important;
     height:           55px !important;
@@ -178,7 +178,7 @@ body.mobilyze-active .swipeRightBlock {
     padding:          2px 0 !important;
 }
 
-body.mobilyze-active .swipes-counter {
+body.mobilyze-active.mobilyze-wrap-active .swipes-counter {
     width:          30px !important;
     height:         25px !important; /* Top half */
     font-size:      10px !important;
@@ -188,7 +188,7 @@ body.mobilyze-active .swipes-counter {
     margin:         0 !important;
 }
 
-body.mobilyze-active .swipe_right {
+body.mobilyze-active.mobilyze-wrap-active .swipe_right {
     width:          30px !important;
     height:         25px !important; /* Bottom half */
     margin:         0 !important;
@@ -308,20 +308,20 @@ body.mobilyze-active #right-nav-panel {
 }
 
 /* Prevent frosted glass tabs from repeating on past messages */
-body.mobilyze-active:not(.swipeAllMessages) .mes:not(.last_mes) .swipe_left,
-body.mobilyze-active:not(.swipeAllMessages) .mes:not(.last_mes) .swipeRightBlock {
+body.mobilyze-active.mobilyze-wrap-active:not(.swipeAllMessages) .mes:not(.last_mes) .swipe_left,
+body.mobilyze-active.mobilyze-wrap-active:not(.swipeAllMessages) .mes:not(.last_mes) .swipeRightBlock {
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
 }
 
 /* Hide the right block completely if a message has 0 swipes */
-body.mobilyze-active .swipeRightBlock:has(.swipes-counter[hidden]) {
+body.mobilyze-active.mobilyze-wrap-active .swipeRightBlock:has(.swipes-counter[hidden]) {
     display: none !important;
 }
 
 /* Respect the global "Hide All Swipe Buttons" setting if toggled */
-body.mobilyze-active.hideAllSwipeButtons .swipe_left,
-body.mobilyze-active.hideAllSwipeButtons .swipeRightBlock {
+body.mobilyze-active.mobilyze-wrap-active.hideAllSwipeButtons .swipe_left,
+body.mobilyze-active.mobilyze-wrap-active.hideAllSwipeButtons .swipeRightBlock {
     display: none !important;
 }
