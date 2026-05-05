@@ -78,7 +78,7 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
 /* 2px overlap: Asymmetrical tabs (20px / 30px) require 18px / 28px text padding */
 body.mobilyze-active .mes_block .mes_text {
     padding-left:  13px !important;
-    padding-right: 23px !important;
+    padding-right: 25px !important;
     margin-left:   0    !important;
     margin-right:  0    !important;
 }
