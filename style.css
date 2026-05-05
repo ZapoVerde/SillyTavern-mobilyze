@@ -1,12 +1,12 @@
 /**
  * @file mobilyze/style.css
- * @stamp 2024-05-05T18:30:00Z
+ * @stamp 2026-05-05T18:35:00Z
  * @architectural-role IO — Layout and visibility definitions.
  * @description
  * CSS overrides for mobile layouts. Implements a centered "comfort width" 
  * (clamped at 800px) for the chat area and UI panels. Includes message reflow 
- * logic gated by user settings and a specialized "Chassis Tab" swipe UI 
- * featuring asymmetrical, frosted glass navigation controls.
+ * logic and an asymmetrical "Chassis Tab" swipe UI with frosted glass 
+ * navigation controls and optimized ergonomics for mobile.
  *
  * @api-declaration
  * N/A - Stylesheet
@@ -18,16 +18,13 @@
  *     external_io:   [Override of ST internal layout properties]
  */
 
-/* ─── Pull handle ─────────────────────────────────────────────────────────────
-   Visible only when the bar is hidden. Hangs from the top edge like a tab.
-   Positioned relative to the center to stay within the comfort-width area.  */
+/* ─── Pull handle ───────────────────────────────────────────────────────────── */
 
 #mobilyze-pull-tab {
     display:           none; 
     position:          fixed;
     top:               0;
     left:              50%;
-    /* Positioned slightly off-center (approx golden ratio of the 800px width) */
     transform:         translateX(calc(-50% + 95px));
     width:             36px;
     height:            28px;
@@ -53,12 +50,8 @@
     border-color: var(--SmartThemeBodyColor, rgba(255, 255, 255, 0.6));
 }
 
-/* ─── Global Message Layout Overrides ───────────────────────────────────────
-   These apply when Mobilyze is active AND the text-wrap setting is enabled.
-   COMPATIBILITY: These rules automatically disable if a theme with complex 
-   message backgrounds (like Moonlit Echoes) is active.                     */
+/* ─── Global Message Layout Overrides ─────────────────────────────────────── */
 
-/* Exclusion list: .echostyle, .whisperstyle, .ripplestyle, .hushstyle, .tidestyle (Moonlit Echoes) */
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mesAvatarWrapper {
     padding-right:  10px;
     padding-bottom: 10px;
@@ -78,19 +71,19 @@ body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not
     max-width:   calc(100% + var(--avatar-base-width) + 10px);
 }
 
-/* ─── Swipe Navigation Chassis (Asymmetrical D-Tabs) ──────────────────────────
-   Replaces floating arrows with frosted "glass" tabs docked to the edges.
-   Left: Compact D-tab. Right: Tall D-tab housing the counter.
-   Aligned to the bottom corners for ergonomic thumb reach.                 */
+/* ─── Swipe Navigation Chassis (Refined Asymmetrical D-Tabs) ──────────────────
+   Replaces floating arrows with frosted glass tabs.
+   Left: 20px depth. Right: 30px depth (to house counter numbers).
+   Icons brightened and gap halved for a tighter, integrated look.           */
 
 body.mobilyze-active .mes_block {
     position: relative;
 }
 
 body.mobilyze-active .mes_text {
-    /* Create a permanent 25px gutter on each side to clear the 20px D-tabs */
-    padding-left:  25px !important;
-    padding-right: 25px !important;
+    /* Padding adjusted to halve the gap between text and D-tabs */
+    padding-left:  22px !important;
+    padding-right: 32px !important;
 }
 
 body.mobilyze-active .swipes {
@@ -100,19 +93,18 @@ body.mobilyze-active .swipes {
     left:           0;
     right:          0;
     height:         100%;
-    pointer-events: none; /* Allow interaction with text behind container */
+    pointer-events: none;
 }
 
 body.mobilyze-active .swipe_left,
 body.mobilyze-active .swipe_right {
     pointer-events: auto;
     position:       absolute !important;
-    bottom:         10px !important; /* Bottom-weighted alignment */
-    width:          20px !important; /* 20px depth as requested */
-    background:     rgba(150, 150, 150, 0.15) !important;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border:         0.5px solid rgba(255, 255, 255, 0.15) !important;
+    bottom:         10px !important; 
+    background:     rgba(200, 200, 200, 0.2) !important; /* Slightly brighter glass */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border:         0.5px solid rgba(255, 255, 255, 0.25) !important;
     display:        flex !important;
     align-items:    center;
     justify-content: center;
@@ -120,55 +112,60 @@ body.mobilyze-active .swipe_right {
     transition:     background 0.2s ease, transform 0.1s ease;
 }
 
+/* Brighten the chevrons */
+body.mobilyze-active .swipe_left i, 
+body.mobilyze-active .swipe_right i {
+    color:       rgba(255, 255, 255, 0.9) !important;
+    text-shadow: 0 0 2px rgba(0,0,0,0.5) !important;
+    background:  none !important;
+    font-size:   14px !important;
+}
+
 body.mobilyze-active .swipe_left:active,
 body.mobilyze-active .swipe_right:active {
-    background: rgba(255, 255, 255, 0.25) !important;
+    background: rgba(255, 255, 255, 0.35) !important;
     transform:  scale(0.95);
 }
 
-/* Left Navigator: Compact short D-tab */
+/* Left Navigator: 20px depth */
 body.mobilyze-active .swipe_left {
     left:          0 !important;
+    width:         20px !important;
     height:        35px !important;
     border-left:   none !important;
     border-radius: 0 12px 12px 0 !important;
 }
 
-/* Right Navigator: Tall D-tab housing both arrow and counter */
+/* Right Navigator: 30px depth to accommodate numbers */
 body.mobilyze-active .swipe_right {
     right:          0 !important;
+    width:          30px !important;
     height:         65px !important;
     border-right:   none !important;
     border-radius:  12px 0 0 12px !important;
     flex-direction: column !important;
 }
 
-/* Align the arrow icon to the top of the tall right tab */
+/* Position arrow in the top half of the tall right tab */
 body.mobilyze-active .swipe_right .fa-chevron-right {
-    margin-top: 10px;
+    margin-top:    -15px !important;
 }
 
+/* Move numbers into the bottom of the Right D-Tab */
 body.mobilyze-active .swipe_counter {
     position:       absolute !important;
-    bottom:         8px !important;
+    bottom:         6px !important;
     left:           0 !important;
     right:          0 !important;
     text-align:     center;
-    font-size:      9px !important;
+    font-size:      10px !important;
     font-weight:    bold;
     pointer-events: none;
-    color:          var(--SmartThemeBodyColor);
-    opacity:        0.8;
+    color:          white !important;
+    opacity:        1 !important;
 }
 
-/* Hide default ST shadow/backgrounds on icons */
-body.mobilyze-active .swipe_left i, 
-body.mobilyze-active .swipe_right i {
-    text-shadow: none !important;
-    background:  none !important;
-}
-
-/* ─── Panel Centering Override (All Viewports) ────────────────────────────── */
+/* ─── Panel Centering Override ───────────────────────────────────────────── */
 
 body.mobilyze-active #left-nav-panel,
 body.mobilyze-active #right-nav-panel {
@@ -185,7 +182,6 @@ body.mobilyze-active #right-nav-panel {
 /* ─── Responsive Height-Based Overrides ────────────────────────────────────── */
 
 @media (max-height: 1000px) {
-    
     body.mobilyze-active.mobilyze-bar-hidden #mobilyze-pull-tab {
         display: flex;
     }
