@@ -152,7 +152,7 @@ body.mobilyze-active .swipe_right i {
 /* Interaction feedback */
 body.mobilyze-active .swipe_left:active,
 body.mobilyze-active .swipeRightBlock:active {
-    background: rgba(255, 255, 255, 0.4) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
     transform:  scale(0.95);
 }
 
