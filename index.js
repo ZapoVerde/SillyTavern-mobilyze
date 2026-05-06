@@ -23,7 +23,7 @@
 
 import { eventSource, event_types }  from '../../../../script.js';
 import { initSettings, getSettings } from './settings.js';
-import { log, setVerbose }          from './logger.js';
+import { log, warn, setVerbose }    from './logger.js';
 import { 
     activateLayout, 
     deactivateLayout 
@@ -91,11 +91,16 @@ function onResize() {
  * Enables all Mobilyze functionality.
  */
 function activate() {
-    log(MODULE, 'Activating Mobilyze');
+    warn(MODULE, '[STEP] activate() called');
     document.body.classList.add(CLASS_ACTIVE);
+    warn(MODULE, '[STEP] mobilyze-active class added');
 
     activateLayout();
+    warn(MODULE, '[STEP] activateLayout() returned');
+
     activateBar();
+    warn(MODULE, '[STEP] activateBar() returned');
+
     syncWrapState();
     initGestures(showBar, scheduleHide);
 
@@ -106,23 +111,26 @@ function activate() {
     }
 
     window.addEventListener('resize', onResize);
+    warn(MODULE, '[STEP] activate() complete');
 }
 
 /**
  * Disables all Mobilyze functionality and cleans up the environment.
  */
-// index.js deactivation wrapper
 function deactivate() {
+    warn(MODULE, '[STEP] deactivate() called');
     try {
-        log(MODULE, 'Deactivating Mobilyze');
-        // REMOVE CLASSES FIRST before logic, so if logic fails, CSS is still gone
         document.body.classList.remove(CLASS_ACTIVE);
         document.body.classList.remove(CLASS_WRAP);
         document.body.classList.remove('mobilyze-bar-hidden');
+        warn(MODULE, '[STEP] body classes removed');
 
         deactivateLayout();
+        warn(MODULE, '[STEP] deactivateLayout() returned');
+
         deactivateBar();
         destroyGestures();
+        warn(MODULE, '[STEP] deactivate() complete');
     } catch (e) {
         console.error("Mobilyze Deactivation failed mid-way:", e);
     } finally {
@@ -133,9 +141,11 @@ function deactivate() {
  * Entry point: SillyTavern initialization.
  */
 jQuery(async () => {
-    // Bootstrap settings and UI
+    warn(MODULE, '[STEP] jQuery ready — initSettings starting');
+
     await initSettings(
         (enabled) => {
+            warn(MODULE, '[STEP] settings toggle callback — enabled:', { enabled });
             enabled ? activate() : deactivate();
         },
         (debugEnabled) => {
@@ -147,12 +157,17 @@ jQuery(async () => {
     );
 
     const settings = getSettings();
-
-    // Sync initial logger state
     setVerbose(settings.debugLogging);
 
-    // Initial activation
+    warn(MODULE, '[STEP] initSettings complete', { enabled: settings.enabled });
+
     if (settings.enabled) {
-        eventSource.once(event_types.APP_READY, activate);
+        warn(MODULE, '[STEP] Registering APP_READY listener');
+        eventSource.once(event_types.APP_READY, () => {
+            warn(MODULE, '[STEP] APP_READY fired — calling activate()');
+            activate();
+        });
+    } else {
+        warn(MODULE, '[STEP] Extension disabled at startup — skipping activate');
     }
 });

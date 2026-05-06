@@ -21,18 +21,27 @@
 'use strict';
 
 import { extension_settings } from '../../../extensions.js';
-import { log }                from './logger.js';
+import { warn }               from './logger.js';
 
 const MODULE = 'layout';
 const COMFORT_WIDTH = 'min(100dvw, 800px)';
 
 let _observer = null;
 
+function readSheldWidth(label) {
+    const inline   = document.documentElement.style.getPropertyValue('--sheldWidth') || '(unset)';
+    const computed = getComputedStyle(document.documentElement).getPropertyValue('--sheldWidth').trim() || '(unset)';
+    const sheld    = document.getElementById('sheld');
+    const sheldW   = sheld ? (sheld.getBoundingClientRect().width + 'px actual / ' + (sheld.style.width || '(no inline)') + ' inline') : '(no #sheld)';
+    warn(MODULE, `[SHELD-WIDTH] ${label}`, { inline, computed, sheld: sheldW });
+}
+
 /**
  * Force-writes the clamped width variable to the root element.
  */
 function forceSheldWidth() {
     document.documentElement.style.setProperty('--sheldWidth', COMFORT_WIDTH);
+    readSheldWidth('after forceSheldWidth');
 }
 
 /**
@@ -40,8 +49,10 @@ function forceSheldWidth() {
  * from overwriting our mobile layout width.
  */
 export function activateLayout() {
+    warn(MODULE, '[STEP] activateLayout() called', { alreadyActive: !!_observer });
     if (_observer) return;
 
+    readSheldWidth('before forceSheldWidth');
     forceSheldWidth();
 
     _observer = new MutationObserver((mutations) => {
@@ -49,7 +60,7 @@ export function activateLayout() {
             if (mutation.attributeName === 'style') {
                 const v = document.documentElement.style.getPropertyValue('--sheldWidth');
                 if (v !== COMFORT_WIDTH) {
-                    log(MODULE, 'Correcting --sheldWidth deviation', { detected: v });
+                    warn(MODULE, '[OBSERVER] --sheldWidth deviation detected — correcting', { was: v, restoringTo: COMFORT_WIDTH });
                     forceSheldWidth();
                 }
             }
@@ -61,18 +72,19 @@ export function activateLayout() {
         attributeFilter: ['style'],
     });
 
-    log(MODULE, 'Layout observer activated (Comfort Width: 800px max)');
+    warn(MODULE, '[STEP] Layout observer activated (Comfort Width: 800px max)');
 }
 
 export function deactivateLayout() {
+    warn(MODULE, '[STEP] deactivateLayout() called');
+    readSheldWidth('deactivate start');
+
     if (_observer) {
         _observer.disconnect();
         _observer = null;
+        warn(MODULE, '[STEP] Observer disconnected');
     }
 
-    log(MODULE, 'Reverting to SillyTavern Native State...');
-
-    // 1. Identify the core ST elements that ST hard-codes during boot
     const targets = [
         document.documentElement,
         document.body,
@@ -83,42 +95,44 @@ export function deactivateLayout() {
         document.getElementById('chat')
     ].filter(Boolean);
 
-    // 2. Clear every variable Mobilyze touches from every element
     const variables = [
-        '--sheldWidth', 
-        '--topBarBlockSize', 
-        '--bottomFormBlockSize', 
+        '--sheldWidth',
+        '--topBarBlockSize',
+        '--bottomFormBlockSize',
         '--mes-right-spacing'
     ];
 
     targets.forEach(el => {
         variables.forEach(v => el.style.removeProperty(v));
-        // Also clear hard-coded positioning ST might have tried to fight us on
         el.style.removeProperty('top');
         el.style.removeProperty('height');
         el.style.removeProperty('max-height');
         el.style.removeProperty('width');
     });
 
-    // 3. THE "SECRET SAUCE": Re-trigger SillyTavern's Internal Smart Theme
-    // This forces ST to re-read 'settings.sheld_width' and re-inject it into the CSS
+    readSheldWidth('after CSS variable removal');
+
     try {
-        // This is the global event that triggers ST's "poweruser.js" layout refresh
-        $(document).trigger('smarttheme_changed'); 
-        
-        // v1.16+ specific: Refresh the "Sheld" specifically
+        $(document).trigger('smarttheme_changed');
+        warn(MODULE, '[STEP] smarttheme_changed triggered');
+        readSheldWidth('after smarttheme_changed');
+
         if (typeof window.adjustSheldWidth === 'function') {
             window.adjustSheldWidth();
+            warn(MODULE, '[STEP] adjustSheldWidth() called');
+            readSheldWidth('after adjustSheldWidth');
+        } else {
+            warn(MODULE, '[STEP] adjustSheldWidth() not available');
         }
     } catch (e) {
-        log(MODULE, 'Soft trigger failed, using resize fallback');
+        warn(MODULE, '[STEP] Soft trigger failed, using resize fallback', { error: String(e) });
     }
 
-    // 4. Force a resize twice (Immediate and Delayed)
-    // The delay is necessary because ST's own resize listeners are debounced.
     window.dispatchEvent(new Event('resize'));
+    readSheldWidth('after immediate resize');
     setTimeout(() => {
         window.dispatchEvent(new Event('resize'));
-        log(MODULE, 'SillyTavern layout re-primed.');
+        readSheldWidth('after delayed resize (200ms)');
+        warn(MODULE, '[STEP] SillyTavern layout re-primed.');
     }, 200);
 }
