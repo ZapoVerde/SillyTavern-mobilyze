@@ -20,7 +20,7 @@
 
 'use strict';
 
-import { extension_settings } from '../../../extensions.js';
+import { power_user }         from '../../../../scripts/power-user.js';
 import { warn }               from './logger.js';
 
 const MODULE = 'layout';
@@ -32,8 +32,8 @@ function readSheldWidth(label) {
     const inline   = document.documentElement.style.getPropertyValue('--sheldWidth') || '(unset)';
     const computed = getComputedStyle(document.documentElement).getPropertyValue('--sheldWidth').trim() || '(unset)';
     const sheld    = document.getElementById('sheld');
-    const sheldW   = sheld ? (sheld.getBoundingClientRect().width + 'px actual / ' + (sheld.style.width || '(no inline)') + ' inline') : '(no #sheld)';
-    warn(MODULE, `[SHELD-WIDTH] ${label}`, { inline, computed, sheld: sheldW });
+    const px       = sheld ? Math.round(sheld.getBoundingClientRect().width) + 'px' : '(no #sheld)';
+    warn(MODULE, `[SHELD-WIDTH] ${label} | inline="${inline}" | computed="${computed}" | rendered=${px}`);
 }
 
 /**
@@ -112,27 +112,12 @@ export function deactivateLayout() {
 
     readSheldWidth('after CSS variable removal');
 
-    try {
-        $(document).trigger('smarttheme_changed');
-        warn(MODULE, '[STEP] smarttheme_changed triggered');
-        readSheldWidth('after smarttheme_changed');
-
-        if (typeof window.adjustSheldWidth === 'function') {
-            window.adjustSheldWidth();
-            warn(MODULE, '[STEP] adjustSheldWidth() called');
-            readSheldWidth('after adjustSheldWidth');
-        } else {
-            warn(MODULE, '[STEP] adjustSheldWidth() not available');
-        }
-    } catch (e) {
-        warn(MODULE, '[STEP] Soft trigger failed, using resize fallback', { error: String(e) });
-    }
+    // Restore ST's native width from its own setting (mirrors what applyChatWidth('forced') does)
+    const nativeWidth = power_user.chat_width ? `${power_user.chat_width}vw` : '50vw';
+    document.documentElement.style.setProperty('--sheldWidth', nativeWidth);
+    warn(MODULE, `[STEP] Restored native --sheldWidth = ${nativeWidth}`);
+    readSheldWidth('after native width restore');
 
     window.dispatchEvent(new Event('resize'));
-    readSheldWidth('after immediate resize');
-    setTimeout(() => {
-        window.dispatchEvent(new Event('resize'));
-        readSheldWidth('after delayed resize (200ms)');
-        warn(MODULE, '[STEP] SillyTavern layout re-primed.');
-    }, 200);
+    warn(MODULE, '[STEP] SillyTavern layout re-primed.');
 }

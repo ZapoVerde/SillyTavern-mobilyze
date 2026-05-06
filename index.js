@@ -145,7 +145,7 @@ jQuery(async () => {
 
     await initSettings(
         (enabled) => {
-            warn(MODULE, '[STEP] settings toggle callback — enabled:', { enabled });
+            warn(MODULE, `[STEP] settings toggle callback — enabled=${enabled}`);
             enabled ? activate() : deactivate();
         },
         (debugEnabled) => {
