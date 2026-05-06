@@ -324,3 +324,12 @@ body.mobilyze-active.mobilyze-wrap-active.hideAllSwipeButtons .swipe_left,
 body.mobilyze-active.mobilyze-wrap-active.hideAllSwipeButtons .swipeRightBlock {
     display: none !important;
 }
+
+/* Cleanup reset */
+body:not(.mobilyze-active) #top-bar, 
+body:not(.mobilyze-active) #top-settings-holder,
+body:not(.mobilyze-active) #sheld {
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
