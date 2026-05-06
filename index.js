@@ -21,6 +21,7 @@
 
 'use strict';
 
+import { eventSource, event_types }  from '../../../../script.js';
 import { initSettings, getSettings } from './settings.js';
 import { log, setVerbose }          from './logger.js';
 import { 
@@ -152,6 +153,6 @@ jQuery(async () => {
 
     // Initial activation
     if (settings.enabled) {
-        activate();
+        eventSource.once(event_types.APP_READY, activate);
     }
 });
