@@ -23,7 +23,7 @@
 
 import { eventSource, event_types }  from '../../../../script.js';
 import { initSettings, getSettings } from './settings.js';
-import { log, warn, setVerbose }    from './logger.js';
+import { log, warn, error, setVerbose } from './logger.js';
 import { 
     activateLayout, 
     deactivateLayout 
@@ -132,7 +132,7 @@ function deactivate() {
         destroyGestures();
         warn(MODULE, '[STEP] deactivate() complete');
     } catch (e) {
-        console.error("Mobilyze Deactivation failed mid-way:", e);
+        error(MODULE, 'Deactivation failed mid-way', { error: e });
     } finally {
         window.dispatchEvent(new Event('resize'));
     }
