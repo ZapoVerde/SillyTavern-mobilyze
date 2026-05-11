@@ -21,27 +21,35 @@
 /* ─── Pull handle ───────────────────────────────────────────────────────────── */
 
 #mobilyze-pull-tab {
-    display:           none; 
-    position:          fixed;
-    top:               0;
-    left:              50%;
-    transform:         translateX(calc(-50% + 95px));
-    width:             36px;
-    height:            28px;
-    background:        transparent;
-    border:            1px solid rgba(128, 128, 128, 0.9);
-    border-top:        none;
-    border-radius:     0 0 14px 14px;
-    z-index:           9999;
-    cursor:            grab;
-    touch-action:      none;
-    user-select:       none;
+    display:             none;
+    position:            fixed;
+    top:                 0;
+    left:                50%;
+    transform:           translateX(calc(-50% + 95px));
+    width:               36px;
+    height:              28px;
+    border-radius:       0 0 14px 14px;
+    z-index:             9999;
+    cursor:              grab;
+    touch-action:        none;
+    user-select:         none;
     -webkit-user-select: none;
-    align-items:       center;
-    justify-content:   center;
-    color:             rgba(128, 128, 128, 0.6);
-    font-size:         11px;
-    transition:        color 0.2s ease, border-color 0.2s ease;
+    align-items:         center;
+    justify-content:     center;
+    font-size:           11px;
+    /* Standard visibility — discoverable fill, easy to spot */
+    background:          rgba(128, 128, 128, 0.20);
+    border:              1px solid rgba(180, 180, 180, 0.6);
+    border-top:          none;
+    color:               rgba(230, 230, 230, 0.9);
+}
+
+/* Subtle — outline only, for users who already know where the tab lives */
+body[data-mobilyze-tab-viz="subtle"] #mobilyze-pull-tab {
+    background: transparent;
+    border:     1px solid rgba(128, 128, 128, 0.9);
+    border-top: none;
+    color:      rgba(128, 128, 128, 0.6);
 }
 
 #mobilyze-pull-tab:active {
@@ -212,90 +220,94 @@ body.mobilyze-active #right-nav-panel {
     max-height: calc(100dvh - var(--topBarBlockSize) - var(--bottomFormBlockSize))   !important;
 }
 
-/* ─── Responsive Height-Based Overrides ────────────────────────────────────── */
+/* ─── Mobile-Mode Layout Overrides ─────────────────────────────────────────── */
+/* Activated by .mobilyze-mobile-mode, set in JS via isMobileViewport().       */
+/* JS owns the threshold-or-override decision; CSS reacts to the body class.   */
 
-@media (max-height: 1000px) {
-    body.mobilyze-active.mobilyze-bar-hidden #mobilyze-pull-tab {
-        display: flex;
-    }
+body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden #mobilyze-pull-tab {
+    display: flex;
+}
 
-    body.mobilyze-active #sheld {
-        width:     min(100dvw, 800px) !important;
-        max-width: min(100dvw, 800px) !important;
-        left:      0                  !important;
-        right:     0                  !important;
-        margin:    0 auto             !important;
-    }
+body.mobilyze-active.mobilyze-mobile-mode #sheld {
+    width:     min(100dvw, 800px) !important;
+    max-width: min(100dvw, 800px) !important;
+    left:      0                  !important;
+    right:     0                  !important;
+    margin:    0 auto             !important;
+}
 
-    body.mobilyze-active #top-bar,
-    body.mobilyze-active #top-settings-holder {
-        width:    min(100dvw, 800px)  !important;
-        position: fixed               !important;
-        top:      0                   !important;
-        left:     0                   !important;
-        right:    0                   !important;
-        margin:   0 auto              !important;
-    }
+body.mobilyze-active.mobilyze-mobile-mode #top-bar,
+body.mobilyze-active.mobilyze-mobile-mode #top-settings-holder {
+    width:    min(100dvw, 800px)  !important;
+    position: fixed               !important;
+    top:      0                   !important;
+    left:     0                   !important;
+    right:    0                   !important;
+    margin:   0 auto              !important;
+}
 
-    body.mobilyze-active #left-nav-panel,
-    body.mobilyze-active #right-nav-panel {
-        width:     min(100dvw, 800px) !important;
-        min-width: min(100dvw, 800px) !important;
-        max-width: min(100dvw, 800px) !important;
-        left:      0                  !important;
-        right:     0                  !important;
-        margin:    0 auto             !important;
-    }
+body.mobilyze-active.mobilyze-mobile-mode #left-nav-panel,
+body.mobilyze-active.mobilyze-mobile-mode #right-nav-panel {
+    width:     min(100dvw, 800px) !important;
+    min-width: min(100dvw, 800px) !important;
+    max-width: min(100dvw, 800px) !important;
+    left:      0                  !important;
+    right:     0                  !important;
+    margin:    0 auto             !important;
+}
 
-    body.mobilyze-active #left-nav-panel:not(.openDrawer),
-    body.mobilyze-active #right-nav-panel:not(.openDrawer) {
-        height:   0       !important;
-        overflow: hidden  !important;
-    }
+body.mobilyze-active.mobilyze-mobile-mode #left-nav-panel:not(.openDrawer),
+body.mobilyze-active.mobilyze-mobile-mode #right-nav-panel:not(.openDrawer) {
+    height:   0       !important;
+    overflow: hidden  !important;
+}
 
-    body.mobilyze-active #bg1,
-    body.mobilyze-active #bg_custom {
-        width:  100dvw !important;
-        height: 100dvh !important;
-    }
+body.mobilyze-active.mobilyze-mobile-mode #bg1,
+body.mobilyze-active.mobilyze-mobile-mode #bg_custom {
+    width:  100dvw !important;
+    height: 100dvh !important;
+}
 
-    body.mobilyze-active #top-bar,
-    body.mobilyze-active #top-settings-holder {
-        transition: transform 0.25s ease, opacity 0.2s ease, visibility 0.25s;
-        opacity:    1;
-        visibility: visible;
-    }
+body.mobilyze-active.mobilyze-mobile-mode #top-bar,
+body.mobilyze-active.mobilyze-mobile-mode #top-settings-holder {
+    transition: transform 0.25s ease, opacity 0.2s ease, visibility 0.25s;
+    opacity:    1;
+    visibility: visible;
+}
 
-    body.mobilyze-dragging #top-bar,
-    body.mobilyze-dragging #top-settings-holder {
-        transition: none !important;
-    }
+body.mobilyze-dragging #top-bar,
+body.mobilyze-dragging #top-settings-holder {
+    transition: none !important;
+}
 
-    body.mobilyze-active.mobilyze-bar-hidden #top-bar,
-    body.mobilyze-active.mobilyze-bar-hidden #top-settings-holder {
-        transform:      translateY(-105%);
-        opacity:        0;
-        visibility:     hidden;
-        pointer-events: none;
-    }
+body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden #top-bar,
+body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden #top-settings-holder {
+    transform:      translateY(-105%);
+    opacity:        0;
+    visibility:     hidden;
+    pointer-events: none;
+}
 
-    body.mobilyze-active.mobilyze-bar-hidden {
-        --topBarBlockSize: 0px;
-    }
+body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden {
+    --topBarBlockSize: 0px;
+}
 
-    body.mobilyze-active #sheld {
-        transition: top 0.25s ease, height 0.25s ease, max-height 0.25s ease;
-    }
+body.mobilyze-active.mobilyze-mobile-mode #sheld {
+    transition: top 0.25s ease, height 0.25s ease, max-height 0.25s ease;
+}
 
-    body.mobilyze-active.mobilyze-bar-hidden:not(.plz-vn-active) #sheld {
-        top:        0      !important;
-        height:     100dvh !important;
-        max-height: 100dvh !important;
-    }
+body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden:not(.plz-vn-active) #sheld {
+    top:        0      !important;
+    height:     100dvh !important;
+    max-height: 100dvh !important;
+}
 
-    body.mobilyze-active {
-        --mes-right-spacing: 10px;
-    }
+body.mobilyze-active.mobilyze-mobile-mode {
+    --mes-right-spacing: 10px;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode.mobilyze-wrap-active #mobilyze-jump-pill {
+    display: flex;
 }
 
 .mobilyze-hint {
@@ -322,6 +334,69 @@ body.mobilyze-active.mobilyze-wrap-active .swipeRightBlock:has(.swipes-counter[h
 /* Respect the global "Hide All Swipe Buttons" setting if toggled */
 body.mobilyze-active.mobilyze-wrap-active.hideAllSwipeButtons .swipe_left,
 body.mobilyze-active.mobilyze-wrap-active.hideAllSwipeButtons .swipeRightBlock {
+    display: none !important;
+}
+
+/* ─── Jump Pill Navigation ──────────────────────────────────────────────────── */
+
+/* NOTE: right: 0 aligns the pill to the viewport edge, which matches the
+   swipe chassis (.swipeRightBlock { right: 0 !important }). Both are
+   correct under mobilyze-mobile-mode where #sheld is clamped to
+   min(100dvw, 800px) and centered — on mobile widths the right edge of
+   #sheld and the viewport coincide. If pill behavior is ever extended
+   to non-mobile-mode viewports, switch to positioning relative to #sheld. */
+
+#mobilyze-jump-pill {
+    display:              none;
+    position:             fixed;
+    right:                0;
+    bottom:               80px;
+    width:                25px;
+    height:               58px;
+    background:           rgba(200, 200, 200, 0.05);
+    backdrop-filter:      blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border:               0.5px solid rgba(255, 255, 255, 0.3);
+    border-right:         none;
+    border-radius:        12px 0 0 12px;
+    z-index:              50;
+    touch-action:         none;
+    flex-direction:       column;
+    align-items:          stretch;
+    padding:              0;
+    overflow:             hidden;
+}
+
+.mobilyze-jump-btn {
+    flex:             1 1 0;
+    background:       transparent;
+    border:           none;
+    color:            rgba(255, 255, 255, 0.55);
+    text-shadow:      0 0 3px rgba(0, 0, 0, 0.8);
+    font-size:        12px;
+    cursor:           pointer;
+    padding:          0;
+    display:          flex;
+    align-items:      center;
+    justify-content:  center;
+    transition:       background 0.15s ease;
+}
+
+.mobilyze-jump-btn[data-direction="up"]   { padding-bottom: 5px; }
+.mobilyze-jump-btn[data-direction="down"] { padding-top: 5px; border-top: 0.5px solid rgba(255, 255, 255, 0.12); }
+
+.mobilyze-jump-btn:active {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.mobilyze-jump-btn[disabled] {
+    color:          rgba(255, 255, 255, 0.18);
+    cursor:         default;
+    pointer-events: none;
+}
+
+body.mobilyze-jump-pill-hidden #mobilyze-jump-pill,
+body.mobilyze-active.hideAllSwipeButtons #mobilyze-jump-pill {
     display: none !important;
 }
 

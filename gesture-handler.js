@@ -21,7 +21,8 @@
 
 'use strict';
 
-import { log } from './logger.js';
+import { getSettings } from './settings.js';
+import { log }         from './logger.js';
 
 const MODULE            = 'gesture';
 const PULL_TAB_ID       = 'mobilyze-pull-tab';
@@ -46,11 +47,14 @@ let _onShow       = null;
 let _onResetTimer = null;
 
 /**
- * Checks if the current viewport is considered "mobile" based on height.
+ * Returns true when mobile-mode behaviors should be active: either the
+ * viewport is under the height breakpoint, or the user has opted into
+ * auto-hide on tall screens.
  * @returns {boolean}
  */
-function isMobileViewport() {
-    return window.innerHeight < HEIGHT_BREAKPOINT;
+export function isMobileViewport() {
+    return window.innerHeight < HEIGHT_BREAKPOINT
+        || getSettings().autoHideOnTallScreens === true;
 }
 
 /**

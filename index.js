@@ -22,7 +22,7 @@
 'use strict';
 
 import { eventSource, event_types }  from '../../../../script.js';
-import { initSettings, getSettings } from './settings.js';
+import { initSettings, getSettings, applyPullTabVisibility } from './settings.js';
 import { log, warn, error, setVerbose } from './logger.js';
 import { 
     activateLayout, 
@@ -36,15 +36,22 @@ import {
     isScrollSuppressed,
     syncBarState
 } from './bar-controller.js';
-import { 
-    initGestures, 
+import {
+    initGestures,
     destroyGestures,
-    syncGestures
+    syncGestures,
+    isMobileViewport,
 } from './gesture-handler.js';
+import {
+    activateJumpPill,
+    deactivateJumpPill,
+    syncJumpPill,
+} from './jump-pill.js';
 
-const MODULE        = 'core';
-const CLASS_ACTIVE  = 'mobilyze-active';
-const CLASS_WRAP    = 'mobilyze-wrap-active';
+const MODULE             = 'core';
+const CLASS_ACTIVE       = 'mobilyze-active';
+const CLASS_WRAP         = 'mobilyze-wrap-active';
+const CLASS_MOBILE_MODE  = 'mobilyze-mobile-mode';
 
 let _lastScrollTop  = 0;
 
@@ -82,7 +89,12 @@ function onChatScroll() {
 /**
  * Handles window resize events to sync UI state between mobile and desktop.
  */
+function syncMobileMode() {
+    document.body.classList.toggle(CLASS_MOBILE_MODE, isMobileViewport());
+}
+
 function onResize() {
+    syncMobileMode();
     syncBarState();
     syncGestures();
 }
@@ -93,6 +105,7 @@ function onResize() {
 function activate() {
     warn(MODULE, '[STEP] activate() called');
     document.body.classList.add(CLASS_ACTIVE);
+    syncMobileMode();
     warn(MODULE, '[STEP] mobilyze-active class added');
 
     activateLayout();
@@ -103,6 +116,8 @@ function activate() {
 
     syncWrapState();
     initGestures(showBar, scheduleHide);
+    applyPullTabVisibility();
+    activateJumpPill();
 
     const chat = document.getElementById('chat');
     if (chat) {
@@ -122,7 +137,9 @@ function deactivate() {
     try {
         document.body.classList.remove(CLASS_ACTIVE);
         document.body.classList.remove(CLASS_WRAP);
+        document.body.classList.remove(CLASS_MOBILE_MODE);
         document.body.classList.remove('mobilyze-bar-hidden');
+        document.body.removeAttribute('data-mobilyze-tab-viz');
         warn(MODULE, '[STEP] body classes removed');
 
         deactivateLayout();
@@ -130,6 +147,7 @@ function deactivate() {
 
         deactivateBar();
         destroyGestures();
+        deactivateJumpPill();
         warn(MODULE, '[STEP] deactivate() complete');
     } catch (e) {
         error(MODULE, 'Deactivation failed mid-way', { error: e });
@@ -152,7 +170,9 @@ jQuery(async () => {
             setVerbose(debugEnabled);
         },
         () => {
+            syncMobileMode();
             syncWrapState();
+            syncJumpPill();
         }
     );
 

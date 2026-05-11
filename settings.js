@@ -28,10 +28,13 @@ const MODULE    = 'settings';
 const EXT_NAME  = 'mobilyze';
 
 const DEFAULTS = {
-    enabled:        true,
-    autoHideDelay:  4000,
-    debugLogging:   false,
-    enableTextWrap: true,
+    enabled:                true,
+    autoHideDelay:          4000,
+    debugLogging:           false,
+    enableTextWrap:         true,
+    showJumpPill:           true,
+    autoHideOnTallScreens:  true,
+    pullTabVisibility:      'standard',
 };
 
 /**
@@ -40,6 +43,14 @@ const DEFAULTS = {
  */
 export function getSettings() {
     return extension_settings[EXT_NAME];
+}
+
+/**
+ * Writes the current pullTabVisibility value to the body attribute so CSS
+ * can react immediately. Safe to call before the pull-tab element exists.
+ */
+export function applyPullTabVisibility() {
+    document.body.setAttribute('data-mobilyze-tab-viz', getSettings().pullTabVisibility);
 }
 
 /**
@@ -62,6 +73,10 @@ function injectSettingsPanel() {
                 <input type="checkbox" id="mobilyze-wrap">
                 <span>Enable text wrapping under avatars</span>
             </label>
+            <label class="checkbox_label flexGap5" title="Show the up/down pill that steps between messages">
+                <input type="checkbox" id="mobilyze-jumppill">
+                <span>Show jump pill</span>
+            </label>
             <div class="range-block">
                 <div class="range-block-title">Auto-hide delay</div>
                 <div class="range-block-range">
@@ -69,6 +84,20 @@ function injectSettingsPanel() {
                     <span id="mobilyze-delay-counter" class="range-block-counter"></span>
                     <span class="range-block-suffix">ms</span>
                 </div>
+            </div>
+            <label class="checkbox_label flexGap5" title="Apply the auto-hiding bar behavior even on tall (desktop-sized) screens">
+                <input type="checkbox" id="mobilyze-tall-autohide">
+                <span>Auto-hide on tall screens</span>
+            </label>
+            <div class="flex-container flexFlowColumn flexGap5" style="margin-top: 8px;">
+                <label for="mobilyze-tab-visibility" class="flexGap5">
+                    <span>Pull-tab visibility</span>
+                </label>
+                <select id="mobilyze-tab-visibility" class="text_pole">
+                    <option value="standard">Standard — neutral fill, easy to spot</option>
+                    <option value="subtle">Subtle — outline only, stays out of the way</option>
+                </select>
+                <small class="opacity50p">Pick "Subtle" once you know where the tab lives.</small>
             </div>
             <label class="checkbox_label flexGap5" title="Enable verbose logging in the browser console">
                 <input type="checkbox" id="mobilyze-debug">
@@ -92,26 +121,35 @@ function injectSettingsPanel() {
  */
 export async function initSettings(onToggle, onDebugToggle, onSync) {
     // Merge defaults
-    extension_settings[EXT_NAME]                ??= {};
-    extension_settings[EXT_NAME].enabled        ??= DEFAULTS.enabled;
-    extension_settings[EXT_NAME].autoHideDelay  ??= DEFAULTS.autoHideDelay;
-    extension_settings[EXT_NAME].debugLogging   ??= DEFAULTS.debugLogging;
-    extension_settings[EXT_NAME].enableTextWrap ??= DEFAULTS.enableTextWrap;
+    extension_settings[EXT_NAME]                          ??= {};
+    extension_settings[EXT_NAME].enabled                  ??= DEFAULTS.enabled;
+    extension_settings[EXT_NAME].autoHideDelay            ??= DEFAULTS.autoHideDelay;
+    extension_settings[EXT_NAME].debugLogging             ??= DEFAULTS.debugLogging;
+    extension_settings[EXT_NAME].enableTextWrap           ??= DEFAULTS.enableTextWrap;
+    extension_settings[EXT_NAME].showJumpPill             ??= DEFAULTS.showJumpPill;
+    extension_settings[EXT_NAME].autoHideOnTallScreens    ??= DEFAULTS.autoHideOnTallScreens;
+    extension_settings[EXT_NAME].pullTabVisibility        ??= DEFAULTS.pullTabVisibility;
 
     injectSettingsPanel();
 
-    const $enabled      = $('#mobilyze-enabled');
-    const $wrap         = $('#mobilyze-wrap');
-    const $delay        = $('#mobilyze-delay');
-    const $delayCounter = $('#mobilyze-delay-counter');
-    const $debug        = $('#mobilyze-debug');
-    const settings      = getSettings();
+    const $enabled       = $('#mobilyze-enabled');
+    const $wrap          = $('#mobilyze-wrap');
+    const $jumppill      = $('#mobilyze-jumppill');
+    const $delay         = $('#mobilyze-delay');
+    const $delayCounter  = $('#mobilyze-delay-counter');
+    const $tallAutohide  = $('#mobilyze-tall-autohide');
+    const $tabViz        = $('#mobilyze-tab-visibility');
+    const $debug         = $('#mobilyze-debug');
+    const settings       = getSettings();
 
     // Sync UI to state
     $enabled.prop('checked', settings.enabled);
     $wrap.prop('checked', settings.enableTextWrap);
+    $jumppill.prop('checked', settings.showJumpPill);
     $delay.val(settings.autoHideDelay);
     $delayCounter.text(settings.autoHideDelay);
+    $tallAutohide.prop('checked', settings.autoHideOnTallScreens);
+    $tabViz.val(settings.pullTabVisibility);
     $debug.prop('checked', settings.debugLogging);
 
     // Bind listeners
@@ -128,9 +166,14 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
         settings.enableTextWrap = this.checked;
         log(MODULE, 'Text wrap toggled', { enabled: settings.enableTextWrap });
         saveSettingsDebounced();
-        if (typeof onSync === 'function') {
-            onSync();
-        }
+        if (typeof onSync === 'function') onSync();
+    });
+
+    $jumppill.on('change', function () {
+        settings.showJumpPill = this.checked;
+        log(MODULE, 'Jump pill toggled', { enabled: settings.showJumpPill });
+        saveSettingsDebounced();
+        if (typeof onSync === 'function') onSync();
     });
 
     $delay.on('input', function () {
@@ -138,6 +181,20 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
         settings.autoHideDelay = val;
         $delayCounter.text(val);
         saveSettingsDebounced();
+    });
+
+    $tallAutohide.on('change', function () {
+        settings.autoHideOnTallScreens = this.checked;
+        log(MODULE, 'Tall-screen auto-hide toggled', { enabled: settings.autoHideOnTallScreens });
+        saveSettingsDebounced();
+        if (typeof onSync === 'function') onSync();
+    });
+
+    $tabViz.on('change', function () {
+        settings.pullTabVisibility = this.value;
+        log(MODULE, 'Pull-tab visibility changed', { value: settings.pullTabVisibility });
+        saveSettingsDebounced();
+        applyPullTabVisibility();
     });
 
     $debug.on('change', function () {

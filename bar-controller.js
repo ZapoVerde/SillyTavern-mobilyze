@@ -25,8 +25,9 @@
 
 'use strict';
 
-import { getSettings } from './settings.js';
-import { log }         from './logger.js';
+import { getSettings }     from './settings.js';
+import { isMobileViewport } from './gesture-handler.js';
+import { log }              from './logger.js';
 
 const MODULE               = 'bar';
 const CLASS_BAR_HIDDEN     = 'mobilyze-bar-hidden';
@@ -36,14 +37,6 @@ const INITIAL_HIDE_DELAY   = 1500;
 let _hideTimer      = null;
 let _drawerObserver = null;
 let _suppressScroll = false;
-
-/**
- * Mobilyze logic now applies to all viewports to maintain single-column layout.
- * @returns {boolean}
- */
-function isMobileViewport() {
-    return true;
-}
 
 /**
  * Checks if any main menu drawer is currently open.
