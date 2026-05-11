@@ -150,11 +150,17 @@ export function syncJumpPill() {
         warn(MODULE, '[SYNC] pill already exists — skipping creation');
     }
 
+    const sheld = document.getElementById('sheld');
+    if (sheld) {
+        const rightOffset = Math.max(0, window.innerWidth - sheld.getBoundingClientRect().right);
+        _pill.style.right = `${rightOffset}px`;
+    }
+
     const willHide  = !settings.showJumpPill;
     const hasActive = document.body.classList.contains('mobilyze-active');
     document.body.classList.toggle('mobilyze-jump-pill-hidden', willHide);
     const computedDisplay = _pill ? getComputedStyle(_pill).display : 'n/a';
-    warn(MODULE, `[SYNC] willHide=${willHide} hasActive=${hasActive} computedDisplay=${computedDisplay}`);
+    warn(MODULE, `[SYNC] willHide=${willHide} hasActive=${hasActive} computedDisplay=${computedDisplay} right=${_pill?.style.right}`);
 
     recomputeDisabledStates();
 }

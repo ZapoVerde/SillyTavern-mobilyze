@@ -339,14 +339,13 @@ body.mobilyze-active.mobilyze-wrap-active.hideAllSwipeButtons .swipeRightBlock {
 
 /* ─── Jump Pill Navigation ──────────────────────────────────────────────────── */
 
-/* max(0px, calc(50dvw - 400px)) tracks the sheld right edge for any viewport width:
-   - viewport ≤ 800px → 0, pill sits flush at the screen edge (= sheld right edge)
-   - viewport > 800px → (viewport - 800px) / 2, pill stays pinned to the sheld edge */
+/* right is set by JS in syncJumpPill() from the sheld's live getBoundingClientRect().
+   The CSS value here is a fallback only and will be overridden on activation. */
 
 #mobilyze-jump-pill {
     display:              none;
     position:             fixed;
-    right:                max(0px, calc(50dvw - 400px));
+    right:                0;
     bottom:               25vh;
     width:                25px;
     height:               58px;
