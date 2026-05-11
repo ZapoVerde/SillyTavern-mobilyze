@@ -306,6 +306,11 @@ body.mobilyze-active.mobilyze-mobile-mode {
     --mes-right-spacing: 10px;
 }
 
+body.mobilyze-active.mobilyze-mobile-mode .mes_buttons,
+body.mobilyze-active.mobilyze-mobile-mode .extraMesButtons {
+    padding-right: 30px;
+}
+
 body.mobilyze-active #mobilyze-jump-pill {
     display: flex;
 }
@@ -346,7 +351,7 @@ body.mobilyze-active.mobilyze-wrap-active.hideAllSwipeButtons .swipeRightBlock {
     display:              none;
     position:             fixed;
     right:                0;
-    bottom:               25vh;
+    top:                  calc(50vh - 29px);
     width:                25px;
     height:               58px;
     background:           rgba(200, 200, 200, 0.05);

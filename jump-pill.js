@@ -163,11 +163,11 @@ export function syncJumpPill() {
         _pill.style.right   = `${rightOffset}px`;
         document.documentElement.style.setProperty('--mobilyze-pill-right', `${rightOffset}px`);
 
-        // CSS `bottom: 25vh` breaks when a CSS transform on <body>/<html> creates a new
+        // CSS `top: 50%` breaks when a CSS transform on <body>/<html> creates a new
         // containing block for position:fixed. Fix: compute the Y position in JS and
         // correct for the containing block's actual viewport offset.
         const PILL_HEIGHT   = 58;
-        const targetVpTop   = Math.round(window.innerHeight * 0.75 - PILL_HEIGHT);
+        const targetVpTop   = Math.round(window.innerHeight * 0.5 - PILL_HEIGHT / 2);
         const bodyTop       = document.body.getBoundingClientRect().top;
         _pill.style.top     = `${Math.round(targetVpTop - bodyTop)}px`;
         _pill.style.bottom  = 'auto';
