@@ -96,7 +96,7 @@ function stepDown() {
     // and produces a near-zero or backward scroll.
     let atTopIdx = -1;
     for (let i = 0; i < mes.length; i++) {
-        if (mes[i].getBoundingClientRect().top <= chatTop + SCROLL_PAD) atTopIdx = i;
+        if (mes[i].getBoundingClientRect().top <= chatTop + SCROLL_PAD + 1) atTopIdx = i;
         else break;
     }
 
