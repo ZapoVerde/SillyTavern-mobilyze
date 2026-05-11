@@ -81,26 +81,28 @@ function injectSettingsPanel() {
                 <input type="checkbox" id="mobilyze-jumppill">
                 <span>Show message navigation buttons</span>
             </label>
-            <small class="mobilyze-hint" style="margin-top:8px;margin-bottom:2px;opacity:0.8;font-weight:bold;">At least one reveal method is required</small>
-            <label class="checkbox_label flexGap5" title="Scroll up in chat to show the menu bar">
-                <input type="checkbox" id="mobilyze-scroll-reveal">
-                <span>Scroll up to reveal</span>
-            </label>
-            <label class="checkbox_label flexGap5" title="Swipe down from the top edge of the screen to show the menu bar (touch only)">
-                <input type="checkbox" id="mobilyze-edge-swipe">
-                <span>Edge swipe to reveal</span>
-            </label>
-            <label class="checkbox_label flexGap5" title="Show a drag handle at the top of the screen when the menu bar is hidden">
-                <input type="checkbox" id="mobilyze-pull-tab-enable">
-                <span>Show pull-tab</span>
-            </label>
-            <label class="checkbox_label flexGap5" title="Hide the jump buttons and swipe controls when no character is loaded">
-                <input type="checkbox" id="mobilyze-hide-on-load">
-                <span>Hide navigation controls on load screen</span>
-            </label>
             <label class="checkbox_label flexGap5" title="Apply the auto-hiding menu bar behavior even on tall (desktop-sized) screens">
                 <input type="checkbox" id="mobilyze-tall-autohide">
                 <span>Auto-hide Menu on tall screens</span>
+            </label>
+            <div style="margin-top:8px; border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:6px 10px 8px;">
+                <small class="mobilyze-hint" style="margin-top:0;margin-bottom:4px;opacity:0.8;font-weight:bold;display:block;">At least one reveal method is required</small>
+                <label class="checkbox_label flexGap5" title="Scroll up in chat to show the menu bar">
+                    <input type="checkbox" id="mobilyze-scroll-reveal">
+                    <span>Scroll up to reveal</span>
+                </label>
+                <label class="checkbox_label flexGap5" title="Swipe down from the top edge of the screen to show the menu bar (touch only)">
+                    <input type="checkbox" id="mobilyze-edge-swipe">
+                    <span>Edge swipe to reveal</span>
+                </label>
+                <label class="checkbox_label flexGap5" title="Show a drag handle at the top of the screen when the menu bar is hidden">
+                    <input type="checkbox" id="mobilyze-pull-tab-enable">
+                    <span>Show pull-tab</span>
+                </label>
+            </div>
+            <label class="checkbox_label flexGap5" title="Hide the jump buttons and swipe controls when no character is loaded">
+                <input type="checkbox" id="mobilyze-hide-on-load">
+                <span>Hide navigation controls on load screen</span>
             </label>
             <div class="range-block">
                 <div class="range-block-title">Auto-hide delay</div>
