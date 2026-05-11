@@ -24,7 +24,7 @@
 
 import { eventSource, event_types } from '../../../../script.js';
 import { getSettings }              from './settings.js';
-import { log, warn }                from './logger.js';
+import { log }                      from './logger.js';
 
 const MODULE             = 'pill';
 const PILL_ID            = 'mobilyze-jump-pill';
@@ -59,8 +59,6 @@ function recomputeDisabledStates() {
 
     _pill.querySelector('[data-direction="up"]').toggleAttribute('disabled', !hasUp);
     _pill.querySelector('[data-direction="down"]').toggleAttribute('disabled', !hasDown);
-
-    log(MODULE, 'Disabled states updated', { hasUp, hasDown });
 }
 
 // ─── Stepping ────────────────────────────────────────────────────────────────
@@ -91,9 +89,9 @@ function stepDown() {
     const chatTop = chat.getBoundingClientRect().top;
 
     // Find the last message whose top is at or near chatTop (the "current" top message).
-    // Using SCROLL_PAD as the tolerance window to match the snap target of stepUp.
-    // Without this, mes.find with a tiny threshold re-selects the current top message
-    // and produces a near-zero or backward scroll.
+    // +1px tolerance absorbs sub-pixel rendering drift from stepUp's snap target.
+    // Without this, a message snapped to chatTop+SCROLL_PAD at 8.2px re-selects itself
+    // and produces a ~0px scroll.
     let atTopIdx = -1;
     for (let i = 0; i < mes.length; i++) {
         if (mes[i].getBoundingClientRect().top <= chatTop + SCROLL_PAD + 1) atTopIdx = i;
@@ -106,9 +104,8 @@ function stepDown() {
         return;
     }
 
-    const targetTop = target.getBoundingClientRect().top;
-    const top = chat.scrollTop + targetTop - chatTop - SCROLL_PAD;
-    warn(MODULE, `Step down: scrollTop=${chat.scrollTop} chatTop=${chatTop.toFixed(1)} targetTop=${targetTop.toFixed(1)} computedTop=${top.toFixed(1)} atTopIdx=${atTopIdx} targetIdx=${atTopIdx + 1}`);
+    const top = chat.scrollTop + target.getBoundingClientRect().top - chatTop - SCROLL_PAD;
+    log(MODULE, 'Step down', { index: atTopIdx + 1, top });
     chat.scrollTo({ top, behavior: 'smooth' });
 }
 
@@ -147,21 +144,15 @@ function _onMessageMutation() { scheduleRecompute(); }
 export function syncJumpPill() {
     const settings = getSettings();
 
-    warn(MODULE, `[SYNC] enabled=${settings.enabled} showJumpPill=${settings.showJumpPill} pillExists=${!!_pill}`);
-
     if (!settings.enabled) {
         if (_pill) { _pill.remove(); _pill = null; }
         document.body.classList.remove('mobilyze-jump-pill-hidden');
-        warn(MODULE, '[SYNC] returning early — extension disabled');
         return;
     }
 
     if (!_pill) {
         _pill = buildPill();
         document.body.appendChild(_pill);
-        warn(MODULE, '[SYNC] pill created and appended to body');
-    } else {
-        warn(MODULE, '[SYNC] pill already exists — skipping creation');
     }
 
     const chat = document.getElementById('chat');
@@ -180,23 +171,14 @@ export function syncJumpPill() {
         const bodyTop       = document.body.getBoundingClientRect().top;
         _pill.style.top     = `${Math.round(targetVpTop - bodyTop)}px`;
         _pill.style.bottom  = 'auto';
-
-        warn(MODULE, `[SYNC] innerWidth=${window.innerWidth} contentRight=${contentRight} rightOffset=${rightOffset} bodyTop=${bodyTop.toFixed(1)} targetVpTop=${targetVpTop}`);
-        const pr = _pill.getBoundingClientRect();
-        warn(MODULE, `[SYNC] pill rect: left=${pr.left.toFixed(1)} right=${pr.right.toFixed(1)} top=${pr.top.toFixed(1)} bottom=${pr.bottom.toFixed(1)} inView=${pr.left>=0 && pr.right<=window.innerWidth && pr.top>=0 && pr.bottom<=window.innerHeight}`);
     }
 
-    const willHide  = !settings.showJumpPill;
-    const hasActive = document.body.classList.contains('mobilyze-active');
-    document.body.classList.toggle('mobilyze-jump-pill-hidden', willHide);
-    const computedDisplay = _pill ? getComputedStyle(_pill).display : 'n/a';
-    warn(MODULE, `[SYNC] willHide=${willHide} hasActive=${hasActive} computedDisplay=${computedDisplay} right=${_pill?.style.right}`);
+    document.body.classList.toggle('mobilyze-jump-pill-hidden', !settings.showJumpPill);
 
     recomputeDisabledStates();
 }
 
 export function activateJumpPill() {
-    warn(MODULE, '[STEP] activateJumpPill() called');
     syncJumpPill();
 
     const chat = document.getElementById('chat');
@@ -210,13 +192,9 @@ export function activateJumpPill() {
     eventSource.on(event_types.MESSAGE_RECEIVED, _onMessageMutation);
     eventSource.on(event_types.MESSAGE_DELETED,  _onMessageMutation);
     eventSource.on(event_types.MESSAGE_SWIPED,   _onMessageMutation);
-
-    warn(MODULE, '[STEP] activateJumpPill() complete');
 }
 
 export function deactivateJumpPill() {
-    warn(MODULE, '[STEP] deactivateJumpPill() called');
-
     if (_pill) { _pill.remove(); _pill = null; }
 
     if (_chatObserver) { _chatObserver.disconnect(); _chatObserver = null; }
@@ -231,5 +209,4 @@ export function deactivateJumpPill() {
     if (_rafToken !== null) { cancelAnimationFrame(_rafToken); _rafToken = null; }
 
     document.body.classList.remove('mobilyze-jump-pill-hidden');
-    warn(MODULE, '[STEP] deactivateJumpPill() complete');
 }

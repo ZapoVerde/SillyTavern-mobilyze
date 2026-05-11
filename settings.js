@@ -76,11 +76,11 @@ function injectSettingsPanel() {
                 <input type="checkbox" id="mobilyze-wrap">
                 <span>Enable text wrapping under avatars</span>
             </label>
-            <label class="checkbox_label flexGap5" title="Show the up/down pill that steps between messages">
+            <label class="checkbox_label flexGap5" title="Floating up/down buttons on the side of the chat that let you step through messages one at a time">
                 <input type="checkbox" id="mobilyze-jumppill">
-                <span>Show jump pill</span>
+                <span>Show message navigation buttons</span>
             </label>
-            <small class="mobilyze-hint" style="margin-top:8px;margin-bottom:2px;opacity:0.8;font-weight:bold;">Menu reveal triggers — keep at least one on</small>
+            <small class="mobilyze-hint" style="margin-top:8px;margin-bottom:2px;opacity:0.8;font-weight:bold;">At least one reveal method is required</small>
             <label class="checkbox_label flexGap5" title="Scroll up in chat to show the menu bar">
                 <input type="checkbox" id="mobilyze-scroll-reveal">
                 <span>Scroll up to reveal</span>
@@ -93,6 +93,10 @@ function injectSettingsPanel() {
                 <input type="checkbox" id="mobilyze-pull-tab-enable">
                 <span>Show pull-tab</span>
             </label>
+            <label class="checkbox_label flexGap5" title="Apply the auto-hiding menu bar behavior even on tall (desktop-sized) screens">
+                <input type="checkbox" id="mobilyze-tall-autohide">
+                <span>Auto-hide Menu on tall screens</span>
+            </label>
             <div class="range-block">
                 <div class="range-block-title">Auto-hide delay</div>
                 <div class="range-block-range">
@@ -101,10 +105,6 @@ function injectSettingsPanel() {
                     <span class="range-block-suffix">ms</span>
                 </div>
             </div>
-            <label class="checkbox_label flexGap5" title="Apply the auto-hiding bar behavior even on tall (desktop-sized) screens">
-                <input type="checkbox" id="mobilyze-tall-autohide">
-                <span>Auto-hide on tall screens</span>
-            </label>
             <div class="flex-container flexFlowColumn flexGap5" style="margin-top: 8px;">
                 <label for="mobilyze-tab-visibility" class="flexGap5">
                     <span>Pull-tab visibility</span>
