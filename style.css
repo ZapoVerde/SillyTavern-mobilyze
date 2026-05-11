@@ -38,18 +38,18 @@
     justify-content:     center;
     font-size:           11px;
     /* Standard visibility — discoverable fill, easy to spot */
-    background:          rgba(128, 128, 128, 0.20);
-    border:              1px solid rgba(180, 180, 180, 0.6);
+    background:          rgba(128, 128, 128, 0.60);
+    border:              1px solid rgba(180, 180, 180, 0.9);
     border-top:          none;
     color:               rgba(230, 230, 230, 0.9);
 }
 
 /* Subtle — outline only, for users who already know where the tab lives */
 body[data-mobilyze-tab-viz="subtle"] #mobilyze-pull-tab {
-    background: transparent;
-    border:     1px solid rgba(128, 128, 128, 0.9);
-    border-top: none;
-    color:      rgba(128, 128, 128, 0.9);
+    background:          rgba(128, 128, 128, 0.20);
+    border:              1px solid rgba(180, 180, 180, 0.6);
+    border-top:          none;
+    color:               rgba(230, 230, 230, 0.9);
 }
 
 #mobilyze-pull-tab:active {
@@ -306,7 +306,7 @@ body.mobilyze-active.mobilyze-mobile-mode {
     --mes-right-spacing: 10px;
 }
 
-body.mobilyze-active.mobilyze-mobile-mode.mobilyze-wrap-active #mobilyze-jump-pill {
+body.mobilyze-active.mobilyze-mobile-mode #mobilyze-jump-pill {
     display: flex;
 }
 
