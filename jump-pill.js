@@ -89,12 +89,22 @@ function stepDown() {
 
     const mes     = [...chat.querySelectorAll('.mes')];
     const chatTop = chat.getBoundingClientRect().top;
-    const anchorY = chatTop + VIEWPORT_TOP_THRESHOLD;
-    const target  = mes.find(m => m.getBoundingClientRect().top > anchorY);
+
+    // Find the last message whose top is at or near chatTop (the "current" top message).
+    // Using SCROLL_PAD as the tolerance window to match the snap target of stepUp.
+    // Without this, mes.find with a tiny threshold re-selects the current top message
+    // and produces a near-zero or backward scroll.
+    let atTopIdx = -1;
+    for (let i = 0; i < mes.length; i++) {
+        if (mes[i].getBoundingClientRect().top <= chatTop + SCROLL_PAD) atTopIdx = i;
+        else break;
+    }
+
+    const target = mes[atTopIdx + 1];
     if (!target) return;
 
     const top = chat.scrollTop + target.getBoundingClientRect().top - chatTop - SCROLL_PAD;
-    log(MODULE, 'Step down', { index: mes.indexOf(target), top });
+    log(MODULE, 'Step down', { atTopIdx, targetIdx: atTopIdx + 1, top });
     chat.scrollTo({ top, behavior: 'smooth' });
 }
 
