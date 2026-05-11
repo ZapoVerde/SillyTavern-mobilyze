@@ -31,8 +31,8 @@ import { log }              from './logger.js';
 
 const MODULE               = 'bar';
 const CLASS_BAR_HIDDEN     = 'mobilyze-bar-hidden';
-const TRANSITION_DURATION  = 400; 
-const INITIAL_HIDE_DELAY   = 1500;
+const TRANSITION_DURATION  = 400;  // V2: Animation timing controls
+const INITIAL_HIDE_DELAY   = 1500; // V2: Animation timing controls
 
 let _hideTimer      = null;
 let _drawerObserver = null;

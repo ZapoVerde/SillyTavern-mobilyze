@@ -1,0 +1,180 @@
+/**
+ * @file mobilyze/gestures.css
+ * @stamp 2026-05-11T00:00:00Z
+ * @architectural-role IO — Pull-tab and swipe chassis visual definitions.
+ * @description
+ * Styles the pull-tab handle and the asymmetrical D-tab swipe navigation
+ * chassis that appears on message cards. No layout grid or nav pill rules here.
+ *
+ * @api-declaration
+ * N/A - Stylesheet
+ *
+ * @contract
+ *   assertions:
+ *     purity:        IO (Global style injection)
+ *     state_ownership: [DOM classes .mobilyze-active, .mobilyze-wrap-active, .mobilyze-dragging, body[data-mobilyze-tab-viz]]
+ *     external_io:   [Override of ST internal swipe elements]
+ */
+
+/* ─── Pull handle ───────────────────────────────────────────────────────────── */
+
+#mobilyze-pull-tab {
+    display:             none;
+    position:            fixed;
+    top:                 0;
+    left:                50%;
+    transform:           translateX(calc(-50% + 95px));
+    width:               36px;
+    height:              28px;
+    border-radius:       0 0 14px 14px;
+    z-index:             9999;
+    cursor:              grab;
+    touch-action:        none;
+    user-select:         none;
+    -webkit-user-select: none;
+    align-items:         center;
+    justify-content:     center;
+    font-size:           11px;
+    /* Standard visibility — discoverable fill, easy to spot */
+    background:          rgba(128, 128, 128, 0.60);
+    border:              1px solid rgba(180, 180, 180, 0.9);
+    border-top:          none;
+    color:               rgba(230, 230, 230, 0.9);
+}
+
+/* Subtle — outline only, for users who already know where the tab lives */
+body[data-mobilyze-tab-viz="subtle"] #mobilyze-pull-tab {
+    background:          rgba(128, 128, 128, 0.20);
+    border:              1px solid rgba(180, 180, 180, 0.6);
+    border-top:          none;
+    color:               rgba(230, 230, 230, 0.9);
+}
+
+#mobilyze-pull-tab:active {
+    cursor:       grabbing;
+    color:        var(--SmartThemeBodyColor, rgba(255, 255, 255, 0.6));
+    border-color: var(--SmartThemeBodyColor, rgba(255, 255, 255, 0.6));
+}
+
+/* ─── Swipe Navigation Chassis (Max-Space Asymmetrical D-Tabs) ──────────────── */
+
+body.mobilyze-active.mobilyze-wrap-active .swipes {
+    display:        block !important;
+    position:       absolute !important;
+    bottom:         0;
+    left:           -100px !important; /* Move boundary left to prevent clipping Left D */
+    right:          0;
+    width:          calc(100% + 100px) !important;
+    height:         100%;
+    pointer-events: none;
+    overflow:       visible !important;
+    opacity:        1 !important;
+}
+
+/* Shared D-Tab aesthetics */
+body.mobilyze-active.mobilyze-wrap-active .swipe_left,
+body.mobilyze-active.mobilyze-wrap-active .swipeRightBlock {
+    pointer-events:  auto !important;
+    position:        absolute !important;
+    bottom:          10px !important;
+    opacity:         1 !important;
+    visibility:      visible !important;
+    background:      rgba(200, 200, 200, 0.05) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border:          0.5px solid rgba(255, 255, 255, 0.3) !important;
+    z-index:         50 !important;
+    transition:      background 0.2s ease, transform 0.1s ease;
+    display:         flex !important;
+    flex-direction:  column !important;
+    align-items:     center !important;
+    justify-content: center !important;
+}
+
+/* Reset internal ST elements so they don't bring their own backgrounds/borders */
+body.mobilyze-active.mobilyze-wrap-active .swipe_right,
+body.mobilyze-active.mobilyze-wrap-active .swipes-counter {
+    background:      none !important;
+    border:          none !important;
+    backdrop-filter: none !important;
+    position:        relative !important;
+    bottom:          auto !important;
+    right:           auto !important;
+    opacity:         1 !important;
+    display:         flex !important;
+    align-items:     center !important;
+    justify-content: center !important;
+    pointer-events:  auto !important;
+}
+
+/* Chevron Styling — icons are FA classes on the divs directly, not on child <i> elements */
+body.mobilyze-active.mobilyze-wrap-active .swipe_left,
+body.mobilyze-active.mobilyze-wrap-active .swipe_right {
+    color:       rgba(255, 255, 255, 0.4) !important;
+    text-shadow: 0 0 3px rgba(0,0,0,0.8) !important;
+    font-size:   14px !important;
+}
+
+/* Interaction feedback */
+body.mobilyze-active.mobilyze-wrap-active .swipe_left:active,
+body.mobilyze-active.mobilyze-wrap-active .swipeRightBlock:active {
+    background: rgba(255, 255, 255, 0.4) !important;
+    transform:  scale(0.95);
+}
+
+/* Left D: 20px wide, 35px tall. Perfectly centered chevron. */
+body.mobilyze-active.mobilyze-wrap-active .swipe_left {
+    left:            0 !important; /* Changed from 100px to sit flush with div.for_checkbox */
+    width:           20px  !important;
+    height:          35px  !important;
+    border-left:     none  !important;
+    border-radius:   0 12px 12px 0 !important;
+    justify-content: center !important; /* Centers the single chevron vertically */
+}
+
+/* Right D (The Block): 30px wide, 55px tall. Split into two halves. */
+body.mobilyze-active.mobilyze-wrap-active .swipeRightBlock {
+    right:            0 !important;
+    width:            25px !important;
+    height:           55px !important;
+    border-right:     none !important;
+    border-radius:    12px 0 0 12px !important;
+    flex-direction:   column-reverse !important; /* DOM order is chevron then counter; reverse puts counter on top */
+    justify-content:  space-evenly !important;
+    padding:          2px 0 !important;
+}
+
+body.mobilyze-active.mobilyze-wrap-active .swipes-counter {
+    width:          30px !important;
+    height:         25px !important; /* Top half */
+    font-size:      10px !important;
+    font-weight:    bold !important;
+    letter-spacing: -0.5px;
+    color:          rgba(255, 255, 255, 0.4) !important;
+    margin:         0 !important;
+}
+
+body.mobilyze-active.mobilyze-wrap-active .swipe_right {
+    width:          30px !important;
+    height:         25px !important; /* Bottom half */
+    margin:         0 !important;
+}
+
+/* Prevent frosted glass tabs from repeating on past messages */
+body.mobilyze-active.mobilyze-wrap-active:not(.swipeAllMessages) .mes:not(.last_mes) .swipe_left,
+body.mobilyze-active.mobilyze-wrap-active:not(.swipeAllMessages) .mes:not(.last_mes) .swipeRightBlock {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Hide the right block completely if a message has 0 swipes */
+body.mobilyze-active.mobilyze-wrap-active .swipeRightBlock:has(.swipes-counter[hidden]) {
+    display: none !important;
+}
+
+/* Respect the global "Hide All Swipe Buttons" setting if toggled */
+body.mobilyze-active.mobilyze-wrap-active.hideAllSwipeButtons .swipe_left,
+body.mobilyze-active.mobilyze-wrap-active.hideAllSwipeButtons .swipeRightBlock {
+    display: none !important;
+}

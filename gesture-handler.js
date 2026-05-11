@@ -29,11 +29,11 @@ const PULL_TAB_ID       = 'mobilyze-pull-tab';
 const CLASS_DRAGGING    = 'mobilyze-dragging';
 const HEIGHT_BREAKPOINT = 1000;
 
-// Gesture Thresholds
-const SWIPE_ORIGIN_MAX_Y  = 30;
-const SWIPE_MIN_DY        = 40;
-const SWIPE_MAX_DX        = 80;
-const DRAG_SNAP_THRESHOLD = 0.35;
+// Gesture Thresholds — V2: expose as user-configurable settings
+const SWIPE_ORIGIN_MAX_Y  = 30;  // V2: User-configurable gesture thresholds
+const SWIPE_MIN_DY        = 40;  // V2: User-configurable gesture thresholds
+const SWIPE_MAX_DX        = 80;  // V2: User-configurable gesture thresholds
+const DRAG_SNAP_THRESHOLD = 0.35; // V2: User-configurable gesture thresholds
 
 // State
 let _touchStartY = 0;

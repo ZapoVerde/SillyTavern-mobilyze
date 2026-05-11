@@ -1,0 +1,195 @@
+/**
+ * @file mobilyze/layout.css
+ * @stamp 2026-05-11T00:00:00Z
+ * @architectural-role IO — Mobile layout grid and bar visibility definitions.
+ * @description
+ * Overrides ST's desktop layout for mobile viewports: message block padding,
+ * avatar text-wrap reflow, panel centering, the mobile-mode chassis sizing, and
+ * the bar hide/show transitions. No pull-tab or nav pill rules here.
+ *
+ * @api-declaration
+ * N/A - Stylesheet
+ *
+ * @contract
+ *   assertions:
+ *     purity:        IO (Global style injection)
+ *     state_ownership: [DOM classes .mobilyze-active, .mobilyze-wrap-active, .mobilyze-mobile-mode, .mobilyze-bar-hidden, .mobilyze-dragging]
+ *     external_io:   [Override of ST internal layout properties]
+ */
+
+/* ─── Global Message Layout Overrides ─────────────────────────────────────── */
+
+body.mobilyze-active .mes {
+    padding-left:  0        !important;
+    padding-right: 0        !important;
+    overflow:      visible  !important;
+}
+
+body.mobilyze-active .mes_block {
+    padding-left:  0        !important;
+    padding-right: 0        !important;
+    overflow:      visible  !important;
+}
+
+body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mesAvatarWrapper {
+    padding-right:  10px;
+    padding-bottom: 10px;
+    margin-left:    10px;
+}
+
+body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .ch_name {
+    min-height:   var(--avatar-base-width);
+    padding-left: 10px;
+}
+
+/* 2px overlap: Asymmetrical tabs (20px / 30px) require 18px / 28px text padding */
+body.mobilyze-active .mes_block .mes_text {
+    padding-left:  13px !important;
+    padding-right: 25px !important;
+    margin-left:   0    !important;
+    margin-right:  0    !important;
+}
+
+body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mes_text {
+    margin-left: calc(-1 * (var(--avatar-base-width) + 10px)) !important;
+    width:       calc(100% + var(--avatar-base-width) + 10px) !important;
+    max-width:   calc(100% + var(--avatar-base-width) + 10px) !important;
+}
+
+/* Restore documentstyle flushness */
+body.mobilyze-active.documentstyle #chat .mes .mes_block {
+    margin-right: 0 !important;
+}
+
+/* ─── Panel Centering Override ───────────────────────────────────────────── */
+
+body.mobilyze-active #left-nav-panel,
+body.mobilyze-active #right-nav-panel {
+    width:      var(--sheldWidth)                                                     !important;
+    min-width:  var(--sheldWidth)                                                     !important;
+    max-width:  var(--sheldWidth)                                                     !important;
+    left:       0                                                                     !important;
+    right:      0                                                                     !important;
+    margin:     0 auto                                                                !important;
+    top:        var(--topBarBlockSize)                                                !important;
+    max-height: calc(100dvh - var(--topBarBlockSize) - var(--bottomFormBlockSize))   !important;
+}
+
+/* ─── Mobile-Mode Layout Overrides ─────────────────────────────────────────── */
+/* Activated by .mobilyze-mobile-mode, set in JS via isMobileViewport().       */
+/* JS owns the threshold-or-override decision; CSS reacts to the body class.   */
+
+body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden #mobilyze-pull-tab {
+    display: flex;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode #sheld {
+    width:     min(100dvw, 800px) !important;
+    max-width: min(100dvw, 800px) !important;
+    left:      0                  !important;
+    right:     0                  !important;
+    margin:    0 auto             !important;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode #top-bar,
+body.mobilyze-active.mobilyze-mobile-mode #top-settings-holder {
+    width:    min(100dvw, 800px)  !important;
+    position: fixed               !important;
+    top:      0                   !important;
+    left:     0                   !important;
+    right:    0                   !important;
+    margin:   0 auto              !important;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode #left-nav-panel,
+body.mobilyze-active.mobilyze-mobile-mode #right-nav-panel {
+    width:     min(100dvw, 800px) !important;
+    min-width: min(100dvw, 800px) !important;
+    max-width: min(100dvw, 800px) !important;
+    left:      0                  !important;
+    right:     0                  !important;
+    margin:    0 auto             !important;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode #left-nav-panel:not(.openDrawer),
+body.mobilyze-active.mobilyze-mobile-mode #right-nav-panel:not(.openDrawer) {
+    height:   0       !important;
+    overflow: hidden  !important;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode #bg1,
+body.mobilyze-active.mobilyze-mobile-mode #bg_custom {
+    width:  100dvw !important;
+    height: 100dvh !important;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode #top-bar,
+body.mobilyze-active.mobilyze-mobile-mode #top-settings-holder {
+    transition: transform 0.25s ease, opacity 0.2s ease, visibility 0.25s;
+    opacity:    1;
+    visibility: visible;
+}
+
+body.mobilyze-dragging #top-bar,
+body.mobilyze-dragging #top-settings-holder {
+    transition: none !important;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden #top-bar,
+body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden #top-settings-holder {
+    transform:      translateY(-105%);
+    opacity:        0;
+    visibility:     hidden;
+    pointer-events: none;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden {
+    --topBarBlockSize: 0px;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode #sheld {
+    transition: top 0.25s ease, height 0.25s ease, max-height 0.25s ease;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden:not(.plz-vn-active) #sheld {
+    top:        0      !important;
+    height:     100dvh !important;
+    max-height: 100dvh !important;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode {
+    --mes-right-spacing: 10px;
+}
+
+body.mobilyze-active.mobilyze-mobile-mode .mes_buttons,
+body.mobilyze-active.mobilyze-mobile-mode .extraMesButtons {
+    padding-right: 30px;
+}
+
+body.mobilyze-active #mobilyze-jump-pill {
+    display: flex;
+}
+
+.mobilyze-hint {
+    display:    block;
+    margin-top: 6px;
+    opacity:    0.55;
+    font-size:  11px;
+    line-height: 1.4;
+}
+
+/* Hide navigation chrome when no character/group is loaded */
+body.mobilyze-no-chat #mobilyze-jump-pill,
+body.mobilyze-no-chat .swipe_left,
+body.mobilyze-no-chat .swipeRightBlock {
+    display: none !important;
+}
+
+/* Cleanup reset */
+body:not(.mobilyze-active) #top-bar,
+body:not(.mobilyze-active) #top-settings-holder,
+body:not(.mobilyze-active) #sheld {
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}

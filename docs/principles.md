@@ -67,11 +67,12 @@ This means:
 
 ## 6. The Three Kinds of Code
 
-All code belongs to exactly one of three categories. No module mixes these responsibilities. If a module is hard to categorise, it needs to be split.
+All code belongs to one of three categories. If a module is hard to categorise, it probably needs to be split — but a tightly-coupled `Stateful+IO` compound is an accepted fourth form for frontend components that own both their runtime state and their own DOM representation (e.g. a pull-tab, a pill widget, a bar controller). That pairing is legitimate; any other mixing is not.
 
 1. **Pure:** Takes data in, returns derived data out. No side effects. No knowledge of the UI or external services. Deterministic and testable in isolation.
 2. **Stateful:** Owns a bounded domain of runtime state. Is the single authoritative writer for that domain. Other modules request state changes through the stateful owner; they do not mutate shared state directly.
 3. **IO:** Performs work with external consequences — DOM manipulation, styling overrides, event binding. Contains no state derivation logic and no business logic. It does what it is told by the stateful and pure layers.
+4. **Stateful+IO (compound):** Permitted only when a module owns a specific DOM widget *and* the state that drives it — inseparable in practice without artificial indirection. The preamble must declare both roles explicitly (e.g. `@architectural-role Stateful / IO`). A module that is hard to justify as a widget owner must be split.
 
 ---
 
