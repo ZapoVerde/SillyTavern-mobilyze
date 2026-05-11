@@ -158,6 +158,15 @@ export function syncJumpPill() {
         _pill.style.right   = `${rightOffset}px`;
         document.documentElement.style.setProperty('--mobilyze-pill-right', `${rightOffset}px`);
         warn(MODULE, `[SYNC] innerWidth=${window.innerWidth} contentRight=${contentRight} rightOffset=${rightOffset}`);
+        const pr = _pill.getBoundingClientRect();
+        warn(MODULE, `[SYNC] pill rect: left=${pr.left.toFixed(1)} right=${pr.right.toFixed(1)} top=${pr.top.toFixed(1)} bottom=${pr.bottom.toFixed(1)} inView=${pr.left>=0 && pr.right<=window.innerWidth}`);
+        const rightD = chat.querySelector('.swipeRightBlock');
+        if (rightD) {
+            const dr = rightD.getBoundingClientRect();
+            warn(MODULE, `[SYNC] rightD rect: left=${dr.left.toFixed(1)} right=${dr.right.toFixed(1)} top=${dr.top.toFixed(1)} bottom=${dr.bottom.toFixed(1)}`);
+        } else {
+            warn(MODULE, '[SYNC] rightD: not found (no messages or wrap disabled)');
+        }
     }
 
     const willHide  = !settings.showJumpPill;
