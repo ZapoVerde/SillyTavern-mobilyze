@@ -133,12 +133,7 @@ function _onMessageMutation() { scheduleRecompute(); }
 export function syncJumpPill() {
     const settings = getSettings();
 
-    warn(MODULE, '[SYNC] syncJumpPill() called', {
-        enabled:      settings.enabled,
-        showJumpPill: settings.showJumpPill,
-        pillExists:   !!_pill,
-        bodyClasses:  document.body.className,
-    });
+    warn(MODULE, `[SYNC] enabled=${settings.enabled} showJumpPill=${settings.showJumpPill} pillExists=${!!_pill}`);
 
     if (!settings.enabled) {
         if (_pill) { _pill.remove(); _pill = null; }
@@ -155,15 +150,11 @@ export function syncJumpPill() {
         warn(MODULE, '[SYNC] pill already exists — skipping creation');
     }
 
-    const willHide = !settings.showJumpPill;
+    const willHide  = !settings.showJumpPill;
+    const hasActive = document.body.classList.contains('mobilyze-active');
     document.body.classList.toggle('mobilyze-jump-pill-hidden', willHide);
-    warn(MODULE, '[SYNC] mobilyze-jump-pill-hidden toggled', {
-        willHide,
-        bodyHasActiveClass: document.body.classList.contains('mobilyze-active'),
-        bodyHasHiddenClass: document.body.classList.contains('mobilyze-jump-pill-hidden'),
-        pillInDOM:          !!document.getElementById('mobilyze-jump-pill'),
-        pillComputedDisplay: _pill ? getComputedStyle(_pill).display : 'n/a',
-    });
+    const computedDisplay = _pill ? getComputedStyle(_pill).display : 'n/a';
+    warn(MODULE, `[SYNC] willHide=${willHide} hasActive=${hasActive} computedDisplay=${computedDisplay}`);
 
     recomputeDisabledStates();
 }
