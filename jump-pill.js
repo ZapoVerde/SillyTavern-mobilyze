@@ -103,8 +103,9 @@ function stepDown() {
     const target = mes[atTopIdx + 1];
     if (!target) return;
 
-    const top = chat.scrollTop + target.getBoundingClientRect().top - chatTop - SCROLL_PAD;
-    log(MODULE, 'Step down', { atTopIdx, targetIdx: atTopIdx + 1, top });
+    const targetTop = target.getBoundingClientRect().top;
+    const top = chat.scrollTop + targetTop - chatTop - SCROLL_PAD;
+    warn(MODULE, `Step down: scrollTop=${chat.scrollTop} chatTop=${chatTop.toFixed(1)} targetTop=${targetTop.toFixed(1)} computedTop=${top.toFixed(1)} atTopIdx=${atTopIdx} targetIdx=${atTopIdx + 1}`);
     chat.scrollTo({ top, behavior: 'smooth' });
 }
 
