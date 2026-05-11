@@ -110,10 +110,9 @@ function injectSettingsPanel() {
                     <span>Pull-tab visibility</span>
                 </label>
                 <select id="mobilyze-tab-visibility" class="text_pole">
-                    <option value="standard">Standard — neutral fill, easy to spot</option>
-                    <option value="subtle">Subtle — outline only, stays out of the way</option>
-                </select>
-                <small class="opacity50p">Pick "Subtle" once you know where the tab lives.</small>
+                    <option value="standard">Standard</option>
+                    <option value="subtle">Subtle</option>
+                </select>                
             </div>
             <label class="checkbox_label flexGap5" title="Enable verbose logging in the browser console">
                 <input type="checkbox" id="mobilyze-debug">
