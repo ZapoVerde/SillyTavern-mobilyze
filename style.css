@@ -379,8 +379,8 @@ body.mobilyze-active.mobilyze-wrap-active.hideAllSwipeButtons .swipeRightBlock {
     transition:       background 0.15s ease;
 }
 
-.mobilyze-jump-btn[data-direction="up"]   { padding-bottom: 5px; }
-.mobilyze-jump-btn[data-direction="down"] { padding-top: 5px; border-top: 0.5px solid rgba(255, 255, 255, 0.12); }
+.mobilyze-jump-btn[data-direction="up"]   { padding-bottom: 5px; border-bottom: 0.5px solid rgba(255, 255, 255, 0.12); }
+.mobilyze-jump-btn[data-direction="down"] { padding-top: 5px;    border-top:    0.5px solid rgba(255, 255, 255, 0.12); }
 
 .mobilyze-jump-btn:active {
     background: rgba(255, 255, 255, 0.15);
