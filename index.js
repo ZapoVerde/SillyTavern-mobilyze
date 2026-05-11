@@ -97,6 +97,7 @@ function onResize() {
     syncMobileMode();
     syncBarState();
     syncGestures();
+    syncJumpPill();
 }
 
 /**

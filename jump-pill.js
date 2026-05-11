@@ -181,8 +181,6 @@ export function activateJumpPill() {
         _chatObserver.observe(chat, { childList: true, subtree: false });
     }
 
-    window.addEventListener('resize', syncJumpPill);
-
     eventSource.on(event_types.MESSAGE_RECEIVED, _onMessageMutation);
     eventSource.on(event_types.MESSAGE_DELETED,  _onMessageMutation);
     eventSource.on(event_types.MESSAGE_SWIPED,   _onMessageMutation);
@@ -199,8 +197,6 @@ export function deactivateJumpPill() {
 
     const chat = document.getElementById('chat');
     if (chat) chat.removeEventListener('scroll', scheduleRecompute);
-
-    window.removeEventListener('resize', syncJumpPill);
 
     eventSource.removeListener(event_types.MESSAGE_RECEIVED, _onMessageMutation);
     eventSource.removeListener(event_types.MESSAGE_DELETED,  _onMessageMutation);
