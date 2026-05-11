@@ -53,8 +53,7 @@ const CLASS_ACTIVE       = 'mobilyze-active';
 const CLASS_WRAP         = 'mobilyze-wrap-active';
 const CLASS_MOBILE_MODE  = 'mobilyze-mobile-mode';
 
-let _lastScrollTop    = 0;
-let _resizePillToken  = null;
+let _lastScrollTop  = 0;
 
 /**
  * Toggles the CSS class that controls text reflow behind portraits.
@@ -98,13 +97,7 @@ function onResize() {
     syncMobileMode();
     syncBarState();
     syncGestures();
-    // Defer pill repositioning by one rAF so the layout-manager's MutationObserver
-    // (which corrects --sheldWidth after ST resets it) fires before we read chat.clientWidth.
-    if (_resizePillToken !== null) cancelAnimationFrame(_resizePillToken);
-    _resizePillToken = requestAnimationFrame(() => {
-        _resizePillToken = null;
-        syncJumpPill();
-    });
+    syncJumpPill();
 }
 
 /**
