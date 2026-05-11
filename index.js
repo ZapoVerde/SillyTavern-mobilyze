@@ -172,6 +172,7 @@ jQuery(async () => {
         },
         () => {
             syncMobileMode();
+            syncBarState();
             syncWrapState();
             syncJumpPill();
             syncGestures();

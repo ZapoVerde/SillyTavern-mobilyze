@@ -101,7 +101,10 @@ function stepDown() {
     }
 
     const target = mes[atTopIdx + 1];
-    if (!target) return;
+    if (!target) {
+        chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' });
+        return;
+    }
 
     const targetTop = target.getBoundingClientRect().top;
     const top = chat.scrollTop + targetTop - chatTop - SCROLL_PAD;
