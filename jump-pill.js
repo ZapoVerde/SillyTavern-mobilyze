@@ -150,10 +150,14 @@ export function syncJumpPill() {
         warn(MODULE, '[SYNC] pill already exists — skipping creation');
     }
 
-    const sheld = document.getElementById('sheld');
-    if (sheld) {
-        const rightOffset = Math.max(0, window.innerWidth - sheld.getBoundingClientRect().right);
-        _pill.style.right = `${rightOffset}px`;
+    const chat = document.getElementById('chat');
+    if (chat) {
+        // clientWidth excludes the scrollbar — this gives the content right edge
+        const contentRight  = chat.getBoundingClientRect().left + chat.clientWidth;
+        const rightOffset   = Math.max(0, window.innerWidth - contentRight);
+        _pill.style.right   = `${rightOffset}px`;
+        document.documentElement.style.setProperty('--mobilyze-pill-right', `${rightOffset}px`);
+        warn(MODULE, `[SYNC] innerWidth=${window.innerWidth} contentRight=${contentRight} rightOffset=${rightOffset}`);
     }
 
     const willHide  = !settings.showJumpPill;

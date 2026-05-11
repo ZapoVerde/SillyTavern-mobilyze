@@ -174,8 +174,11 @@ body.mobilyze-active.mobilyze-wrap-active .swipe_left {
 }
 
 /* Right D (The Block): 30px wide, 55px tall. Split into two halves. */
+/* DEBUG: position: fixed + --mobilyze-pill-right lets us visually compare with the pill */
 body.mobilyze-active.mobilyze-wrap-active .swipeRightBlock {
-    right:            0 !important;
+    position:         fixed !important;
+    bottom:           35vh !important;
+    right:            var(--mobilyze-pill-right, 0px) !important;
     width:            25px !important;
     height:           55px !important;
     border-right:     none !important;
