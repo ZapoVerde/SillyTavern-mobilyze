@@ -306,7 +306,7 @@ body.mobilyze-active.mobilyze-mobile-mode {
     --mes-right-spacing: 10px;
 }
 
-body.mobilyze-active.mobilyze-mobile-mode #mobilyze-jump-pill {
+body.mobilyze-active #mobilyze-jump-pill {
     display: flex;
 }
 
@@ -395,8 +395,7 @@ body.mobilyze-active.mobilyze-wrap-active.hideAllSwipeButtons .swipeRightBlock {
     pointer-events: none;
 }
 
-body.mobilyze-jump-pill-hidden #mobilyze-jump-pill,
-body.mobilyze-active.hideAllSwipeButtons #mobilyze-jump-pill {
+body.mobilyze-jump-pill-hidden #mobilyze-jump-pill {
     display: none !important;
 }
 

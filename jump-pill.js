@@ -23,7 +23,6 @@
 'use strict';
 
 import { eventSource, event_types } from '../../../../script.js';
-import { isMobileViewport }         from './gesture-handler.js';
 import { getSettings }              from './settings.js';
 import { log, warn }                from './logger.js';
 
@@ -134,7 +133,7 @@ function _onMessageMutation() { scheduleRecompute(); }
 export function syncJumpPill() {
     const settings = getSettings();
 
-    if (!settings.enabled || !isMobileViewport()) {
+    if (!settings.enabled) {
         if (_pill) { _pill.remove(); _pill = null; }
         document.body.classList.remove('mobilyze-jump-pill-hidden');
         return;
