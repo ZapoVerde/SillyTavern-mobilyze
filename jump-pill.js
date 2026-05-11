@@ -133,19 +133,38 @@ function _onMessageMutation() { scheduleRecompute(); }
 export function syncJumpPill() {
     const settings = getSettings();
 
+    warn(MODULE, '[SYNC] syncJumpPill() called', {
+        enabled:      settings.enabled,
+        showJumpPill: settings.showJumpPill,
+        pillExists:   !!_pill,
+        bodyClasses:  document.body.className,
+    });
+
     if (!settings.enabled) {
         if (_pill) { _pill.remove(); _pill = null; }
         document.body.classList.remove('mobilyze-jump-pill-hidden');
+        warn(MODULE, '[SYNC] returning early — extension disabled');
         return;
     }
 
     if (!_pill) {
         _pill = buildPill();
         document.body.appendChild(_pill);
-        log(MODULE, 'Jump pill created');
+        warn(MODULE, '[SYNC] pill created and appended to body');
+    } else {
+        warn(MODULE, '[SYNC] pill already exists — skipping creation');
     }
 
-    document.body.classList.toggle('mobilyze-jump-pill-hidden', !settings.showJumpPill);
+    const willHide = !settings.showJumpPill;
+    document.body.classList.toggle('mobilyze-jump-pill-hidden', willHide);
+    warn(MODULE, '[SYNC] mobilyze-jump-pill-hidden toggled', {
+        willHide,
+        bodyHasActiveClass: document.body.classList.contains('mobilyze-active'),
+        bodyHasHiddenClass: document.body.classList.contains('mobilyze-jump-pill-hidden'),
+        pillInDOM:          !!document.getElementById('mobilyze-jump-pill'),
+        pillComputedDisplay: _pill ? getComputedStyle(_pill).display : 'n/a',
+    });
+
     recomputeDisabledStates();
 }
 
