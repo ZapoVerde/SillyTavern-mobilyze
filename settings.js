@@ -35,6 +35,9 @@ const DEFAULTS = {
     showJumpPill:           true,
     autoHideOnTallScreens:  true,
     pullTabVisibility:      'standard',
+    enableScrollReveal:     true,
+    enableEdgeSwipe:        true,
+    enablePullTab:          true,
 };
 
 /**
@@ -77,6 +80,19 @@ function injectSettingsPanel() {
                 <input type="checkbox" id="mobilyze-jumppill">
                 <span>Show jump pill</span>
             </label>
+            <small class="mobilyze-hint" style="margin-top:8px;margin-bottom:2px;opacity:0.8;font-weight:bold;">Menu reveal triggers — keep at least one on</small>
+            <label class="checkbox_label flexGap5" title="Scroll up in chat to show the menu bar">
+                <input type="checkbox" id="mobilyze-scroll-reveal">
+                <span>Scroll up to reveal</span>
+            </label>
+            <label class="checkbox_label flexGap5" title="Swipe down from the top edge of the screen to show the menu bar (touch only)">
+                <input type="checkbox" id="mobilyze-edge-swipe">
+                <span>Edge swipe to reveal</span>
+            </label>
+            <label class="checkbox_label flexGap5" title="Show a drag handle at the top of the screen when the menu bar is hidden">
+                <input type="checkbox" id="mobilyze-pull-tab-enable">
+                <span>Show pull-tab</span>
+            </label>
             <div class="range-block">
                 <div class="range-block-title">Auto-hide delay</div>
                 <div class="range-block-range">
@@ -114,6 +130,18 @@ function injectSettingsPanel() {
 }
 
 /**
+ * Returns the number of menu reveal triggers that are currently enabled.
+ * Used to enforce the lockout rule: at least one trigger must stay on.
+ * @param {object} s
+ * @returns {number}
+ */
+function enabledTriggerCount(s) {
+    return (s.enableScrollReveal ? 1 : 0)
+         + (s.enableEdgeSwipe   ? 1 : 0)
+         + (s.enablePullTab     ? 1 : 0);
+}
+
+/**
  * Initializes settings state and binds UI event listeners.
  * @param {Function} onToggle - Callback triggered when the 'enabled' state changes.
  * @param {Function} onDebugToggle - Callback triggered when 'debugLogging' state changes.
@@ -129,12 +157,18 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
     extension_settings[EXT_NAME].showJumpPill             ??= DEFAULTS.showJumpPill;
     extension_settings[EXT_NAME].autoHideOnTallScreens    ??= DEFAULTS.autoHideOnTallScreens;
     extension_settings[EXT_NAME].pullTabVisibility        ??= DEFAULTS.pullTabVisibility;
+    extension_settings[EXT_NAME].enableScrollReveal       ??= DEFAULTS.enableScrollReveal;
+    extension_settings[EXT_NAME].enableEdgeSwipe          ??= DEFAULTS.enableEdgeSwipe;
+    extension_settings[EXT_NAME].enablePullTab            ??= DEFAULTS.enablePullTab;
 
     injectSettingsPanel();
 
     const $enabled       = $('#mobilyze-enabled');
     const $wrap          = $('#mobilyze-wrap');
     const $jumppill      = $('#mobilyze-jumppill');
+    const $scrollReveal  = $('#mobilyze-scroll-reveal');
+    const $edgeSwipe     = $('#mobilyze-edge-swipe');
+    const $pullTabEnable = $('#mobilyze-pull-tab-enable');
     const $delay         = $('#mobilyze-delay');
     const $delayCounter  = $('#mobilyze-delay-counter');
     const $tallAutohide  = $('#mobilyze-tall-autohide');
@@ -146,6 +180,9 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
     $enabled.prop('checked', settings.enabled);
     $wrap.prop('checked', settings.enableTextWrap);
     $jumppill.prop('checked', settings.showJumpPill);
+    $scrollReveal.prop('checked', settings.enableScrollReveal);
+    $edgeSwipe.prop('checked', settings.enableEdgeSwipe);
+    $pullTabEnable.prop('checked', settings.enablePullTab);
     $delay.val(settings.autoHideDelay);
     $delayCounter.text(settings.autoHideDelay);
     $tallAutohide.prop('checked', settings.autoHideOnTallScreens);
@@ -172,6 +209,39 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
     $jumppill.on('change', function () {
         settings.showJumpPill = this.checked;
         log(MODULE, 'Jump pill toggled', { enabled: settings.showJumpPill });
+        saveSettingsDebounced();
+        if (typeof onSync === 'function') onSync();
+    });
+
+    $scrollReveal.on('change', function () {
+        if (!this.checked && enabledTriggerCount(settings) <= 1) {
+            this.checked = true;
+            return;
+        }
+        settings.enableScrollReveal = this.checked;
+        log(MODULE, 'Scroll reveal toggled', { enabled: settings.enableScrollReveal });
+        saveSettingsDebounced();
+        if (typeof onSync === 'function') onSync();
+    });
+
+    $edgeSwipe.on('change', function () {
+        if (!this.checked && enabledTriggerCount(settings) <= 1) {
+            this.checked = true;
+            return;
+        }
+        settings.enableEdgeSwipe = this.checked;
+        log(MODULE, 'Edge swipe toggled', { enabled: settings.enableEdgeSwipe });
+        saveSettingsDebounced();
+        if (typeof onSync === 'function') onSync();
+    });
+
+    $pullTabEnable.on('change', function () {
+        if (!this.checked && enabledTriggerCount(settings) <= 1) {
+            this.checked = true;
+            return;
+        }
+        settings.enablePullTab = this.checked;
+        log(MODULE, 'Pull-tab enable toggled', { enabled: settings.enablePullTab });
         saveSettingsDebounced();
         if (typeof onSync === 'function') onSync();
     });

@@ -134,7 +134,7 @@ function onTouchEnd(e) {
 
     if (_touchStartY < SWIPE_ORIGIN_MAX_Y && dy > SWIPE_MIN_DY && dx < SWIPE_MAX_DX) {
         log(MODULE, 'Edge swipe detected');
-        if (_onShow) _onShow();
+        if (getSettings().enableEdgeSwipe && _onShow) _onShow();
         return;
     }
 
@@ -167,15 +167,15 @@ function buildPullTab() {
  */
 export function syncGestures() {
     const tab = document.getElementById(PULL_TAB_ID);
-    if (isMobileViewport()) {
+    if (isMobileViewport() && getSettings().enablePullTab) {
         if (!tab) {
             document.body.appendChild(buildPullTab());
-            log(MODULE, 'Pull-tab created (small height detected)');
+            log(MODULE, 'Pull-tab created');
         }
     } else {
         if (tab) {
             tab.remove();
-            log(MODULE, 'Pull-tab removed (large height detected)');
+            log(MODULE, 'Pull-tab removed');
         }
     }
 }

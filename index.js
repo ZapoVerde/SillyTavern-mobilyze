@@ -74,7 +74,7 @@ function onChatScroll() {
     if (!chat) return;
 
     const st = chat.scrollTop;
-    if (isScrollSuppressed()) {
+    if (!getSettings().enableScrollReveal || isScrollSuppressed()) {
         _lastScrollTop = st;
         return;
     }
@@ -173,6 +173,7 @@ jQuery(async () => {
             syncMobileMode();
             syncWrapState();
             syncJumpPill();
+            syncGestures();
         }
     );
 
