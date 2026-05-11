@@ -401,6 +401,13 @@ body.mobilyze-jump-pill-hidden #mobilyze-jump-pill {
     display: none !important;
 }
 
+/* Hide navigation chrome when no character/group is loaded */
+body.mobilyze-no-chat #mobilyze-jump-pill,
+body.mobilyze-no-chat .swipe_left,
+body.mobilyze-no-chat .swipeRightBlock {
+    display: none !important;
+}
+
 /* Cleanup reset */
 body:not(.mobilyze-active) #top-bar, 
 body:not(.mobilyze-active) #top-settings-holder,

@@ -34,10 +34,11 @@ const DEFAULTS = {
     enableTextWrap:         true,
     showJumpPill:           true,
     autoHideOnTallScreens:  true,
-    pullTabVisibility:      'standard',
-    enableScrollReveal:     true,
-    enableEdgeSwipe:        true,
-    enablePullTab:          true,
+    pullTabVisibility:          'standard',
+    enableScrollReveal:         true,
+    enableEdgeSwipe:            true,
+    enablePullTab:              true,
+    hideControlsOnLoadScreen:   true,
 };
 
 /**
@@ -92,6 +93,10 @@ function injectSettingsPanel() {
             <label class="checkbox_label flexGap5" title="Show a drag handle at the top of the screen when the menu bar is hidden">
                 <input type="checkbox" id="mobilyze-pull-tab-enable">
                 <span>Show pull-tab</span>
+            </label>
+            <label class="checkbox_label flexGap5" title="Hide the jump buttons and swipe controls when no character is loaded">
+                <input type="checkbox" id="mobilyze-hide-on-load">
+                <span>Hide navigation controls on load screen</span>
             </label>
             <label class="checkbox_label flexGap5" title="Apply the auto-hiding menu bar behavior even on tall (desktop-sized) screens">
                 <input type="checkbox" id="mobilyze-tall-autohide">
@@ -158,7 +163,8 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
     extension_settings[EXT_NAME].pullTabVisibility        ??= DEFAULTS.pullTabVisibility;
     extension_settings[EXT_NAME].enableScrollReveal       ??= DEFAULTS.enableScrollReveal;
     extension_settings[EXT_NAME].enableEdgeSwipe          ??= DEFAULTS.enableEdgeSwipe;
-    extension_settings[EXT_NAME].enablePullTab            ??= DEFAULTS.enablePullTab;
+    extension_settings[EXT_NAME].enablePullTab                ??= DEFAULTS.enablePullTab;
+    extension_settings[EXT_NAME].hideControlsOnLoadScreen     ??= DEFAULTS.hideControlsOnLoadScreen;
 
     injectSettingsPanel();
 
@@ -171,6 +177,7 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
     const $delay         = $('#mobilyze-delay');
     const $delayCounter  = $('#mobilyze-delay-counter');
     const $tallAutohide  = $('#mobilyze-tall-autohide');
+    const $hideOnLoad    = $('#mobilyze-hide-on-load');
     const $tabViz        = $('#mobilyze-tab-visibility');
     const $debug         = $('#mobilyze-debug');
     const settings       = getSettings();
@@ -185,6 +192,7 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
     $delay.val(settings.autoHideDelay);
     $delayCounter.text(settings.autoHideDelay);
     $tallAutohide.prop('checked', settings.autoHideOnTallScreens);
+    $hideOnLoad.prop('checked', settings.hideControlsOnLoadScreen);
     $tabViz.val(settings.pullTabVisibility);
     $debug.prop('checked', settings.debugLogging);
 
@@ -250,6 +258,12 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
         settings.autoHideDelay = val;
         $delayCounter.text(val);
         saveSettingsDebounced();
+    });
+
+    $hideOnLoad.on('change', function () {
+        settings.hideControlsOnLoadScreen = this.checked;
+        saveSettingsDebounced();
+        if (typeof onSync === 'function') onSync();
     });
 
     $tallAutohide.on('change', function () {

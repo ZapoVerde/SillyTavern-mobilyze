@@ -22,6 +22,7 @@
 'use strict';
 
 import { eventSource, event_types }  from '../../../../script.js';
+import { getContext }                 from '../../../extensions.js';
 import { initSettings, getSettings, applyPullTabVisibility } from './settings.js';
 import { log, warn, error, setVerbose } from './logger.js';
 import {
@@ -52,8 +53,17 @@ const MODULE             = 'core';
 const CLASS_ACTIVE       = 'mobilyze-active';
 const CLASS_WRAP         = 'mobilyze-wrap-active';
 const CLASS_MOBILE_MODE  = 'mobilyze-mobile-mode';
+const CLASS_NO_CHAT      = 'mobilyze-no-chat';
 
 let _lastScrollTop  = 0;
+
+function syncNoChatState() {
+    const ctx = getContext();
+    const noChat = getSettings().hideControlsOnLoadScreen
+        && ctx.characterId === undefined
+        && !ctx.groupId;
+    document.body.classList.toggle(CLASS_NO_CHAT, noChat);
+}
 
 function syncWrapState() {
     const settings = getSettings();
@@ -92,6 +102,7 @@ function onResize() {
 function activate() {
     document.body.classList.add(CLASS_ACTIVE);
     syncMobileMode();
+    syncNoChatState();
 
     activateLayout();
     activateBar();
@@ -107,6 +118,7 @@ function activate() {
         chat.addEventListener('scroll', onChatScroll, { passive: true });
     }
 
+    eventSource.on(event_types.CHAT_CHANGED, syncNoChatState);
     window.addEventListener('resize', onResize);
 }
 
@@ -115,7 +127,9 @@ function deactivate() {
         document.body.classList.remove(CLASS_ACTIVE);
         document.body.classList.remove(CLASS_WRAP);
         document.body.classList.remove(CLASS_MOBILE_MODE);
+        document.body.classList.remove(CLASS_NO_CHAT);
         document.body.classList.remove('mobilyze-bar-hidden');
+        eventSource.removeListener(event_types.CHAT_CHANGED, syncNoChatState);
         document.body.removeAttribute('data-mobilyze-tab-viz');
 
         deactivateLayout();

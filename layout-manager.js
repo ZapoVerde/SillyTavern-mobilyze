@@ -21,7 +21,7 @@
 'use strict';
 
 import { power_user }         from '../../../../scripts/power-user.js';
-import { warn }               from './logger.js';
+import { log }                from './logger.js';
 
 const MODULE = 'layout';
 const COMFORT_WIDTH = 'min(100dvw, 800px)';
@@ -33,7 +33,7 @@ function readSheldWidth(label) {
     const computed = getComputedStyle(document.documentElement).getPropertyValue('--sheldWidth').trim() || '(unset)';
     const sheld    = document.getElementById('sheld');
     const px       = sheld ? Math.round(sheld.getBoundingClientRect().width) + 'px' : '(no #sheld)';
-    warn(MODULE, `[SHELD-WIDTH] ${label} | inline="${inline}" | computed="${computed}" | rendered=${px}`);
+    log(MODULE, `[SHELD-WIDTH] ${label} | inline="${inline}" | computed="${computed}" | rendered=${px}`);
 }
 
 /**
@@ -49,7 +49,7 @@ function forceSheldWidth() {
  * from overwriting our mobile layout width.
  */
 export function activateLayout() {
-    warn(MODULE, '[STEP] activateLayout() called', { alreadyActive: !!_observer });
+    log(MODULE, '[STEP] activateLayout() called', { alreadyActive: !!_observer });
     if (_observer) return;
 
     readSheldWidth('before forceSheldWidth');
@@ -60,7 +60,7 @@ export function activateLayout() {
             if (mutation.attributeName === 'style') {
                 const v = document.documentElement.style.getPropertyValue('--sheldWidth');
                 if (v !== COMFORT_WIDTH) {
-                    warn(MODULE, '[OBSERVER] --sheldWidth deviation detected — correcting', { was: v, restoringTo: COMFORT_WIDTH });
+                    log(MODULE, '[OBSERVER] --sheldWidth deviation detected — correcting', { was: v, restoringTo: COMFORT_WIDTH });
                     forceSheldWidth();
                 }
             }
@@ -72,17 +72,17 @@ export function activateLayout() {
         attributeFilter: ['style'],
     });
 
-    warn(MODULE, '[STEP] Layout observer activated (Comfort Width: 800px max)');
+    log(MODULE, '[STEP] Layout observer activated (Comfort Width: 800px max)');
 }
 
 export function deactivateLayout() {
-    warn(MODULE, '[STEP] deactivateLayout() called');
+    log(MODULE, '[STEP] deactivateLayout() called');
     readSheldWidth('deactivate start');
 
     if (_observer) {
         _observer.disconnect();
         _observer = null;
-        warn(MODULE, '[STEP] Observer disconnected');
+        log(MODULE, '[STEP] Observer disconnected');
     }
 
     const targets = [
@@ -115,9 +115,9 @@ export function deactivateLayout() {
     // Restore ST's native width from its own setting (mirrors what applyChatWidth('forced') does)
     const nativeWidth = power_user.chat_width ? `${power_user.chat_width}vw` : '50vw';
     document.documentElement.style.setProperty('--sheldWidth', nativeWidth);
-    warn(MODULE, `[STEP] Restored native --sheldWidth = ${nativeWidth}`);
+    log(MODULE, `[STEP] Restored native --sheldWidth = ${nativeWidth}`);
     readSheldWidth('after native width restore');
 
     window.dispatchEvent(new Event('resize'));
-    warn(MODULE, '[STEP] SillyTavern layout re-primed.');
+    log(MODULE, '[STEP] SillyTavern layout re-primed.');
 }
