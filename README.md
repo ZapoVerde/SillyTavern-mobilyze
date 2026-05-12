@@ -2,7 +2,9 @@
 
 ### Stop fighting the interface and start reading your stories.
 
-Mobilyze is a SillyTavern extension designed to transform the mobile chatting experience. It reclaims every possible pixel of screen real estate by hiding the top menu and forcing a "mobile-first" layout that stays readable on any screen—from the smallest phone to the largest tablet.
+Mobilyze is a SillyTavern extension designed to transform the mobile chatting experience. It reclaims every possible pixel of screen real estate by hiding the top menu and forcing a "mobile-first" layout that stays readable on any screen -- from the smallest phone to the largest tablet.
+
+Mobilyze ships with translations for English, Simplified Chinese, Spanish, and Portuguese. Additional translations available on request.
 
 ## What Mobilyze Does for You
 
@@ -44,6 +46,7 @@ Find the Mobilyze configuration in the SillyTavern Extensions drawer:
 | Setting | Description |
 | :--- | :--- |
 | **Enable mobile layout** | The master switch. Turns on the auto-hiding bar and layout fixes. |
+| **Disable on desktop screens** | When checked, Mobilyze automatically deactivates whenever the viewport is wider than 1000 px and reactivates when you resize back to mobile width. Useful if you use SillyTavern on both a phone and a desktop browser. |
 | **Enable text wrapping under avatars** | Allows message text to flow behind the character avatars. |
 | **Show message navigation buttons** | Toggles the floating up/down navigation buttons on the side of the chat. |
 | **Reveal Triggers** | Individually toggle **Scroll up**, **Edge swipe**, or **Pull-tab** as your preferred menu triggers. |
