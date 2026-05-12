@@ -25,7 +25,6 @@
     "mobilyze.settings.opt_subtle":           "低调",
     "mobilyze.settings.label_debug":          "启用调试日志",
     "mobilyze.settings.title_debug":          "在浏览器控制台启用详细日志",
-    "mobilyze.settings.footer_hint":          "拖动屏幕顶部的手柄，或在聊天中向上滚动，以显示菜单栏。",
 
     "mobilyze.pull_tab.drag_hint":            "向下拖动以显示菜单",
 

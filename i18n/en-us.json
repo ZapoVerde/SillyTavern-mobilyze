@@ -25,7 +25,6 @@
     "mobilyze.settings.opt_subtle":           "Subtle",
     "mobilyze.settings.label_debug":          "Enable debug logging",
     "mobilyze.settings.title_debug":          "Enable verbose logging in the browser console",
-    "mobilyze.settings.footer_hint":          "Drag the handle at the top of the screen, or scroll up in chat, to show the menu bar.",
 
     "mobilyze.pull_tab.drag_hint":            "Drag down to show menu",
 

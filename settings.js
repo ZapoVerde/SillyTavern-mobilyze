@@ -130,9 +130,7 @@ function injectSettingsPanel() {
                 <input type="checkbox" id="mobilyze-debug">
                 <span data-i18n="mobilyze.settings.label_debug">Enable debug logging</span>
             </label>
-            <small class="mobilyze-hint" data-i18n="mobilyze.settings.footer_hint">
-                Drag the handle at the top of the screen, or scroll up in chat, to show the menu bar.
-            </small>
+
         </div>
     </div>
 </div>`;

@@ -25,7 +25,6 @@
     "mobilyze.settings.opt_subtle":           "Sutil",
     "mobilyze.settings.label_debug":          "Activar registro de depuración",
     "mobilyze.settings.title_debug":          "Activa el registro detallado en la consola del navegador",
-    "mobilyze.settings.footer_hint":          "Arrastra el control en la parte superior, o desplázate hacia arriba en el chat, para mostrar la barra de menú.",
 
     "mobilyze.pull_tab.drag_hint":            "Arrastra hacia abajo para mostrar el menú",
 
