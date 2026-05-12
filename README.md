@@ -2,9 +2,9 @@
 
 ### Stop fighting the interface and start reading your stories.
 
-Mobilyze is a SillyTavern extension designed to transform the mobile chatting experience. It reclaims every possible pixel of screen real estate by hiding the top menu and forcing a "mobile-first" layout that stays readable on any screen -- from the smallest phone to the largest tablet.
+Mobilyze is a SillyTavern extension designed to transform the mobile chatting experience. It reclaims every possible pixel of screen real estate by hiding the top menu and applying a "mobile-first" layout that stays readable on any screen -- from the smallest phone to the largest tablet.
 
-Mobilyze ships with translations for English, Simplified Chinese, Spanish, and Portuguese. Additional translations available on request.
+Mobilyze ships with translations for English, Simplified Chinese, Spanish, and Portuguese. Additional languages can be added easily on request.
 
 ## What Mobilyze Does for You
 
@@ -18,7 +18,7 @@ Mobilyze ships with translations for English, Simplified Chinese, Spanish, and P
 
 ## Navigating with Mobilyze
 
-When the top bar is hidden, you can bring it back instantly using three customizable triggers. You can enable or disable these individually in the settings:
+When the menu bar is hidden, you can bring it back instantly using three customizable triggers. You can enable or disable these individually in the settings:
 
 1.  **Scroll Up:** Simply scroll back up through your message history; the bar will slide back down automatically.
 2.  **Edge Swipe:** Drag your finger down from the very top edge of the screen (Touch devices only).
@@ -30,7 +30,7 @@ When the top bar is hidden, you can bring it back instantly using three customiz
 
 ## Installation
 
-1.  Open SillyTavern and click the **Extensions** icon (the three stacked blocks) in the top navigation bar.
+1.  Open SillyTavern and click the **Extensions** icon (the three stacked blocks) in the top menu bar.
 2.  Click the **Install extension** button.
 3.  Paste the following URL into the "Enter the Git URL" input box:
     `https://github.com/ZapoVerde/SillyTavern-mobilyze`
