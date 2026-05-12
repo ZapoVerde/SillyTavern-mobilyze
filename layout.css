@@ -143,8 +143,18 @@ body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden #top-settings-hold
     pointer-events: none;
 }
 
+/* Hide any extension-injected bars inside #sheld when mobilyze hides.
+   Targets direct children that are not #chat or #form_sheld -- i.e. content
+   extensions insert above the chat. display:none removes them from the flex
+   flow so #chat reclaims the full height, and --mobilyze-sheld-preamble is
+   overridden to 0px above so nav panel positioning stays correct. */
+body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden #sheld > :not(#chat):not(#form_sheld) {
+    display: none !important;
+}
+
 body.mobilyze-active.mobilyze-mobile-mode.mobilyze-bar-hidden {
-    --topBarBlockSize: 0px;
+    --topBarBlockSize:          0px;
+    --mobilyze-sheld-preamble:  0px;
 }
 
 body.mobilyze-active.mobilyze-mobile-mode #sheld {
@@ -192,4 +202,8 @@ body:not(.mobilyze-active) #sheld {
     transform: none !important;
     opacity: 1 !important;
     visibility: visible !important;
+}
+
+body:not(.mobilyze-active) #sheld > :not(#chat):not(#form_sheld) {
+    display: revert !important;
 }
