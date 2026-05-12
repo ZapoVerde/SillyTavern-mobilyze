@@ -37,11 +37,12 @@ const SWIPE_MAX_DX        = 80;  // V2: User-configurable gesture thresholds
 const DRAG_SNAP_THRESHOLD = 0.35; // V2: User-configurable gesture thresholds
 
 // State
-let _touchStartY = 0;
-let _touchStartX = 0;
-let _dragActive  = false;
-let _dragStartY  = 0;
-let _barHeight   = 0;
+let _touchStartY         = 0;
+let _touchStartX         = 0;
+let _dragActive          = false;
+let _dragStartY          = 0;
+let _barHeight           = 0;
+let _swipeForwardHandler = null;
 
 // Callbacks
 let _onShow       = null;
@@ -192,6 +193,18 @@ export function initGestures(onShow, onResetTimer) {
 
     document.addEventListener('touchstart', onTouchStart, { passive: true });
     document.addEventListener('touchend',   onTouchEnd,   { passive: true });
+
+    const chat = document.getElementById('chat');
+    if (chat) {
+        _swipeForwardHandler = (e) => {
+            const block = e.target.closest('.swipeRightBlock');
+            if (block && !e.target.closest('.swipe_right')) {
+                block.querySelector('.swipe_right')?.click();
+            }
+        };
+        chat.addEventListener('click', _swipeForwardHandler);
+    }
+
     log(MODULE, 'Gestures initialized');
 }
 
@@ -206,7 +219,13 @@ export function destroyGestures() {
 
     document.removeEventListener('touchstart', onTouchStart);
     document.removeEventListener('touchend',   onTouchEnd);
-    
+
+    const chat = document.getElementById('chat');
+    if (chat && _swipeForwardHandler) {
+        chat.removeEventListener('click', _swipeForwardHandler);
+        _swipeForwardHandler = null;
+    }
+
     _onShow       = null;
     _onResetTimer = null;
     log(MODULE, 'Gestures destroyed');
