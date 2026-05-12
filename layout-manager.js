@@ -50,6 +50,11 @@ function forceSheldWidth() {
  * --mobilyze-sheld-preamble so nav panels can be positioned below them.
  */
 export function syncSheldPreamble() {
+    // Skip while bar is hidden — extension bars are display:none in that state,
+    // so getBoundingClientRect().height === 0. Writing that would corrupt the
+    // variable; the CSS rule in .mobilyze-bar-hidden already owns the 0px state.
+    if (document.body.classList.contains('mobilyze-bar-hidden')) return;
+
     const sheld = document.getElementById('sheld');
     const chat  = document.getElementById('chat');
     if (!sheld || !chat) return;

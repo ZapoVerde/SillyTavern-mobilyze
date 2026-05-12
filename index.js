@@ -24,7 +24,7 @@
 import { eventSource, event_types }  from '../../../../script.js';
 import { getContext }                 from '../../../extensions.js';
 import { initSettings, getSettings, applyPullTabVisibility } from './settings.js';
-import { log, warn, error, setVerbose } from './logger.js';
+import { log, error, setVerbose } from './logger.js';
 import {
     activateLayout,
     deactivateLayout,
@@ -49,6 +49,10 @@ import {
     deactivateJumpPill,
     syncJumpPill,
 } from './jump-pill.js';
+import {
+    initTopInfoBarCompat,
+    destroyTopInfoBarCompat,
+} from './compat-topinfobar.js';
 
 const MODULE             = 'core';
 const CLASS_ACTIVE       = 'mobilyze-active';
@@ -131,6 +135,7 @@ function activate() {
     initGestures(showBar, scheduleHide);
     applyPullTabVisibility();
     activateJumpPill();
+    initTopInfoBarCompat();
 
     const chat = document.getElementById('chat');
     if (chat) {
@@ -158,6 +163,7 @@ function deactivate() {
         deactivateBar();
         destroyGestures();
         deactivateJumpPill();
+        destroyTopInfoBarCompat();
     } catch (e) {
         error(MODULE, 'Deactivation failed mid-way', { error: e });
     } finally {
