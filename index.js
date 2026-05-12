@@ -27,7 +27,8 @@ import { initSettings, getSettings, applyPullTabVisibility } from './settings.js
 import { log, warn, error, setVerbose } from './logger.js';
 import {
     activateLayout,
-    deactivateLayout
+    deactivateLayout,
+    syncSheldPreamble,
 } from './layout-manager.js';
 import {
     activateBar,
@@ -113,6 +114,7 @@ function onResize() {
     syncBarState();
     syncGestures();
     syncJumpPill();
+    syncSheldPreamble();
 }
 
 function activate() {

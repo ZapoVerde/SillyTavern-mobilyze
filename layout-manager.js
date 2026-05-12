@@ -45,6 +45,26 @@ function forceSheldWidth() {
 }
 
 /**
+ * Measures the total rendered height of all #sheld children that appear
+ * before #chat (i.e. extension-injected top bars), and writes it to
+ * --mobilyze-sheld-preamble so nav panels can be positioned below them.
+ */
+export function syncSheldPreamble() {
+    const sheld = document.getElementById('sheld');
+    const chat  = document.getElementById('chat');
+    if (!sheld || !chat) return;
+
+    let height = 0;
+    for (const child of sheld.children) {
+        if (child === chat) break;
+        height += child.getBoundingClientRect().height;
+    }
+
+    document.documentElement.style.setProperty('--mobilyze-sheld-preamble', `${height}px`);
+    log(MODULE, `[SHELD-PREAMBLE] ${height}px above #chat`);
+}
+
+/**
  * Starts observing documentElement for style changes to prevent ST 
  * from overwriting our mobile layout width.
  */
@@ -71,6 +91,10 @@ export function activateLayout() {
         attributes:      true,
         attributeFilter: ['style'],
     });
+
+    // Measure on next tick (sync) and again after 500ms to catch late-loading extensions
+    setTimeout(() => syncSheldPreamble(), 0);
+    setTimeout(() => syncSheldPreamble(), 500);
 
     log(MODULE, '[STEP] Layout observer activated (Comfort Width: 800px max)');
 }
@@ -99,7 +123,8 @@ export function deactivateLayout() {
         '--sheldWidth',
         '--topBarBlockSize',
         '--bottomFormBlockSize',
-        '--mes-right-spacing'
+        '--mes-right-spacing',
+        '--mobilyze-sheld-preamble',
     ];
 
     targets.forEach(el => {
