@@ -51,7 +51,7 @@ Find the Mobilyze configuration in the SillyTavern Extensions drawer:
 | **Show message navigation buttons** | Toggles the floating up/down navigation buttons on the side of the chat. |
 | **Reveal Triggers** | Individually toggle **Scroll up**, **Edge swipe**, or **Pull-tab** as your preferred menu triggers. |
 | **Auto-hide delay** | Controls how long the bar stays visible (1000ms to 10000ms). |
-| **Auto-hide Menu on tall screens** | By default, Mobilyze triggers on screens under 1000px tall. Enable this to force mobile behavior on large desktop monitors. |
+| **Auto-hide Menu on tall screens** | By default, Mobilyze triggers on screens under 1000px tall. Enable this to apply mobile behavior on taller screens. |
 | **Pull-tab visibility** | **Standard** for a visible grey handle; **Subtle** for a minimalist, low-opacity outline. |
 | **Hide navigation controls on load screen** | Hides the navigation buttons and swipe controls when no character is actively loaded. |
 | **Enable debug logging** | Only needed if you are reporting a bug to the developers. |
