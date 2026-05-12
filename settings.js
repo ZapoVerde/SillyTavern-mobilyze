@@ -39,6 +39,7 @@ const DEFAULTS = {
     enableEdgeSwipe:            true,
     enablePullTab:              true,
     hideControlsOnLoadScreen:   true,
+    disableOnWideScreens:       false,
 };
 
 /**
@@ -72,6 +73,10 @@ function injectSettingsPanel() {
             <label class="checkbox_label flexGap5" data-i18n="[title]mobilyze.settings.title_enabled" title="Force full-screen mobile layout and auto-hiding top bar">
                 <input type="checkbox" id="mobilyze-enabled">
                 <span data-i18n="mobilyze.settings.label_enabled">Enable mobile layout</span>
+            </label>
+            <label class="checkbox_label flexGap5" data-i18n="[title]mobilyze.settings.title_disable_wide" title="Automatically disable Mobilyze when the viewport is wider than 1000 px">
+                <input type="checkbox" id="mobilyze-disable-wide">
+                <span data-i18n="mobilyze.settings.label_disable_wide">Disable on desktop screens</span>
             </label>
             <label class="checkbox_label flexGap5" data-i18n="[title]mobilyze.settings.title_wrap" title="Allow message text to flow under avatars">
                 <input type="checkbox" id="mobilyze-wrap">
@@ -167,10 +172,12 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
     extension_settings[EXT_NAME].enableEdgeSwipe          ??= DEFAULTS.enableEdgeSwipe;
     extension_settings[EXT_NAME].enablePullTab                ??= DEFAULTS.enablePullTab;
     extension_settings[EXT_NAME].hideControlsOnLoadScreen     ??= DEFAULTS.hideControlsOnLoadScreen;
+    extension_settings[EXT_NAME].disableOnWideScreens         ??= DEFAULTS.disableOnWideScreens;
 
     injectSettingsPanel();
 
     const $enabled       = $('#mobilyze-enabled');
+    const $wideDisable   = $('#mobilyze-disable-wide');
     const $wrap          = $('#mobilyze-wrap');
     const $jumppill      = $('#mobilyze-jumppill');
     const $scrollReveal  = $('#mobilyze-scroll-reveal');
@@ -186,6 +193,7 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
 
     // Sync UI to state
     $enabled.prop('checked', settings.enabled);
+    $wideDisable.prop('checked', settings.disableOnWideScreens);
     $wrap.prop('checked', settings.enableTextWrap);
     $jumppill.prop('checked', settings.showJumpPill);
     $scrollReveal.prop('checked', settings.enableScrollReveal);
@@ -206,6 +214,13 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
         if (typeof onToggle === 'function') {
             onToggle(settings.enabled);
         }
+    });
+
+    $wideDisable.on('change', function () {
+        settings.disableOnWideScreens = this.checked;
+        log(MODULE, 'Disable on wide screens toggled', { enabled: settings.disableOnWideScreens });
+        saveSettingsDebounced();
+        if (typeof onSync === 'function') onSync();
     });
 
     $wrap.on('change', function () {

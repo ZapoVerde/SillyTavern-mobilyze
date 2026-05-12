@@ -54,8 +54,22 @@ const CLASS_ACTIVE       = 'mobilyze-active';
 const CLASS_WRAP         = 'mobilyze-wrap-active';
 const CLASS_MOBILE_MODE  = 'mobilyze-mobile-mode';
 const CLASS_NO_CHAT      = 'mobilyze-no-chat';
+const WIDTH_BREAKPOINT   = 1000;
 
 let _lastScrollTop  = 0;
+let _isActive       = false;
+
+function isWideViewport() {
+    return window.innerWidth >= WIDTH_BREAKPOINT;
+}
+
+function syncActivationState() {
+    const settings = getSettings();
+    const shouldBeActive = settings.enabled
+        && !(settings.disableOnWideScreens && isWideViewport());
+    if (shouldBeActive && !_isActive) activate();
+    else if (!shouldBeActive && _isActive) deactivate();
+}
 
 function syncNoChatState() {
     const ctx = getContext();
@@ -93,6 +107,8 @@ function syncMobileMode() {
 }
 
 function onResize() {
+    syncActivationState();
+    if (!_isActive) return;
     syncMobileMode();
     syncBarState();
     syncGestures();
@@ -100,6 +116,8 @@ function onResize() {
 }
 
 function activate() {
+    if (_isActive) return;
+    _isActive = true;
     document.body.classList.add(CLASS_ACTIVE);
     syncMobileMode();
     syncNoChatState();
@@ -123,6 +141,8 @@ function activate() {
 }
 
 function deactivate() {
+    if (!_isActive) return;
+    _isActive = false;
     try {
         document.body.classList.remove(CLASS_ACTIVE);
         document.body.classList.remove(CLASS_WRAP);
@@ -145,18 +165,21 @@ function deactivate() {
 
 jQuery(async () => {
     await initSettings(
-        (enabled) => {
-            enabled ? activate() : deactivate();
+        () => {
+            syncActivationState();
         },
         (debugEnabled) => {
             setVerbose(debugEnabled);
         },
         () => {
-            syncMobileMode();
-            syncBarState();
-            syncWrapState();
-            syncJumpPill();
-            syncGestures();
+            syncActivationState();
+            if (_isActive) {
+                syncMobileMode();
+                syncBarState();
+                syncWrapState();
+                syncJumpPill();
+                syncGestures();
+            }
         }
     );
 
@@ -165,7 +188,7 @@ jQuery(async () => {
 
     if (settings.enabled) {
         eventSource.once(event_types.APP_READY, () => {
-            activate();
+            syncActivationState();
         });
     }
 });

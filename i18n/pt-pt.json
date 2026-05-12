@@ -5,6 +5,8 @@
     "mobilyze.settings.title_wrap":           "Permite que o texto da mensagem flua sob os avatares",
     "mobilyze.settings.label_jumppill":       "Mostrar botões de navegação de mensagens",
     "mobilyze.settings.title_jumppill":       "Botões flutuantes cima/baixo no lateral do chat para navegar pelas mensagens uma a uma",
+    "mobilyze.settings.label_disable_wide":   "Desativar em ecrãs de secretária",
+    "mobilyze.settings.title_disable_wide":   "Desativa o Mobilyze automaticamente quando o viewport tem mais de 1000 px de largura",
     "mobilyze.settings.label_tall_autohide":  "Ocultar menu automaticamente em ecrãs altos",
     "mobilyze.settings.title_tall_autohide":  "Aplica a ocultação automática mesmo em ecrãs altos (tamanho secretária)",
     "mobilyze.settings.reveal_required_hint": "É necessário pelo menos um método de revelação",

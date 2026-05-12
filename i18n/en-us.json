@@ -5,6 +5,8 @@
     "mobilyze.settings.title_wrap":           "Allow message text to flow under avatars",
     "mobilyze.settings.label_jumppill":       "Show message navigation buttons",
     "mobilyze.settings.title_jumppill":       "Floating up/down buttons on the side of the chat that let you step through messages one at a time",
+    "mobilyze.settings.label_disable_wide":   "Disable on desktop screens",
+    "mobilyze.settings.title_disable_wide":   "Automatically disable Mobilyze when the viewport is wider than 1000 px",
     "mobilyze.settings.label_tall_autohide":  "Auto-hide Menu on tall screens",
     "mobilyze.settings.title_tall_autohide":  "Apply the auto-hiding menu bar behavior even on tall (desktop-sized) screens",
     "mobilyze.settings.reveal_required_hint": "At least one reveal method is required",

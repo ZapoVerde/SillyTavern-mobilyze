@@ -5,6 +5,8 @@
     "mobilyze.settings.title_wrap":           "允许消息文字在头像下方流动",
     "mobilyze.settings.label_jumppill":       "显示消息导航按钮",
     "mobilyze.settings.title_jumppill":       "聊天侧边的浮动上下按钮，可逐条浏览消息",
+    "mobilyze.settings.label_disable_wide":   "在桌面屏幕上禁用",
+    "mobilyze.settings.title_disable_wide":   "当视口宽度超过 1000 px 时自动禁用 Mobilyze",
     "mobilyze.settings.label_tall_autohide":  "在高屏幕上自动隐藏菜单",
     "mobilyze.settings.title_tall_autohide":  "即使在高屏幕（桌面尺寸）上也应用自动隐藏菜单栏行为",
     "mobilyze.settings.reveal_required_hint": "至少需要一种显示方式",
