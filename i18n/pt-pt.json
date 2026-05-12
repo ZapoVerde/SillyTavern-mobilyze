@@ -1,0 +1,33 @@
+{
+    "mobilyze.settings.label_enabled":       "Ativar layout móvel",
+    "mobilyze.settings.title_enabled":        "Força o layout móvel em ecrã completo e a barra superior oculta-se automaticamente",
+    "mobilyze.settings.label_wrap":           "Ativar quebra de texto sob os avatares",
+    "mobilyze.settings.title_wrap":           "Permite que o texto da mensagem flua sob os avatares",
+    "mobilyze.settings.label_jumppill":       "Mostrar botões de navegação de mensagens",
+    "mobilyze.settings.title_jumppill":       "Botões flutuantes cima/baixo no lateral do chat para navegar pelas mensagens uma a uma",
+    "mobilyze.settings.label_tall_autohide":  "Ocultar menu automaticamente em ecrãs altos",
+    "mobilyze.settings.title_tall_autohide":  "Aplica a ocultação automática mesmo em ecrãs altos (tamanho secretária)",
+    "mobilyze.settings.reveal_required_hint": "É necessário pelo menos um método de revelação",
+    "mobilyze.settings.label_scroll_reveal":  "Rolar para cima para revelar",
+    "mobilyze.settings.title_scroll_reveal":  "Role para cima no chat para mostrar a barra de menu",
+    "mobilyze.settings.label_edge_swipe":     "Deslizar da extremidade para revelar",
+    "mobilyze.settings.title_edge_swipe":     "Deslize para baixo desde a extremidade superior para mostrar a barra de menu (apenas toque)",
+    "mobilyze.settings.label_pull_tab":       "Mostrar aba de arrastar",
+    "mobilyze.settings.title_pull_tab":       "Mostra uma alça de arrastar no topo quando a barra de menu está oculta",
+    "mobilyze.settings.label_hide_on_load":   "Ocultar controlos de navegação no ecrã de carregamento",
+    "mobilyze.settings.title_hide_on_load":   "Oculta os botões de salto e controlos deslizantes quando não há personagem carregado",
+    "mobilyze.settings.label_delay":          "Atraso de ocultação automática",
+    "mobilyze.settings.unit_ms":              "ms",
+    "mobilyze.settings.label_tab_visibility": "Visibilidade da aba",
+    "mobilyze.settings.opt_standard":         "Padrão",
+    "mobilyze.settings.opt_subtle":           "Subtil",
+    "mobilyze.settings.label_debug":          "Ativar registo de depuração",
+    "mobilyze.settings.title_debug":          "Ativa o registo detalhado na consola do browser",
+    "mobilyze.settings.footer_hint":          "Arraste a alça no topo do ecrã, ou role para cima no chat, para mostrar a barra de menu.",
+
+    "mobilyze.pull_tab.drag_hint":            "Arraste para baixo para mostrar o menu",
+
+    "mobilyze.jump_pill.group_label":         "Saltar entre mensagens",
+    "mobilyze.jump_pill.btn_up":              "Saltar para a mensagem anterior",
+    "mobilyze.jump_pill.btn_down":            "Saltar para a próxima mensagem"
+}

@@ -1,0 +1,33 @@
+{
+    "mobilyze.settings.label_enabled":       "Activar diseño móvil",
+    "mobilyze.settings.title_enabled":        "Fuerza el diseño móvil a pantalla completa y oculta la barra superior automáticamente",
+    "mobilyze.settings.label_wrap":           "Activar ajuste de texto bajo los avatares",
+    "mobilyze.settings.title_wrap":           "Permite que el texto del mensaje fluya debajo de los avatares",
+    "mobilyze.settings.label_jumppill":       "Mostrar botones de navegación de mensajes",
+    "mobilyze.settings.title_jumppill":       "Botones flotantes arriba/abajo en el lateral del chat para navegar por los mensajes uno a uno",
+    "mobilyze.settings.label_tall_autohide":  "Ocultar menú automáticamente en pantallas altas",
+    "mobilyze.settings.title_tall_autohide":  "Aplica la ocultación automática incluso en pantallas altas (tamaño escritorio)",
+    "mobilyze.settings.reveal_required_hint": "Se requiere al menos un método para mostrar la barra",
+    "mobilyze.settings.label_scroll_reveal":  "Desplazar hacia arriba para mostrar",
+    "mobilyze.settings.title_scroll_reveal":  "Desplázate hacia arriba en el chat para mostrar la barra de menú",
+    "mobilyze.settings.label_edge_swipe":     "Deslizar desde el borde para mostrar",
+    "mobilyze.settings.title_edge_swipe":     "Desliza hacia abajo desde el borde superior para mostrar la barra de menú (solo táctil)",
+    "mobilyze.settings.label_pull_tab":       "Mostrar pestaña deslizable",
+    "mobilyze.settings.title_pull_tab":       "Muestra un control de arrastre en la parte superior cuando la barra de menú está oculta",
+    "mobilyze.settings.label_hide_on_load":   "Ocultar controles de navegación en la pantalla de carga",
+    "mobilyze.settings.title_hide_on_load":   "Oculta los botones de salto y controles deslizantes cuando no hay personaje cargado",
+    "mobilyze.settings.label_delay":          "Retraso de ocultación automática",
+    "mobilyze.settings.unit_ms":              "ms",
+    "mobilyze.settings.label_tab_visibility": "Visibilidad de la pestaña",
+    "mobilyze.settings.opt_standard":         "Estándar",
+    "mobilyze.settings.opt_subtle":           "Sutil",
+    "mobilyze.settings.label_debug":          "Activar registro de depuración",
+    "mobilyze.settings.title_debug":          "Activa el registro detallado en la consola del navegador",
+    "mobilyze.settings.footer_hint":          "Arrastra el control en la parte superior, o desplázate hacia arriba en el chat, para mostrar la barra de menú.",
+
+    "mobilyze.pull_tab.drag_hint":            "Arrastra hacia abajo para mostrar el menú",
+
+    "mobilyze.jump_pill.group_label":         "Saltar entre mensajes",
+    "mobilyze.jump_pill.btn_up":              "Saltar al mensaje anterior",
+    "mobilyze.jump_pill.btn_down":            "Saltar al siguiente mensaje"
+}

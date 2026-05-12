@@ -1,0 +1,33 @@
+{
+    "mobilyze.settings.label_enabled":       "启用移动布局",
+    "mobilyze.settings.title_enabled":        "强制全屏移动布局并自动隐藏顶部栏",
+    "mobilyze.settings.label_wrap":           "启用头像下方文字折行",
+    "mobilyze.settings.title_wrap":           "允许消息文字在头像下方流动",
+    "mobilyze.settings.label_jumppill":       "显示消息导航按钮",
+    "mobilyze.settings.title_jumppill":       "聊天侧边的浮动上下按钮，可逐条浏览消息",
+    "mobilyze.settings.label_tall_autohide":  "在高屏幕上自动隐藏菜单",
+    "mobilyze.settings.title_tall_autohide":  "即使在高屏幕（桌面尺寸）上也应用自动隐藏菜单栏行为",
+    "mobilyze.settings.reveal_required_hint": "至少需要一种显示方式",
+    "mobilyze.settings.label_scroll_reveal":  "向上滚动以显示",
+    "mobilyze.settings.title_scroll_reveal":  "在聊天中向上滚动以显示菜单栏",
+    "mobilyze.settings.label_edge_swipe":     "从边缘滑动以显示",
+    "mobilyze.settings.title_edge_swipe":     "从屏幕顶部边缘向下滑动以显示菜单栏（仅触控）",
+    "mobilyze.settings.label_pull_tab":       "显示下拉标签",
+    "mobilyze.settings.title_pull_tab":       "菜单栏隐藏时在屏幕顶部显示拖动手柄",
+    "mobilyze.settings.label_hide_on_load":   "在加载屏幕上隐藏导航控件",
+    "mobilyze.settings.title_hide_on_load":   "未加载角色时隐藏跳转按钮和滑动控件",
+    "mobilyze.settings.label_delay":          "自动隐藏延迟",
+    "mobilyze.settings.unit_ms":              "毫秒",
+    "mobilyze.settings.label_tab_visibility": "下拉标签可见性",
+    "mobilyze.settings.opt_standard":         "标准",
+    "mobilyze.settings.opt_subtle":           "低调",
+    "mobilyze.settings.label_debug":          "启用调试日志",
+    "mobilyze.settings.title_debug":          "在浏览器控制台启用详细日志",
+    "mobilyze.settings.footer_hint":          "拖动屏幕顶部的手柄，或在聊天中向上滚动，以显示菜单栏。",
+
+    "mobilyze.pull_tab.drag_hint":            "向下拖动以显示菜单",
+
+    "mobilyze.jump_pill.group_label":         "在消息间跳转",
+    "mobilyze.jump_pill.btn_up":              "跳转到上一条消息",
+    "mobilyze.jump_pill.btn_down":            "跳转到下一条消息"
+}

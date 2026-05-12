@@ -9,6 +9,9 @@
     "version": "0.5.0",
     "auto_update": false,
     "i18n": {
-        "en-us": "i18n/en-us.json"
+        "en-us": "i18n/en-us.json",
+        "es-es": "i18n/es-es.json",
+        "pt-pt": "i18n/pt-pt.json",
+        "zh-cn": "i18n/zh-cn.json"
     }
 }
