@@ -69,63 +69,63 @@ function injectSettingsPanel() {
             <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
         </div>
         <div class="inline-drawer-content">
-            <label class="checkbox_label flexGap5" title="Force full-screen mobile layout and auto-hiding top bar">
+            <label class="checkbox_label flexGap5" data-i18n="[title]mobilyze.settings.title_enabled" title="Force full-screen mobile layout and auto-hiding top bar">
                 <input type="checkbox" id="mobilyze-enabled">
-                <span>Enable mobile layout</span>
+                <span data-i18n="mobilyze.settings.label_enabled">Enable mobile layout</span>
             </label>
-            <label class="checkbox_label flexGap5" title="Allow message text to flow under avatars">
+            <label class="checkbox_label flexGap5" data-i18n="[title]mobilyze.settings.title_wrap" title="Allow message text to flow under avatars">
                 <input type="checkbox" id="mobilyze-wrap">
-                <span>Enable text wrapping under avatars</span>
+                <span data-i18n="mobilyze.settings.label_wrap">Enable text wrapping under avatars</span>
             </label>
-            <label class="checkbox_label flexGap5" title="Floating up/down buttons on the side of the chat that let you step through messages one at a time">
+            <label class="checkbox_label flexGap5" data-i18n="[title]mobilyze.settings.title_jumppill" title="Floating up/down buttons on the side of the chat that let you step through messages one at a time">
                 <input type="checkbox" id="mobilyze-jumppill">
-                <span>Show message navigation buttons</span>
+                <span data-i18n="mobilyze.settings.label_jumppill">Show message navigation buttons</span>
             </label>
-            <label class="checkbox_label flexGap5" title="Apply the auto-hiding menu bar behavior even on tall (desktop-sized) screens">
+            <label class="checkbox_label flexGap5" data-i18n="[title]mobilyze.settings.title_tall_autohide" title="Apply the auto-hiding menu bar behavior even on tall (desktop-sized) screens">
                 <input type="checkbox" id="mobilyze-tall-autohide">
-                <span>Auto-hide Menu on tall screens</span>
+                <span data-i18n="mobilyze.settings.label_tall_autohide">Auto-hide Menu on tall screens</span>
             </label>
             <div style="margin-top:8px; border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:6px 10px 8px;">
-                <small class="mobilyze-hint" style="margin-top:0;margin-bottom:4px;opacity:0.8;font-weight:bold;display:block;">At least one reveal method is required</small>
-                <label class="checkbox_label flexGap5" title="Scroll up in chat to show the menu bar">
+                <small class="mobilyze-hint" style="margin-top:0;margin-bottom:4px;opacity:0.8;font-weight:bold;display:block;" data-i18n="mobilyze.settings.reveal_required_hint">At least one reveal method is required</small>
+                <label class="checkbox_label flexGap5" data-i18n="[title]mobilyze.settings.title_scroll_reveal" title="Scroll up in chat to show the menu bar">
                     <input type="checkbox" id="mobilyze-scroll-reveal">
-                    <span>Scroll up to reveal</span>
+                    <span data-i18n="mobilyze.settings.label_scroll_reveal">Scroll up to reveal</span>
                 </label>
-                <label class="checkbox_label flexGap5" title="Swipe down from the top edge of the screen to show the menu bar (touch only)">
+                <label class="checkbox_label flexGap5" data-i18n="[title]mobilyze.settings.title_edge_swipe" title="Swipe down from the top edge of the screen to show the menu bar (touch only)">
                     <input type="checkbox" id="mobilyze-edge-swipe">
-                    <span>Edge swipe to reveal</span>
+                    <span data-i18n="mobilyze.settings.label_edge_swipe">Edge swipe to reveal</span>
                 </label>
-                <label class="checkbox_label flexGap5" title="Show a drag handle at the top of the screen when the menu bar is hidden">
+                <label class="checkbox_label flexGap5" data-i18n="[title]mobilyze.settings.title_pull_tab" title="Show a drag handle at the top of the screen when the menu bar is hidden">
                     <input type="checkbox" id="mobilyze-pull-tab-enable">
-                    <span>Show pull-tab</span>
+                    <span data-i18n="mobilyze.settings.label_pull_tab">Show pull-tab</span>
                 </label>
             </div>
-            <label class="checkbox_label flexGap5" title="Hide the jump buttons and swipe controls when no character is loaded">
+            <label class="checkbox_label flexGap5" data-i18n="[title]mobilyze.settings.title_hide_on_load" title="Hide the jump buttons and swipe controls when no character is loaded">
                 <input type="checkbox" id="mobilyze-hide-on-load">
-                <span>Hide navigation controls on load screen</span>
+                <span data-i18n="mobilyze.settings.label_hide_on_load">Hide navigation controls on load screen</span>
             </label>
             <div class="range-block">
-                <div class="range-block-title">Auto-hide delay</div>
+                <div class="range-block-title" data-i18n="mobilyze.settings.label_delay">Auto-hide delay</div>
                 <div class="range-block-range">
                     <input type="range" id="mobilyze-delay" min="1000" max="10000" step="500">
                     <span id="mobilyze-delay-counter" class="range-block-counter"></span>
-                    <span class="range-block-suffix">ms</span>
+                    <span class="range-block-suffix" data-i18n="mobilyze.settings.unit_ms">ms</span>
                 </div>
             </div>
             <div class="flex-container flexFlowColumn flexGap5" style="margin-top: 8px;">
                 <label for="mobilyze-tab-visibility" class="flexGap5">
-                    <span>Pull-tab visibility</span>
+                    <span data-i18n="mobilyze.settings.label_tab_visibility">Pull-tab visibility</span>
                 </label>
                 <select id="mobilyze-tab-visibility" class="text_pole">
-                    <option value="standard">Standard</option>
-                    <option value="subtle">Subtle</option>
-                </select>                
+                    <option value="standard" data-i18n="mobilyze.settings.opt_standard">Standard</option>
+                    <option value="subtle" data-i18n="mobilyze.settings.opt_subtle">Subtle</option>
+                </select>
             </div>
-            <label class="checkbox_label flexGap5" title="Enable verbose logging in the browser console">
+            <label class="checkbox_label flexGap5" data-i18n="[title]mobilyze.settings.title_debug" title="Enable verbose logging in the browser console">
                 <input type="checkbox" id="mobilyze-debug">
-                <span>Enable debug logging</span>
+                <span data-i18n="mobilyze.settings.label_debug">Enable debug logging</span>
             </label>
-            <small class="mobilyze-hint">
+            <small class="mobilyze-hint" data-i18n="mobilyze.settings.footer_hint">
                 Drag the handle at the top of the screen, or scroll up in chat, to show the menu bar.
             </small>
         </div>

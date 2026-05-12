@@ -23,6 +23,7 @@
 
 import { getSettings } from './settings.js';
 import { log }         from './logger.js';
+import { translate }   from '../../../../i18n.js';
 
 const MODULE            = 'gesture';
 const PULL_TAB_ID       = 'mobilyze-pull-tab';
@@ -152,7 +153,7 @@ function onTouchEnd(e) {
 function buildPullTab() {
     const tab = document.createElement('div');
     tab.id        = PULL_TAB_ID;
-    tab.title     = 'Drag down to show menu';
+    tab.title     = translate('Drag down to show menu', 'mobilyze.pull_tab.drag_hint');
     tab.innerHTML = '<i class="fa-solid fa-grip-lines" aria-hidden="true"></i>';
 
     tab.addEventListener('touchstart',  onHandleTouchStart, { passive: true });

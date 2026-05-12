@@ -25,6 +25,7 @@
 import { eventSource, event_types } from '../../../../script.js';
 import { getSettings }              from './settings.js';
 import { log }                      from './logger.js';
+import { translate }                from '../../../../i18n.js';
 
 const MODULE             = 'pill';
 const PILL_ID            = 'mobilyze-jump-pill';
@@ -115,19 +116,19 @@ function buildPill() {
     const pill = document.createElement('div');
     pill.id = PILL_ID;
     pill.setAttribute('role', 'group');
-    pill.setAttribute('aria-label', 'Jump between messages');
+    pill.setAttribute('aria-label', translate('Jump between messages', 'mobilyze.jump_pill.group_label'));
 
     const upBtn = document.createElement('button');
     upBtn.className = 'mobilyze-jump-btn';
     upBtn.dataset.direction = 'up';
-    upBtn.setAttribute('aria-label', 'Jump to previous message');
+    upBtn.setAttribute('aria-label', translate('Jump to previous message', 'mobilyze.jump_pill.btn_up'));
     upBtn.innerHTML = '<i class="fa-solid fa-chevron-up"></i>';
     upBtn.addEventListener('click', stepUp);
 
     const downBtn = document.createElement('button');
     downBtn.className = 'mobilyze-jump-btn';
     downBtn.dataset.direction = 'down';
-    downBtn.setAttribute('aria-label', 'Jump to next message');
+    downBtn.setAttribute('aria-label', translate('Jump to next message', 'mobilyze.jump_pill.btn_down'));
     downBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
     downBtn.addEventListener('click', stepDown);
 

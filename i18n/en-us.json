@@ -1,0 +1,33 @@
+{
+    "mobilyze.settings.label_enabled":       "Enable mobile layout",
+    "mobilyze.settings.title_enabled":        "Force full-screen mobile layout and auto-hiding top bar",
+    "mobilyze.settings.label_wrap":           "Enable text wrapping under avatars",
+    "mobilyze.settings.title_wrap":           "Allow message text to flow under avatars",
+    "mobilyze.settings.label_jumppill":       "Show message navigation buttons",
+    "mobilyze.settings.title_jumppill":       "Floating up/down buttons on the side of the chat that let you step through messages one at a time",
+    "mobilyze.settings.label_tall_autohide":  "Auto-hide Menu on tall screens",
+    "mobilyze.settings.title_tall_autohide":  "Apply the auto-hiding menu bar behavior even on tall (desktop-sized) screens",
+    "mobilyze.settings.reveal_required_hint": "At least one reveal method is required",
+    "mobilyze.settings.label_scroll_reveal":  "Scroll up to reveal",
+    "mobilyze.settings.title_scroll_reveal":  "Scroll up in chat to show the menu bar",
+    "mobilyze.settings.label_edge_swipe":     "Edge swipe to reveal",
+    "mobilyze.settings.title_edge_swipe":     "Swipe down from the top edge of the screen to show the menu bar (touch only)",
+    "mobilyze.settings.label_pull_tab":       "Show pull-tab",
+    "mobilyze.settings.title_pull_tab":       "Show a drag handle at the top of the screen when the menu bar is hidden",
+    "mobilyze.settings.label_hide_on_load":   "Hide navigation controls on load screen",
+    "mobilyze.settings.title_hide_on_load":   "Hide the jump buttons and swipe controls when no character is loaded",
+    "mobilyze.settings.label_delay":          "Auto-hide delay",
+    "mobilyze.settings.unit_ms":              "ms",
+    "mobilyze.settings.label_tab_visibility": "Pull-tab visibility",
+    "mobilyze.settings.opt_standard":         "Standard",
+    "mobilyze.settings.opt_subtle":           "Subtle",
+    "mobilyze.settings.label_debug":          "Enable debug logging",
+    "mobilyze.settings.title_debug":          "Enable verbose logging in the browser console",
+    "mobilyze.settings.footer_hint":          "Drag the handle at the top of the screen, or scroll up in chat, to show the menu bar.",
+
+    "mobilyze.pull_tab.drag_hint":            "Drag down to show menu",
+
+    "mobilyze.jump_pill.group_label":         "Jump between messages",
+    "mobilyze.jump_pill.btn_up":              "Jump to previous message",
+    "mobilyze.jump_pill.btn_down":            "Jump to next message"
+}
