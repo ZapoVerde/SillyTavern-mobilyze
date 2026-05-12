@@ -14,6 +14,8 @@ Mobilyze ships with translations for English, Simplified Chinese, Spanish, and P
 *   **Smart Message Wrapping:** Text flows *under* avatars instead of being squeezed into a narrow column next to them, making message bubbles feel more spacious and natural.
 *   **Fixes "Stuck" Side Panels:** Forces the left and right drawers to stay contained within the chat width, preventing them from bleeding off-screen on mobile devices.
 
+<img src="docs/chatshot.png" width="320" alt="Chat view with Mobilyze active"> <img src="docs/menu.png" width="320" alt="Menu reveal controls">
+
 ---
 
 ## Navigating with Mobilyze
