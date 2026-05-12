@@ -23,7 +23,7 @@
 
 import { getSettings } from './settings.js';
 import { log }         from './logger.js';
-import { translate }   from '../../../../i18n.js';
+import { translate }   from '../../../i18n.js';
 
 const MODULE            = 'gesture';
 const PULL_TAB_ID       = 'mobilyze-pull-tab';

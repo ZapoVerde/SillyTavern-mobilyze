@@ -25,7 +25,7 @@
 import { eventSource, event_types } from '../../../../script.js';
 import { getSettings }              from './settings.js';
 import { log }                      from './logger.js';
-import { translate }                from '../../../../i18n.js';
+import { translate }                from '../../../i18n.js';
 
 const MODULE             = 'pill';
 const PILL_ID            = 'mobilyze-jump-pill';
