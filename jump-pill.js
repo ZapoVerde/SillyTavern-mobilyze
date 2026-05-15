@@ -167,8 +167,18 @@ export function syncJumpPill() {
         // CSS `top: 50%` breaks when a CSS transform on <body>/<html> creates a new
         // containing block for position:fixed. Fix: compute the Y position in JS and
         // correct for the containing block's actual viewport offset.
+        //
+        // Clamp so the pill never overlaps the swipeRightBlock D-tab (55px tall,
+        // bottom: 10px) or the form below it. DTAB_CLEAR = 55 + 10 + 8px gap.
         const PILL_HEIGHT   = 58;
-        const targetVpTop   = Math.round(window.innerHeight * 0.5 - PILL_HEIGHT / 2);
+        const DTAB_CLEAR    = 73;
+        const formSheld     = document.getElementById('form_sheld');
+        const formHeight    = formSheld ? formSheld.getBoundingClientRect().height : 0;
+        const maxVpTop      = window.innerHeight - formHeight - DTAB_CLEAR - PILL_HEIGHT;
+        const targetVpTop   = Math.min(
+            Math.round(window.innerHeight * 0.5 - PILL_HEIGHT / 2),
+            Math.round(maxVpTop),
+        );
         const bodyTop       = document.body.getBoundingClientRect().top;
         _pill.style.top     = `${Math.round(targetVpTop - bodyTop)}px`;
         _pill.style.bottom  = 'auto';
