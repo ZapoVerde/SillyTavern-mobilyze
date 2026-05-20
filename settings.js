@@ -40,6 +40,7 @@ const DEFAULTS = {
     enablePullTab:              true,
     hideControlsOnLoadScreen:   true,
     disableOnWideScreens:       false,
+    parametersDrawerOpen:       false,
 };
 
 /**
@@ -171,6 +172,7 @@ export async function initSettings(onToggle, onDebugToggle, onSync) {
     extension_settings[EXT_NAME].enablePullTab                ??= DEFAULTS.enablePullTab;
     extension_settings[EXT_NAME].hideControlsOnLoadScreen     ??= DEFAULTS.hideControlsOnLoadScreen;
     extension_settings[EXT_NAME].disableOnWideScreens         ??= DEFAULTS.disableOnWideScreens;
+    extension_settings[EXT_NAME].parametersDrawerOpen         ??= DEFAULTS.parametersDrawerOpen;
 
     injectSettingsPanel();
 

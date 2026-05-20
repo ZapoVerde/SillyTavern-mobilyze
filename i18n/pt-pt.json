@@ -30,5 +30,7 @@
 
     "mobilyze.jump_pill.group_label":         "Saltar entre mensagens",
     "mobilyze.jump_pill.btn_up":              "Saltar para a mensagem anterior",
-    "mobilyze.jump_pill.btn_down":            "Saltar para a próxima mensagem"
+    "mobilyze.jump_pill.btn_down":            "Saltar para a próxima mensagem",
+
+    "mobilyze.layout.sampler_drawer_title":   "Parâmetros de amostragem"
 }

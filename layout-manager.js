@@ -21,12 +21,53 @@
 'use strict';
 
 import { power_user }         from '../../../../scripts/power-user.js';
+import { saveSettingsDebounced } from '../../../../script.js';
+import { getSettings }        from './settings.js';
 import { log }                from './logger.js';
 
-const MODULE = 'layout';
+const MODULE      = 'layout';
 const COMFORT_WIDTH = 'min(100dvw, 800px)';
+const DRAWER_ID   = 'mobilyze-sampler-drawer';
 
 let _observer = null;
+
+function wrapSamplerDrawer() {
+    const target = document.getElementById('range_block_openai');
+    if (!target || document.getElementById(DRAWER_ID)) return;
+
+    const open = getSettings().parametersDrawerOpen;
+    const drawer = document.createElement('div');
+    drawer.id = DRAWER_ID;
+    drawer.className = 'inline-drawer wide100p';
+    drawer.innerHTML = `
+        <div class="inline-drawer-toggle inline-drawer-header">
+            <b data-i18n="mobilyze.layout.sampler_drawer_title">Sampling Parameters</b>
+            <div class="fa-solid fa-circle-chevron-${open ? 'up' : 'down'} inline-drawer-icon ${open ? 'up' : 'down'}"></div>
+        </div>
+        <div class="inline-drawer-content" style="display:${open ? 'block' : 'none'}"></div>
+    `;
+
+    target.parentNode.insertBefore(drawer, target);
+    drawer.querySelector('.inline-drawer-content').appendChild(target);
+
+    drawer.querySelector('.inline-drawer-toggle').addEventListener('click', () => {
+        getSettings().parametersDrawerOpen = !getSettings().parametersDrawerOpen;
+        saveSettingsDebounced();
+    });
+
+    log(MODULE, 'Sampler drawer wrapped', { open });
+}
+
+function unwrapSamplerDrawer() {
+    const drawer = document.getElementById(DRAWER_ID);
+    if (!drawer) return;
+
+    const target = document.getElementById('range_block_openai');
+    if (target) drawer.parentNode.insertBefore(target, drawer);
+    drawer.remove();
+
+    log(MODULE, 'Sampler drawer unwrapped');
+}
 
 function readSheldWidth(label) {
     const inline   = document.documentElement.style.getPropertyValue('--sheldWidth') || '(unset)';
@@ -96,6 +137,8 @@ export function activateLayout() {
     setTimeout(() => syncSheldPreamble(), 0);
     setTimeout(() => syncSheldPreamble(), 500);
 
+    wrapSamplerDrawer();
+
     log(MODULE, '[STEP] Layout observer activated (Comfort Width: 800px max)');
 }
 
@@ -108,6 +151,8 @@ export function deactivateLayout() {
         _observer = null;
         log(MODULE, '[STEP] Observer disconnected');
     }
+
+    unwrapSamplerDrawer();
 
     const targets = [
         document.documentElement,

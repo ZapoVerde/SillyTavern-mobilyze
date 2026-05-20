@@ -13,6 +13,7 @@ Mobilyze ships with translations for English, Simplified Chinese, Spanish, and P
 *   **Improved Readability on Tablets:** On wider screens, chat messages are centered and limited in width so text stays easy to read instead of stretching across the screen.
 *   **Smart Message Wrapping:** Text flows *under* avatars instead of being squeezed into a narrow column next to them, making message bubbles feel more spacious and natural.
 *   **Fixes "Stuck" Side Panels:** Forces the left and right drawers to stay contained within the chat width, preventing them from bleeding off-screen on mobile devices.
+*   **Safer Settings Scrolling:** The Sampling Parameters panel (Temperature, Frequency Penalty, etc.) is wrapped in a collapsible drawer so you can scroll past it without accidentally moving a slider. Its open/closed state is remembered between sessions.
 
 <img src="docs/chatshot.png" width="320" alt="Chat view with Mobilyze active"> <img src="docs/menu.png" width="320" alt="Menu reveal controls">
 
