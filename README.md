@@ -1,5 +1,7 @@
 # Mobilyze
 
+**[Released]**
+
 ### Stop fighting the interface and start reading your stories.
 
 Mobilyze is a SillyTavern extension designed to transform the mobile chatting experience. It reclaims every possible pixel of screen real estate by hiding the top menu and applying a "mobile-first" layout that stays readable on any screen -- from the smallest phone to the largest tablet.
