@@ -1,6 +1,6 @@
 /**
  * @file mobilyze/layout.css
- * @stamp 2026-05-11T00:00:00Z
+ * @stamp 2026-07-02T00:00:00Z
  * @architectural-role IO — Mobile layout grid and bar visibility definitions.
  * @description
  * Overrides ST's desktop layout for mobile viewports: message block padding,
@@ -22,38 +22,50 @@
 body.mobilyze-active .mes {
     padding-left:  0        !important;
     padding-right: 0        !important;
-    overflow:      visible  !important;
 }
 
 body.mobilyze-active .mes_block {
     padding-left:  0        !important;
     padding-right: 0        !important;
-    overflow:      visible  !important;
+}
+
+/* ─── Wrap-Active Avatar Reflow ───────────────────────────────────────────────
+   The avatar floats inside .mes instead of sitting in ST's native flex row.
+   .mes switches to flow-root (not flex) so it correctly contains the float's
+   height without clipping anything. Because .mes_block is no longer a flex
+   item here, its overflow:visible (needed so the float can reach into its
+   line boxes) can't trigger the flexbox "automatic minimum size" pitfall that
+   let a long unbroken token stretch the message box offscreen -- outside
+   wrap-active mode .mes stays ST's native flex row and .mes_block keeps its
+   native overflow-x:hidden, which was the actual guard against that pitfall
+   all along. .ch_name and everything after it -- badge rows an extension
+   inserts via $chName.after(), the message text, reasoning, media -- are left
+   uncleared on purpose: each wraps beside the avatar only as long as it's
+   still within the avatar's height, then reverts to full width on its own.
+   Nothing is reserved for a badge that isn't there. */
+body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mes {
+    display: flow-root !important;
+}
+
+body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mes_block {
+    overflow: visible !important;
 }
 
 body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mesAvatarWrapper {
-    padding-right:  10px;
+    float:          left;
+    margin:         0 10px 10px 10px;
     padding-bottom: 10px;
-    margin-left:    10px;
 }
 
-body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .ch_name {
-    min-height:   var(--avatar-base-width);
-    padding-left: 10px;
-}
-
-/* 2px overlap: Asymmetrical tabs (20px / 30px) require 18px / 28px text padding */
+/* Clears the swipe D-tabs (20px left, 25px right). 23px left restores the
+   clearance the old avatar-column layout gave .mes_text for free via its
+   negative-margin residual -- the flow-root/float redesign starts .mes_block
+   flush at x:0, so that margin no longer exists to lean on. */
 body.mobilyze-active .mes_block .mes_text {
-    padding-left:  13px !important;
+    padding-left:  23px !important;
     padding-right: 25px !important;
     margin-left:   0    !important;
     margin-right:  0    !important;
-}
-
-body.mobilyze-active.mobilyze-wrap-active:not(.echostyle):not(.whisperstyle):not(.ripplestyle):not(.hushstyle):not(.tidestyle) .mes_text {
-    margin-left: calc(-1 * (var(--avatar-base-width) + 10px)) !important;
-    width:       calc(100% + var(--avatar-base-width) + 10px) !important;
-    max-width:   calc(100% + var(--avatar-base-width) + 10px) !important;
 }
 
 /* Restore documentstyle flushness */
